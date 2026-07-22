@@ -1,0 +1,11 @@
+{
+  "_note": "instance config for the demo store. keychain values are macOS Keychain service NAMES \u2014 references, never secrets. client_id is your public OAuth client id (not a secret); the client secret lives only in the Keychain. fill these in for your own store.",
+  "store": "demostore",
+  "shop_domain": "your-store.myshopify.com",
+  "api_version": "2026-04",
+  "client_id": "<your-oauth-client-id>",
+  "keychain": {
+    "client_id": "commerceos/shopify-client-id",
+    "client_secret": "commerceos/shopify-admin"
+  }
+}

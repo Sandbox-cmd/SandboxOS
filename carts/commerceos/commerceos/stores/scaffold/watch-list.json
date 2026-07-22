@@ -1,0 +1,5 @@
+{
+  "_doc": "the scaffold store's watch-list \u2014 empty on purpose: the engine evaluates nothing and says so honestly until real rows are earned.",
+  "store": "scaffold",
+  "metrics": []
+}

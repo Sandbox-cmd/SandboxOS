@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Michael — cartridge</title>
+<style>
+  :root{
+    --cream:#f6efe3; --paper:#fffaf1; --walnut:#4a3323; --walnut-2:#6b4a30;
+    --walnut-soft:#8a6a4c; --gold:#d9a441; --gold-deep:#b9812a; --sage:#7d8a5c;
+    --line:#e2d3ba;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--walnut);
+    background:
+      radial-gradient(1000px 480px at 50% -8%, #fdf6e9 0%, rgba(253,246,233,0) 62%),
+      linear-gradient(180deg,#f8f1e5 0%, #f0e4d1 100%);
+    min-height:100%;
+    display:flex; flex-direction:column; align-items:center;
+    padding:34px 18px 46px;
+  }
+  .display{font-family:"Marker Felt","Comic Sans MS","Segoe Print",Georgia,serif;}
+  h1{font-size:clamp(1.8rem,5vw,2.6rem);margin:0 0 4px;text-align:center;}
+  .tag{color:var(--walnut-soft);margin:0 0 26px;text-align:center;font-size:1rem;}
+
+  /* ---------------- deck (cartridge + console) ---------------- */
+  .deck{
+    position:relative; width:340px; max-width:92vw; height:540px;
+    margin:0 auto; flex:0 0 auto;
+  }
+
+  /* ---- cartridge ---- */
+  .cartridge{
+    position:absolute; left:50%; top:6px; width:250px; margin-left:-125px;
+    z-index:2; cursor:pointer;
+    transition:transform .85s cubic-bezier(.55,.06,.32,1.4);
+    filter:drop-shadow(0 22px 26px rgba(74,51,35,.28));
+    will-change:transform;
+  }
+  .cart-float{ animation:bob 4.6s ease-in-out infinite; transform-origin:center; }
+  @keyframes bob{
+    0%,100%{transform:translateY(0) rotate(-1.2deg);}
+    50%{transform:translateY(-12px) rotate(1.2deg);}
+  }
+  .cart-body{
+    position:relative;
+    background:
+      linear-gradient(160deg,#7a5533 0%, #5f4026 46%, #4a3120 100%);
+    border-radius:16px 16px 8px 8px;
+    padding:18px 18px 0;
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.18), inset 0 -10px 24px rgba(0,0,0,.30);
+  }
+  /* angled top-right corner cut, the classic cartridge chamfer */
+  .cart-body::before{
+    content:""; position:absolute; top:-1px; right:-1px;
+    border-width:0 22px 22px 0; border-style:solid;
+    border-color:transparent #f0e4d1 transparent transparent;
+    filter:drop-shadow(-1px 1px 0 rgba(0,0,0,.15));
+  }
+  .cart-label{
+    position:relative; overflow:hidden;
+    background:linear-gradient(175deg,#fffdf7,#f4e7cf);
+    border-radius:9px; padding:16px 15px 15px;
+    border:1px solid #e6d3ac;
+    box-shadow:0 2px 6px rgba(0,0,0,.18);
+  }
+  .cart-label::after{ /* glossy shine sweep */
+    content:""; position:absolute; top:-60%; left:-40%;
+    width:45%; height:220%;
+    background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.75) 50%,rgba(255,255,255,0) 100%);
+    transform:rotate(18deg);
+    animation:shine 5.2s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%,62%{left:-45%;} 82%,100%{left:130%;}
+  }
+  .lb-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .lb-emoji{font-size:1.5rem;}
+  .lb-name{font-size:1.5rem;line-height:1;color:var(--walnut);}
+  .lb-sub{
+    font-size:.62rem; letter-spacing:2px; text-transform:uppercase;
+    color:var(--gold-deep); font-weight:700; margin-bottom:11px;
+  }
+  .lb-chips{display:flex;flex-direction:column;gap:6px;}
+  .chip{
+    display:flex;align-items:center;gap:7px;
+    font-size:.74rem; color:var(--walnut-2); font-weight:600;
+  }
+  .chip i{
+    width:14px;height:14px;border-radius:4px;background:var(--sage);
+    display:inline-block;flex:0 0 auto;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);
+  }
+  .chip.g i{background:var(--gold);}
+  .chip.b i{background:var(--brick,#b5563f);}
+  .lb-ver{
+    margin-top:11px;padding-top:9px;border-top:1px dashed #d9c6a0;
+    font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--walnut-soft);font-weight:700;display:flex;justify-content:space-between;
+  }
+  /* ridged grip */
+  .cart-grip{
+    height:46px;margin:14px 6px 0;border-radius:0 0 6px 6px;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(0,0,0,.30) 0 3px, rgba(255,255,255,.06) 3px 8px);
+    box-shadow:inset 0 3px 8px rgba(0,0,0,.4);
+  }
+  .cart-foot{height:14px;}
+
+  /* ---- console ---- */
+  .console{
+    position:absolute; left:50%; bottom:0; width:340px; margin-left:-170px;
+    height:196px; z-index:5;
+    background:linear-gradient(180deg,#4a3323 0%, #3a2718 100%);
+    border-radius:20px;
+    box-shadow:0 16px 34px rgba(74,51,35,.34), inset 0 2px 0 rgba(255,255,255,.08);
+    border:1px solid rgba(0,0,0,.25);
+  }
+  .slot{
+    position:absolute; top:-9px; left:50%; margin-left:-115px; width:230px; height:20px;
+    background:linear-gradient(180deg,#140d07,#241811);
+    border-radius:7px;
+    box-shadow:inset 0 6px 9px rgba(0,0,0,.85), 0 1px 0 rgba(255,255,255,.09);
+  }
+  .console-face{
+    position:absolute; inset:auto 0 0 0; padding:26px 22px 20px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .screen{
+    flex:1; background:#0f1a10; border-radius:10px; padding:11px 14px;
+    border:1px solid #223322; min-height:70px;
+    box-shadow:inset 0 0 18px rgba(0,0,0,.7);
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    color:#5f7d5f; font-size:.72rem; line-height:1.5; overflow:hidden;
+  }
+  .screen .ln{opacity:.35; transition:opacity .3s;}
+  .screen .ln.on{opacity:1;color:#8fe08f;text-shadow:0 0 8px rgba(120,224,120,.55);}
+  .screen .cursor{color:#8fe08f;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .power{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .led{
+    width:15px;height:15px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#7a2f22,#3a140d);
+    box-shadow:inset 0 0 3px rgba(0,0,0,.7);
+    transition:all .4s;
+  }
+  .led.on{
+    background:radial-gradient(circle at 35% 30%,#bdffb0,#3fbf46);
+    box-shadow:0 0 12px rgba(90,224,110,.9),0 0 4px rgba(120,255,140,.9);
+  }
+  .power span{font-size:.52rem;letter-spacing:1.5px;color:#c9b596;text-transform:uppercase;font-weight:700;}
+
+  /* ---- inserted state ---- */
+  .deck.loaded .cartridge{ transform:translateY(130px) scale(.985); }
+  .deck.loaded .cart-float{ animation:none; transform:none; }
+
+  /* ---------------- controls ---------------- */
+  .controls{margin-top:30px;display:flex;gap:12px;justify-content:center;}
+  button{
+    font:inherit;font-weight:700;cursor:pointer;
+    border-radius:999px;padding:12px 26px;border:1px solid var(--gold-deep);
+    background:linear-gradient(180deg,var(--gold),var(--gold-deep));
+    color:#3a2718;box-shadow:0 6px 16px rgba(185,129,42,.32);
+    transition:transform .12s, box-shadow .2s, opacity .2s;
+  }
+  button:hover{transform:translateY(-1px);}
+  button:active{transform:translateY(1px);}
+  button.ghost{
+    background:var(--paper);color:var(--walnut-2);border:1px solid var(--line);
+    box-shadow:0 4px 12px rgba(74,51,35,.10);
+  }
+  button[disabled]{opacity:.4;cursor:default;transform:none;box-shadow:none;}
+  .hint{margin-top:14px;color:var(--walnut-soft);font-size:.86rem;text-align:center;}
+</style>
+</head>
+<body>
+
+  <h1 class="display">Michael, cartridged</h1>
+  <p class="tag">His whole know-how, on one little cart. Click it in.</p>
+
+  <div class="deck" id="deck">
+    <!-- cartridge -->
+    <div class="cartridge" id="cart" title="Click to insert">
+      <div class="cart-float">
+        <div class="cart-body">
+          <div class="cart-label">
+            <div class="lb-top">
+              <span class="lb-emoji">🪵</span>
+              <span class="lb-name display">MICHAEL</span>
+            </div>
+            <div class="lb-sub">measure-twice cartridge</div>
+            <div class="lb-chips">
+              <span class="chip"><i></i> Design principles</span>
+              <span class="chip g"><i></i> Printability checker</span>
+              <span class="chip b"><i></i> Materials &amp; the bench</span>
+            </div>
+            <div class="lb-ver"><span>v1.1</span><span>3D&nbsp;PRINT</span></div>
+          </div>
+          <div class="cart-grip"></div>
+          <div class="cart-foot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- console -->
+    <div class="console">
+      <div class="slot"></div>
+      <div class="console-face">
+        <div class="screen" id="screen">
+          <div class="ln" id="l1">&gt; slot empty</div>
+          <div class="ln" id="l2">&gt; insert cartridge…<span class="cursor">▋</span></div>
+          <div class="ln" id="l3"></div>
+        </div>
+        <div class="power">
+          <div class="led" id="led"></div>
+          <span>power</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="insertBtn">Insert cartridge</button>
+    <button id="ejectBtn" class="ghost" disabled>Eject</button>
+  </div>
+  <p class="hint">Tip: you can also just click the cartridge.</p>
+
+<script>
+  const deck = document.getElementById('deck');
+  const cart = document.getElementById('cart');
+  const led  = document.getElementById('led');
+  const insertBtn = document.getElementById('insertBtn');
+  const ejectBtn  = document.getElementById('ejectBtn');
+  const l1 = document.getElementById('l1');
+  const l2 = document.getElementById('l2');
+  const l3 = document.getElementById('l3');
+  let loaded = false, timers = [];
+
+  // tiny retro "click" via WebAudio (no external files)
+  let actx;
+  function blip(freq, dur){
+    try{
+      actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type='square'; o.frequency.value=freq;
+      g.gain.setValueAtTime(.06, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime+dur);
+    }catch(e){}
+  }
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+
+  function insert(){
+    if(loaded) return;
+    loaded = true;
+    deck.classList.add('loaded');
+    insertBtn.disabled = true;
+    blip(180,.08);
+    clearTimers();
+    // readout sequence as it seats + powers on
+    l1.textContent = '> reading cartridge…'; l1.className='ln on';
+    l2.innerHTML = '&gt; measure-twice v1.3';
+    l3.textContent = '';
+    timers.push(setTimeout(()=>{ blip(520,.06); }, 620));   // seat click
+    timers.push(setTimeout(()=>{
+      led.classList.add('on');
+      l2.className='ln on';
+      l3.innerHTML = '&gt; READY — pull up a stool 🪵<span class="cursor">▋</span>';
+      l3.className='ln on';
+      ejectBtn.disabled = false;
+      blip(720,.12);
+    }, 900));
+  }
+
+  function eject(){
+    if(!loaded) return;
+    loaded = false;
+    deck.classList.remove('loaded');
+    led.classList.remove('on');
+    ejectBtn.disabled = true;
+    insertBtn.disabled = false;
+    blip(300,.06);
+    clearTimers();
+    l1.textContent = '> slot empty'; l1.className='ln';
+    l2.innerHTML = '&gt; insert cartridge…<span class="cursor">▋</span>'; l2.className='ln';
+    l3.textContent = ''; l3.className='ln';
+  }
+
+  cart.addEventListener('click', ()=> loaded ? eject() : insert());
+  insertBtn.addEventListener('click', insert);
+  ejectBtn.addEventListener('click', eject);
+</script>
+</body>
+</html>

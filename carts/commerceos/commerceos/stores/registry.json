@@ -1,0 +1,14 @@
+{
+  "_doc": "the stores this install knows. 'demostore' is the placeholder default \u2014 rename it, or register your own and make yours default.",
+  "stores": [
+    {
+      "name": "demostore",
+      "label": "Demo Store",
+      "default": true
+    },
+    {
+      "name": "scaffold",
+      "label": "Scaffold"
+    }
+  ]
+}

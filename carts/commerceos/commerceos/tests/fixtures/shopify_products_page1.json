@@ -1,0 +1,125 @@
+{
+  "_note": "synthetic fixture — hand-written for tests in the Admin GraphQL response shape; not captured from a live store. page 1 of 2 (hasNextPage true). wide A8 shape: metafields (commerceos + a foreign namespace), seo, mediaCount, featuredMedia, collections, descriptionHtml. product 1001 carries everything; product 1002 landed every signal empty/null (requested, came back empty — real gaps, not unknowables).",
+  "data": {
+    "products": {
+      "pageInfo": { "hasNextPage": true, "endCursor": "cursor-page-1" },
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/1001",
+          "handle": "alpine-tent-2p",
+          "title": "Alpine Tent 2P",
+          "status": "ACTIVE",
+          "vendor": "SummitWorks",
+          "productType": "Tents",
+          "tags": ["camping", "tents"],
+          "descriptionHtml": "<p>Two-person alpine tent with aluminium poles.</p>",
+          "seo": {
+            "title": "Alpine Tent 2P — SummitWorks",
+            "description": "A two-person, four-season alpine tent."
+          },
+          "mediaCount": { "count": 3 },
+          "featuredMedia": {
+            "preview": {
+              "image": { "url": "https://cdn.example.test/alpine-tent-2p.jpg" }
+            }
+          },
+          "collections": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              { "title": "Tents & Shelters" },
+              { "title": "New Arrivals" }
+            ]
+          },
+          "metafields": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "namespace": "commerceos",
+                "key": "capacity_persons",
+                "type": "number_integer",
+                "value": "2"
+              },
+              {
+                "namespace": "commerceos",
+                "key": "capacity_persons_provenance",
+                "type": "json",
+                "value": "{\"source\": \"datasheet:summitworks-2026\", \"verified\": true, \"verified_on\": \"2026-07-01\"}"
+              },
+              {
+                "namespace": "commerceos",
+                "key": "tech_spec",
+                "type": "multi_line_text_field",
+                "value": "poles: aluminium\ncapacity: 2 persons"
+              },
+              {
+                "namespace": "global",
+                "key": "title_tag",
+                "type": "single_line_text_field",
+                "value": "Alpine Tent 2P — SummitWorks"
+              }
+            ]
+          },
+          "variants": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/2001",
+                "sku": "TENT-ALP-2P",
+                "barcode": "6291041500001",
+                "price": "605.00",
+                "inventoryQuantity": 12
+              },
+              {
+                "id": "gid://shopify/ProductVariant/2002",
+                "sku": "TENT-ALP-2P-GRN",
+                "barcode": null,
+                "price": "615.00",
+                "inventoryQuantity": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Product/1002",
+          "handle": "trail-stove",
+          "title": "Trail Stove",
+          "status": "ACTIVE",
+          "vendor": "CampCo",
+          "productType": "Cooking",
+          "tags": [],
+          "descriptionHtml": "",
+          "seo": { "title": null, "description": null },
+          "mediaCount": { "count": 0 },
+          "featuredMedia": null,
+          "collections": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": []
+          },
+          "metafields": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "namespace": "global",
+                "key": "title_tag",
+                "type": "single_line_text_field",
+                "value": "Trail Stove | CampCo"
+              }
+            ]
+          },
+          "variants": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/2003",
+                "sku": "STOVE-TRL",
+                "barcode": null,
+                "price": "164.00",
+                "inventoryQuantity": 40
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

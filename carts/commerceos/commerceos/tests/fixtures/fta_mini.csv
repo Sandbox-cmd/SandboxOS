@@ -1,0 +1,45 @@
+Company Information Table
+TaxablePersonNameEn,TaxablePersonNameAr,TRN,TaxAgencyName,TAN,TaxAgentName,TAAN,PeriodStart,PeriodEnd,FAFCreationDate,ProductVersion
+Demo Store,,104100363100003,,,,,02 Aug 2023,04 Apr 2026,04 Apr 2026,
+
+Customer Supply Listing Table
+Customer Name,CustomerCountry,CustomerTIN/TRN,InvoiceDate,Invoice No.,TransactionID,Line No.,ProductDescription,ProductName,SupplyValueAED,VATValueAED,TaxCode,Country,VATFCY,SupplyFCY,FCYCode
+Amina Khan,United Arab Emirates,,05-01-2024,GDINV-000100,9000000000000000001,1,,Trail Tent 2P,1000.000,50.000,SR,United Arab Emirates,0.00,0.00,
+Amina Khan,United Arab Emirates,,05-01-2024,GDINV-000100,9000000000000000001,2,,Camp Stove,250.500,12.530,SR,United Arab Emirates,0.00,0.00,
+Omar Aziz,United Arab Emirates,,20-03-2024,GDINV-000101,9000000000000000002,1,"A stove guard.
+Wind resistant, folds flat.",Stove Guard,75.250,3.760,SR,United Arab Emirates,0.00,0.00,
+Omar Aziz,United Arab Emirates,,20-03-2024,GDINV-000101,9000000000000000002,2,Shipping Charges : Standard,,30.000,0.000,ZR,United Arab Emirates,0.00,0.00,
+Layla Nasser,United Arab Emirates,,14-02-2025,GDINV-000200,9000000000000000003,1,,Headlamp Pro,400.000,20.000,SR,United Arab Emirates,0.00,0.00,
+Layla Nasser,United Arab Emirates,,14-02-2025,GDINV-000200,9000000000000000003,2,,Dry Bag 10L,55.000,2.750,SR,United Arab Emirates,0.00,0.00,
+Layla Nasser,United Arab Emirates,,14-02-2025,GDINV-000200,9000000000000000003,3,,Dry Bag 10L,55.000,2.750,SR,United Arab Emirates,0.00,0.00,
+Layla Nasser,United Arab Emirates,,01-03-2025,GDCN-00010,9000000000000000004,1,,,-100.000,-5.000,SR,United Arab Emirates,0.00,0.00,
+Cartlow,,000000000000000,10-04-2025,,9000000000000000005,1,,,540.000,27.000,SR,,0.00,0.00,
+Bad Row,United Arab Emirates,,banana,GDINV-000300,9000000000000000006,1,,Ghost Item,10.000,0.500,SR,United Arab Emirates,0.00,0.00,
+Bad Row,United Arab Emirates,,15-05-2025,GDINV-000301,9000000000000000007,1,,Ghost Item,12.3.4,0.500,SR,United Arab Emirates,0.00,0.00,
+Maryam Saeed,United Arab Emirates,,30-03-2025,GDCN-00011,9000000000000000008,1,Standard Shipping,,-30.000,0.000,EX,United Arab Emirates,0.00,0.00,
+
+Customer Supply Listing Total
+TransactionCountTotal,SupplyTotalAED,VATTotalAED
+10,2275.750,113.790
+
+Supplier Purchase Listing Table
+SupplierName,SupplierCountry,SupplierTIN/TRN,InvoiceDate,Invoice No.,PermitNo,TransactionID,Line No.,ProductDescription,ProductName,PurchaseValueAED,VATValueAED,TaxCode,VATFCY,PurchaseFCY,FCYCode
+Procamp General Trading Co LLC,,100261790800003,08-01-2024,INV2-2024010001,,9100000000000000001,1,,Trail Tent 2P,600.000,30.000,SR,0.00,0.00,
+Procamp General Trading Co LLC,,100261790800003,08-01-2024,INV2-2024010001,,9100000000000000001,2,,Camp Stove,150.000,7.500,SR,0.00,0.00,
+Ramrod General Trading LLC,United Arab Emirates,100291039400003,12-02-2025,Pending,,9100000000000000002,1,,Aveo Bottle/Blue,39.050,1.950,SR,0.00,0.00,
+Ramrod General Trading LLC,United Arab Emirates,100291039400003,12-02-2025,Pending,,9100000000000000002,2,,Aveo Bottle/Red,39.050,1.950,SR,0.00,0.00,
+Gymcare General Trading LLC,,100261931800003,05-03-2025,GDCN-00066,,9100000000000000003,1,,,-456.000,-22.800,SR,0.00,0.00,
+Short Row,United Arab Emirates
+
+Supplier Purchase Listing Total
+TransactionCountTotal,PurchaseTotalAED,VATTotalAED
+5,372.100,18.600
+
+General Ledger Table
+TransactionDate,AccountID,AccountName,TransactionDescription,Name,TransactionID,SourceDocumentID,SourceType,Debit,Credit,balance
+05-01-2024,4030881000000000388,Sales-Demo Store,,GDINV-000100,9200000000000000001,GDINV-000100,Account Receivable,0.00,1000.000,1000.000
+05-01-2024,4030881000000000388,Sales-Demo Store,,GDINV-000100,9200000000000000001,GDINV-000100,Account Receivable,0.00,250.500,1250.500
+
+General Ledger Table Total
+TotalDebit,TotalCredit,TransactionCountTotal,GLTCurrency
+0.00,1250.500,2,AED

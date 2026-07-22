@@ -1,0 +1,44 @@
+{
+  "_doc": "the demo store's rhythm \u2014 every job disabled on purpose; nothing arms itself until you enable it.",
+  "store": "demostore",
+  "jobs": {
+    "expire_sweep": {
+      "cadence": "15m",
+      "enabled": false,
+      "_note": "flip pending approvals past their expiry to expired (gate behavior 5) \u2014 runs first, so nothing stale looks approvable"
+    },
+    "sync": {
+      "cadence": "6h",
+      "enabled": false,
+      "_note": "the spine lands products + orders from Shopify"
+    },
+    "propose": {
+      "cadence": "1h",
+      "enabled": false,
+      "kind": "gtin_normalize",
+      "batch": 50,
+      "_note": "the workers' standing turn \u2014 a queue of repairs runs in hourly batches, then it finds nothing and reports so"
+    },
+    "audit": {
+      "cadence": "24h",
+      "enabled": false,
+      "_note": "read-only catalog health score over landed facts -> reports/"
+    },
+    "evaluate": {
+      "cadence": "6h",
+      "enabled": false,
+      "_note": "the watching pass over the store's watch-list"
+    },
+    "analyst": {
+      "cadence": "1d",
+      "enabled": false,
+      "_note": "the analyst's six ruled hunts over landed facts \u2014 findings only, minted through watching's door. ships disabled: arming is the owner's keystroke"
+    }
+  },
+  "ntfy": {
+    "_doc": "push reach (spec/experience.md: notify-only \u2014 the item and a deep link, never the decision). server AND topic are null by default: unconfigured means every push is skipped with an honest log line, never sent to a silent third-party default. point server at an ntfy instance you chose and pick a private topic. link_base is where deep links point \u2014 set it to the tailscale hostname when the phone needs reach.",
+    "server": null,
+    "topic": null,
+    "link_base": "http://localhost:8000"
+  }
+}

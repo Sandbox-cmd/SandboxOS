@@ -1,0 +1,145 @@
+/* SPDX-License-Identifier: FSL-1.1-Apache-2.0 */
+/* ============================================================
+   commerceos — the fusion register (the collaboration surface).
+   direction: spec/parts/collab-surface.md, RULED 2026-07-22 — the
+   SF1 arc's fusion of the quiet page and the desk. supersedes the
+   teletext register FOR THIS SURFACE ONLY; teletext.css is
+   untouched and still governs its own pages.
+
+   self-contained: no @import, no external requests, no reach into
+   tokens.css — this register is its own (spec: "no broadcast
+   fiction, no page numbers, no terminal cosplay"). transcribed
+   from reports/collab-surface/fusion.html's ruled <style> block —
+   values copied, not redesigned.
+
+     · light ground, system type — the quiet page carries the frame
+     · the sentence is the one focus: ~2rem/600, sentence-case prose
+     · the ticket is the desk's unit: white card, 1px border, a 3px
+       colored edge that means ONE thing — amber waits on you, blue
+       is the machine's hands, red stopped honestly, green landed
+     · group labels: small caps, letterspaced, quiet
+     · depth opens ON the ticket (the receipt-in-place block)
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #FAFAF7;
+  color: #1A1A17;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
+}
+
+.inner { max-width: 600px; margin: 0 auto; }
+
+/* ---- the tiny stamp row: store + freshness ------------------ */
+.tiny {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #9A968A;
+  margin-bottom: 2.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ---- the sentence — one focus, prose, sentence-case ---------- */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  margin-bottom: .4rem;
+}
+
+.sub { color: #7A766A; margin-bottom: 1.8rem; }
+
+.calm { margin-top: 2rem; color: #7A766A; }
+.calm b { color: #1A1A17; font-weight: 600; }
+
+.doors { margin-top: 2.8rem; font-size: .8rem; }
+.doors a { color: #7A766A; text-decoration: none; margin-right: 1.2rem; }
+
+/* ---- tickets — the desk's unit, wearing the quiet page's light */
+.ticket {
+  background: #FFFFFF;
+  border: 1px solid #E7E4D9;
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  margin-bottom: .8rem;
+  box-shadow: 0 2px 10px rgba(26, 26, 23, .06);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+.ticket .t { font-weight: 600; }
+.ticket .m {
+  color: #7A766A;
+  font-size: .85rem;
+  display: block;
+  margin-top: .15rem;
+  font-weight: 400;
+}
+.ticket a {
+  color: #8A5A00;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: .9rem;
+}
+
+/* the edge — one color, one meaning, always */
+.ticket.waiting { border-left-color: #E0A63C; } /* amber: waits on you */
+.ticket.running { border-left-color: #5B8DEF; } /* blue: in my hands */
+.ticket.stopped { border-left-color: #C4442A; } /* red: stopped, honestly */
+.ticket.done    { border-left-color: #5FA168; } /* green: landed */
+
+/* the one honest batch ticket — reversible routine, collapsed */
+.ticket.batch { background: #F4F1E8; border-style: dashed; }
+
+/* ---- group labels — small caps, letterspaced, quiet ---------- */
+.group-label {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #9A968A;
+  margin: 1.6rem 0 .7rem;
+}
+
+/* ---- the receipt — depth opens ON the ticket, in place -------- */
+.receipt {
+  background: #F6F4EC;
+  border: 1px solid #E7E4D9;
+  border-radius: 0 0 8px 8px;
+  margin: -.6rem 0 .8rem;
+  padding: .7rem 1rem;
+  font-size: .82rem;
+  color: #5A5648;
+}
+.receipt b { color: #1A1A17; }
+
+/* ---- the board's two zones (my side / your side) -------------- */
+.zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  margin-top: 1.6rem;
+}
+.zones h3 {
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #9A968A;
+  margin-bottom: .8rem;
+}
+@media (max-width: 640px) {
+  .zones { grid-template-columns: 1fr; }
+}

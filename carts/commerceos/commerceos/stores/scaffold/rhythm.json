@@ -1,0 +1,38 @@
+{
+  "_doc": "the scaffold store's rhythm \u2014 every job disabled; nothing arms itself.",
+  "store": "scaffold",
+  "jobs": {
+    "expire_sweep": {
+      "cadence": "15m",
+      "enabled": false
+    },
+    "sync": {
+      "cadence": "6h",
+      "enabled": false
+    },
+    "propose": {
+      "cadence": "1h",
+      "enabled": false,
+      "kind": "gtin_normalize",
+      "batch": 50
+    },
+    "audit": {
+      "cadence": "24h",
+      "enabled": false
+    },
+    "evaluate": {
+      "cadence": "6h",
+      "enabled": false
+    },
+    "analyst": {
+      "cadence": "1d",
+      "enabled": false
+    }
+  },
+  "ntfy": {
+    "_doc": "push reach (spec/experience.md: notify-only \u2014 the item and a deep link, never the decision). server AND topic are null by default: unconfigured means every push is skipped with an honest log line, never sent to a silent third-party default. point server at an ntfy instance you chose and pick a private topic. link_base is where deep links point \u2014 set it to the tailscale hostname when the phone needs reach.",
+    "server": null,
+    "topic": null,
+    "link_base": "http://localhost:8000"
+  }
+}

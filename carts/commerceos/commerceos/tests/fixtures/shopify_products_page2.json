@@ -1,0 +1,63 @@
+{
+  "_note": "synthetic fixture — hand-written for tests in the Admin GraphQL response shape; not captured from a live store. page 2 of 2 (hasNextPage false). product 1003's spec carries a provenance companion flagged verified WITHOUT a source — the refuse-to-guess breach the provenance dimension must catch.",
+  "data": {
+    "products": {
+      "pageInfo": { "hasNextPage": false, "endCursor": "cursor-page-2" },
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/1003",
+          "handle": "headlamp-pro",
+          "title": "Headlamp Pro",
+          "status": "DRAFT",
+          "vendor": "SummitWorks",
+          "productType": "Lighting",
+          "tags": ["lighting"],
+          "descriptionHtml": "<p>800-lumen rechargeable headlamp.</p>",
+          "seo": {
+            "title": "Headlamp Pro",
+            "description": "800-lumen rechargeable headlamp."
+          },
+          "mediaCount": { "count": 1 },
+          "featuredMedia": {
+            "preview": {
+              "image": { "url": "https://cdn.example.test/headlamp-pro.jpg" }
+            }
+          },
+          "collections": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [{ "title": "Lighting" }]
+          },
+          "metafields": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "namespace": "commerceos",
+                "key": "max_lumens",
+                "type": "number_integer",
+                "value": "800"
+              },
+              {
+                "namespace": "commerceos",
+                "key": "max_lumens_provenance",
+                "type": "json",
+                "value": "{\"verified\": true}"
+              }
+            ]
+          },
+          "variants": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/2004",
+                "sku": "LAMP-PRO",
+                "barcode": null,
+                "price": "89.50",
+                "inventoryQuantity": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

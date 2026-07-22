@@ -1,0 +1,95 @@
+{
+  "_note": "instance config for the catalog loop's audit phase (spec/parts/catalog-loop.md, mechanism vs config). dimensions + weights are per-store tuning; the engine knows nothing about any vertical \u2014 taxonomy.json does. `requires` names the raw signals a dimension needs: a signal the sync never landed marks the dimension not-scorable (named in the report, weight withheld \u2014 never scored zero as if measured).",
+  "store": "demostore",
+  "dimensions": {
+    "classification": {
+      "weight": 0.18,
+      "requires": [
+        "product_type"
+      ],
+      "note": "product_type resolves to a locked taxonomy leaf (curated subcategories, then the 417-leaf source map). v0 preferred the persisted commerceos.category metafield; metafields are not landed by the current sync, so this body scores from product_type alone."
+    },
+    "specs_structured": {
+      "weight": 0.2,
+      "requires": [
+        "metafields"
+      ],
+      "note": "at least one typed commerceos.* spec metafield (descriptive blobs excluded via spec_blob_keys)."
+    },
+    "provenance": {
+      "weight": 0.2,
+      "requires": [
+        "metafields"
+      ],
+      "note": "every spec carries a parseable companion (source, verified, verified_on); none verified-without-source \u2014 the refuse-to-guess invariant."
+    },
+    "identity_gtin": {
+      "weight": 0.15,
+      "requires": [
+        "barcode"
+      ],
+      "note": "a variant barcode that is a checksum-valid GTIN-8/12/13/14 as stored \u2014 not an SKU in costume. stricter than v0, which matched digits by regex only."
+    },
+    "merchandising": {
+      "weight": 0.1,
+      "requires": [
+        "tags"
+      ],
+      "min_tags": 1,
+      "note": "carries at least one tag (the signal smart collections rule on). v0 scored collection membership directly; collections are not landed by the current sync, so tags are the scorable basis."
+    },
+    "seo": {
+      "weight": 0.12,
+      "requires": [
+        "seo"
+      ],
+      "note": "seo title and seo description both present."
+    },
+    "images": {
+      "weight": 0.05,
+      "requires": [
+        "media"
+      ],
+      "note": "a featured image or image list resolves \u2014 the dimension a bad push can silently empty, which is why the image scar test exists."
+    }
+  },
+  "signals": {
+    "_note": "raw-payload keys per signal. a key present with a null value counts as landed (requested, came back empty \u2014 a real gap); an absent key means the sync never asked \u2014 unknowable, not zero.",
+    "product_type": [
+      "productType"
+    ],
+    "metafields": [
+      "metafields"
+    ],
+    "barcode": [
+      "variants[].barcode"
+    ],
+    "tags": [
+      "tags"
+    ],
+    "seo": [
+      "seo"
+    ],
+    "media": [
+      "featuredMedia",
+      "featuredImage",
+      "images",
+      "media"
+    ]
+  },
+  "spec_blob_keys": [
+    "tech_spec",
+    "features",
+    "category"
+  ],
+  "moat_weights": {
+    "provenance": 3.0,
+    "specs_structured": 2.5,
+    "identity_gtin": 2.0,
+    "classification": 2.0,
+    "merchandising": 1.2,
+    "images": 1.2,
+    "seo": 1.0
+  },
+  "worst_gaps": 15
+}

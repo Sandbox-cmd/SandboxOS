@@ -1,0 +1,115 @@
+{
+  "_doc": "the demo store's gate config. commerceos carries mechanism; each store carries config \u2014 this file is what a new store tunes. the gate computes the effective class per call from this table and takes the stricter of it and the agent's declared class: no self-downgrade. money in minor units. values move only through gate.move_threshold, owner-only \u2014 every move lands on the ledger with old, new, by whom, why.",
+  "version": 1,
+  "severity_order": [
+    "reversible",
+    "consequential",
+    "fit_critical"
+  ],
+  "unknown_method_class": "fit_critical",
+  "_unknown_doc": "an unregistered method fails safe-high: fit_critical, always human-gated. the gate never auto-approves what it does not recognise.",
+  "expiry_seconds": {
+    "_doc": "pending approvals lapse rather than fire on changed conditions: one hour default, thirty minutes when money moves. a lapsed item still wanted is re-proposed with current numbers.",
+    "default": 3600,
+    "money": 1800
+  },
+  "functions": {
+    "catalog-enrichment": {
+      "_note": "reversible auto-approves (recorded, never silent); everything consequential or fit_critical is human-gated.",
+      "auto_approve": [
+        "reversible"
+      ]
+    },
+    "content-geo": {
+      "auto_approve": [
+        "reversible"
+      ]
+    },
+    "pricing": {
+      "_note": "money-move function; nothing auto in V1 \u2014 every price change is gated. money_threshold (minor units) is the trust-ratchet dial: 0 means no amount auto-approves.",
+      "auto_approve": [],
+      "money_threshold": 0
+    },
+    "ads-pacing": {
+      "auto_approve": [],
+      "money_threshold": 0
+    },
+    "policy": {
+      "_note": "threshold moves file here \u2014 owner-only by construction (gate.move_threshold), each its own ledger record.",
+      "auto_approve": []
+    }
+  },
+  "methods": {
+    "read_product": {
+      "default": "reversible",
+      "_read": true
+    },
+    "read_orders": {
+      "default": "reversible",
+      "_read": true
+    },
+    "read_inventory_level": {
+      "default": "reversible",
+      "_read": true
+    },
+    "read_campaign_performance": {
+      "default": "reversible",
+      "_read": true
+    },
+    "mutate_product_field": {
+      "default": "reversible",
+      "_note": "not all content is reversible: a wrong spec is a safety claim, not content. fit-critical fields gate even though they are nominally content; publish and delist raise the class.",
+      "field_overrides": {
+        "temp_rating": "fit_critical",
+        "load_limit": "fit_critical",
+        "weight_limit": "fit_critical",
+        "waterproof_rating": "fit_critical",
+        "ip_rating": "fit_critical",
+        "certifications": "fit_critical",
+        "safety_rating": "fit_critical",
+        "material_spec": "fit_critical"
+      },
+      "state_overrides": {
+        "publish": "consequential",
+        "delist": "consequential"
+      }
+    },
+    "mutate_seo": {
+      "default": "reversible"
+    },
+    "mutate_spec_verification": {
+      "default": "fit_critical"
+    },
+    "mutate_price": {
+      "default": "consequential",
+      "_money": true
+    },
+    "mutate_inventory_adjust": {
+      "default": "consequential"
+    },
+    "mutate_campaign_budget": {
+      "default": "consequential",
+      "_money": true
+    },
+    "mutate_campaign_status": {
+      "default": "consequential",
+      "_money": true
+    },
+    "policy.move_threshold": {
+      "default": "consequential",
+      "_note": "the meta-action: moving this very table. owner-only through gate.move_threshold; never on any agent-facing surface."
+    },
+    "mutate_variant_field": {
+      "default": "reversible",
+      "_note": "variant-level content fields (barcode normalization, sku hygiene). price never travels this method \u2014 mutate_price exists and is consequential."
+    },
+    "create_collection": {
+      "default": "reversible",
+      "_note": "CW4 smart-collection create. reversible \u2014 a collection deletes cleanly; under WF-approve the ~20-create merchandising batch HOLDS for one glance-approve. membership settles asynchronously after the ruleSet create, so the create receipt verifies the rules echoed back live, not the member count (CW5's separate settle check)."
+    },
+    "mutate_menu": {
+      "default": "consequential",
+      "_note": "CW4 main-navigation placement. consequential, ruled so deliberately: menuUpdate replaces the entire menu item tree wholesale (the Admin API has no per-item diff), so a write silently drops whatever the payload omits, and the main menu is a default, un-deletable menu \u2014 a nav rewrite is not reversible-in-practice, so the owner rules each change (it parks per item)."
+    }
+  }
+}

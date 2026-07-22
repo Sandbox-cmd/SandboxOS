@@ -1,0 +1,5 @@
+{
+  "_note": "your commission take rate in basis points. set it before the first order lands.",
+  "default_bps": 0,
+  "vendors": {}
+}
