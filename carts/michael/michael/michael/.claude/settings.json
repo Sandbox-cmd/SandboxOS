@@ -1,0 +1,20 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$CLAUDE_PROJECT_DIR/statusline.sh\""
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "open -a Blender 2>/dev/null || true",
+            "async": true,
+            "statusMessage": "Opening Blender..."
+          }
+        ]
+      }
+    ]
+  }
+}

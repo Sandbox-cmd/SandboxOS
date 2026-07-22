@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bench</title>
+<style>
+  :root{
+    --paper:#f5f2ea; --card:#fbf9f3; --ink:#22252a; --muted:#6f7168; --hair:#e2ddd0;
+    --accent:#2a5e57; --ochre:#b0763a; --good:#3e8e5a; --warn:#b9862c; --bad:#ae4a30;
+    --serif:ui-serif,"New York",Georgia,serif; --sans:-apple-system,system-ui,"SF Pro Text",sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#14161a; --card:#1c1f24; --ink:#e9e5dc; --muted:#9a9c93; --hair:#2b2f35;
+    --accent:#5ca79b; --ochre:#d0975a; --good:#5aa873; --warn:#d0a144; --bad:#cf6a4e;}}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);
+    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+  .top{height:44px;flex:0 0 44px;display:flex;align-items:center;gap:12px;padding:0 16px;
+    border-bottom:1px solid var(--hair);background:color-mix(in srgb,var(--card) 88%,var(--paper))}
+  .top .name{font-family:var(--serif);font-size:16px;font-weight:600}
+  .top .dots{margin-left:auto;display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .dot{display:inline-flex;align-items:center;gap:6px}
+  .dot i{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+  .dot.on i{background:var(--good)} .dot.off i{background:var(--bad)}
+
+  .grid{flex:1;min-height:0;display:grid;grid-template-columns:340px 1fr 250px}
+  .col{min-height:0;display:flex;flex-direction:column}
+  .chat{border-right:1px solid var(--hair);background:color-mix(in srgb,var(--card) 92%,var(--paper))}
+  .thread{flex:1;overflow:auto;padding:16px 14px;display:flex;flex-direction:column;gap:13px}
+  .bubble{max-width:94%;font-size:13.5px;line-height:1.5;white-space:pre-wrap}
+  .bubble.me{align-self:flex-end;background:var(--accent);color:#fff;padding:9px 12px;border-radius:13px 13px 3px 13px}
+  .bubble.bot .who{font-family:var(--serif);font-size:12.5px;color:var(--accent);margin-bottom:3px}
+  .bubble.bot .body{background:color-mix(in srgb,var(--accent) 7%,var(--card));border:1px solid var(--hair);
+    padding:9px 12px;border-radius:13px 13px 13px 3px}
+  .bubble.me img{max-width:180px;border-radius:8px;margin-bottom:6px;display:block}
+  .tool{font-family:var(--mono);font-size:11px;color:var(--muted);align-self:flex-start;display:flex;align-items:center;gap:7px}
+  .tool i{width:8px;height:8px;border-radius:50%;background:var(--ochre);animation:pulse 1s infinite}
+  .tool.done i{background:var(--good);animation:none} .tool.err i{background:var(--bad);animation:none}
+  @keyframes pulse{50%{opacity:.3}}
+  @media(prefers-reduced-motion:reduce){.tool i{animation:none}}
+  .composer{border-top:1px solid var(--hair);padding:10px 12px;display:flex;gap:8px;align-items:center}
+  .composer input[type=text]{flex:1;font:inherit;font-size:13px;padding:9px 12px;border-radius:999px;
+    border:1px solid var(--hair);background:var(--paper);color:var(--ink)}
+  .composer input:focus{outline:2px solid color-mix(in srgb,var(--accent) 55%,transparent);border-color:var(--accent)}
+  .iconbtn{width:34px;height:34px;flex:0 0 34px;border-radius:50%;border:1px solid var(--hair);
+    background:var(--card);color:var(--ink);cursor:pointer;font-size:15px}
+  .iconbtn.send{background:var(--accent);border:none;color:#fff}
+
+  .viewport{position:relative;display:flex;flex-direction:column;
+    background:radial-gradient(140% 120% at 50% 12%,color-mix(in srgb,var(--accent) 9%,var(--card)),var(--card))}
+  .vptop{display:flex;justify-content:space-between;padding:12px 16px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .stage{flex:1;display:grid;place-items:center;position:relative;overflow:hidden}
+  .stage img{max-width:100%;max-height:100%;object-fit:contain}
+  .stage .empty{color:var(--muted);font-size:13px;text-align:center;padding:0 30px;line-height:1.6}
+  .drop{position:absolute;inset:0;display:none;place-items:center;background:color-mix(in srgb,var(--ochre) 18%,transparent);
+    border:2px dashed var(--ochre);color:var(--ochre);font-size:14px;z-index:5}
+  .drop.show{display:grid}
+
+  .rail{border-left:1px solid var(--hair);padding:14px;overflow:auto;
+    background:color-mix(in srgb,var(--card) 92%,var(--paper))}
+  .rail h5{margin:0 0 9px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+  .gates{display:flex;flex-direction:column;gap:6px}
+  .gate{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:6px 9px;border-radius:8px;border:1px solid var(--hair)}
+  .gate .gd{width:8px;height:8px;border-radius:50%;flex:0 0 8px;background:var(--muted)}
+  .gate.PASS .gd{background:var(--good)} .gate.WARN .gd{background:var(--warn)} .gate.FAIL .gd{background:var(--bad)}
+  .gate .gn{flex:1} .gate .gv{font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .verdict{font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:8px;text-align:center;margin-top:9px}
+  .verdict.PASS{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+  .verdict.WARN{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+  .verdict.FAIL{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+  .railempty{color:var(--muted);font-size:12px;line-height:1.6}
+  .sketch{margin-top:16px}
+  .sketch img{width:100%;border-radius:8px;border:1px solid var(--hair)}
+</style>
+</head>
+<body>
+  <div class="top">
+    <span class="name">Bench</span>
+    <div class="dots">
+      <span class="dot" id="d-blender"><i></i>blender</span>
+      <span class="dot" id="d-key"><i></i>brain</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="col chat">
+      <div class="thread" id="thread">
+        <div class="bubble bot"><div class="who">Bench</div><div class="body">Hi Mira. Drop a drawing on the viewport, or just tell me what you want to make.</div></div>
+      </div>
+      <div class="composer">
+        <button class="iconbtn" id="clip" title="Attach a drawing">✎</button>
+        <input type="file" id="file" accept="image/*" hidden />
+        <input type="text" id="msg" placeholder="Tell me what to make or change…" autocomplete="off" />
+        <button class="iconbtn send" id="send" title="Send">↑</button>
+      </div>
+    </div>
+
+    <div class="col viewport" id="vp">
+      <div class="vptop"><span>LIVE PREVIEW</span><span id="dims"></span></div>
+      <div class="stage" id="stage">
+        <div class="empty" id="stageEmpty">Nothing built yet.<br>Drop a sketch here, or ask me to make something.</div>
+        <img id="render" alt="Blender preview" hidden />
+        <div class="drop" id="drop">Drop the drawing</div>
+      </div>
+    </div>
+
+    <aside class="col rail">
+      <h5>Manufacturability</h5>
+      <div id="gates"><div class="railempty">No checks yet. Ask me to check printability once something's built.</div></div>
+      <div class="sketch" id="sketchBox" hidden><h5>From your sketch</h5><img id="sketchImg" alt="sketch" /></div>
+    </aside>
+  </div>
+
+<script>
+const thread=document.getElementById("thread"), msg=document.getElementById("msg");
+const stage=document.getElementById("stage"), render=document.getElementById("render"), stageEmpty=document.getElementById("stageEmpty");
+const gatesEl=document.getElementById("gates"), drop=document.getElementById("drop");
+let pendingImage=null;   // path of an uploaded sketch to send with the next message
+let botBody=null;        // current streaming assistant bubble body
+let turnText="";         // everything the assistant said this turn (for gates parsing)
+
+function refreshPreview(){
+  const img=document.getElementById("render"), test=new Image();
+  test.onload=()=>{ img.src=test.src; img.hidden=false; document.getElementById("stageEmpty").hidden=true; };
+  test.src="/renders/latest.png?t="+Date.now();
+}
+
+function bubble(role, html){
+  const b=document.createElement("div"); b.className="bubble "+role;
+  if(role==="bot"){ b.innerHTML='<div class="who">Bench</div><div class="body"></div>'; b.querySelector(".body").textContent=""; }
+  if(html!==undefined){ (role==="bot"?b.querySelector(".body"):b).innerHTML=html; }
+  thread.appendChild(b); thread.scrollTop=thread.scrollHeight; return b;
+}
+function toolChip(name){
+  const t=document.createElement("div"); t.className="tool"; t.innerHTML='<i></i>'+name;
+  thread.appendChild(t); thread.scrollTop=thread.scrollHeight; return t;
+}
+
+async function refreshStatus(){
+  try{const s=await (await fetch("/status")).json();
+    document.getElementById("d-blender").className="dot "+(s.blender?"on":"off");
+    document.getElementById("d-key").className="dot "+(s.brain?"on":"off");
+  }catch(e){}
+}
+refreshStatus(); setInterval(refreshStatus, 5000);
+
+// ---- gates rendering (parse the checker's text table) ----
+function renderGates(text){
+  const rows=[]; let verdict=null;
+  text.split("\n").forEach(line=>{
+    const m=line.match(/\[(PASS|WARN|FAIL)\]\s+(\S[^0-9]*?)\s{2,}(.*)/);
+    if(m) rows.push({s:m[1], n:m[2].trim(), v:m[3].trim()});
+    const vm=line.match(/VERDICT:\s+(PASS|WARN|FAIL)/); if(vm) verdict=vm[1];
+  });
+  if(!rows.length){ return; }
+  gatesEl.innerHTML='<div class="gates">'+rows.map(r=>
+    `<div class="gate ${r.s}"><span class="gd"></span><span class="gn">${r.n}</span><span class="gv">${r.v}</span></div>`).join("")+"</div>"+
+    (verdict?`<div class="verdict ${verdict}">${verdict}</div>`:"");
+}
+
+// ---- send / stream ----
+async function send(){
+  const text=msg.value.trim(); if(!text && !pendingImage) return;
+  let mine=text; if(pendingImage){ mine=`<img src="${pendingImage.url}">`+ (text?("\n"+text):""); }
+  bubble("me", mine); msg.value="";
+  const payload={message:text, image_path: pendingImage?pendingImage.path:null};
+  const sending=pendingImage; pendingImage=null;
+  botBody=null; turnText="";
+
+  let resp;
+  try{ resp=await fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); }
+  catch(e){ bubble("bot").querySelector(".body").textContent="Couldn't reach the server."; return; }
+
+  const reader=resp.body.getReader(), dec=new TextDecoder(); let buf="";
+  while(true){
+    const {done,value}=await reader.read(); if(done) break;
+    buf+=dec.decode(value,{stream:true});
+    let i; while((i=buf.indexOf("\n\n"))>=0){
+      const chunk=buf.slice(0,i); buf=buf.slice(i+2);
+      if(!chunk.startsWith("data:")) continue;
+      handle(JSON.parse(chunk.slice(5).trim()));
+    }
+  }
+}
+function handle(ev){
+  if(ev.type==="text"){
+    if(!botBody){ botBody=bubble("bot").querySelector(".body"); }
+    botBody.textContent+=ev.text; turnText+=ev.text; thread.scrollTop=thread.scrollHeight;
+  }else if(ev.type==="tool_start"){ handle._chipName=ev.name; handle._chip=toolChip(ev.name+"…"); botBody=null;
+  }else if(ev.type==="tool_done"){ if(handle._chip){ const n=handle._chipName||"done"; handle._chip.className="tool "+(ev.error?"err":"done"); handle._chip.innerHTML='<i></i>'+n+(ev.error?" — failed":" — done"); }
+  }else if(ev.type==="error"){ bubble("bot").querySelector(".body").textContent="⚠ "+ev.text;
+  }else if(ev.type==="done"){ botBody=null; renderGates(turnText); refreshPreview(); }
+}
+
+document.getElementById("send").addEventListener("click",send);
+msg.addEventListener("keydown",e=>{ if(e.key==="Enter") send(); });
+
+// ---- sketch upload (clip button + drag/drop on viewport) ----
+async function upload(file){
+  const fd=new FormData(); fd.append("file",file);
+  const r=await (await fetch("/sketch",{method:"POST",body:fd})).json();
+  if(r.error){ bubble("bot").querySelector(".body").textContent="Couldn't read that image."; return; }
+  pendingImage={path:r.path,url:r.url};
+  document.getElementById("sketchImg").src=r.url; document.getElementById("sketchBox").hidden=false;
+  msg.placeholder="Drawing attached — add a note or just hit send…"; msg.focus();
+}
+document.getElementById("clip").addEventListener("click",()=>document.getElementById("file").click());
+document.getElementById("file").addEventListener("change",e=>{ if(e.target.files[0]) upload(e.target.files[0]); });
+["dragenter","dragover"].forEach(ev=>document.getElementById("vp").addEventListener(ev,e=>{e.preventDefault();drop.classList.add("show");}));
+["dragleave","drop"].forEach(ev=>document.getElementById("vp").addEventListener(ev,e=>{e.preventDefault();if(ev==="drop"){}else drop.classList.remove("show");}));
+document.getElementById("vp").addEventListener("drop",e=>{e.preventDefault();drop.classList.remove("show");const f=e.dataTransfer.files[0];if(f&&f.type.startsWith("image/"))upload(f);});
+</script>
+</body>
+</html>

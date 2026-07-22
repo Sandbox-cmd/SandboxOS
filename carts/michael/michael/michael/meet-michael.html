@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meet Michael — your workbench partner</title>
+<style>
+  :root{
+    --cream:#f6efe3;
+    --cream-2:#efe4d1;
+    --paper:#fffaf1;
+    --walnut:#4a3323;
+    --walnut-2:#6b4a30;
+    --walnut-soft:#8a6a4c;
+    --gold:#d9a441;
+    --gold-deep:#b9812a;
+    --sage:#7d8a5c;
+    --brick:#b5563f;
+    --line:#e2d3ba;
+    --shadow:0 10px 30px rgba(74,51,35,.10), 0 2px 6px rgba(74,51,35,.08);
+    --shadow-sm:0 4px 14px rgba(74,51,35,.09);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--walnut);
+    background:
+      radial-gradient(1200px 500px at 80% -10%, #fdf6e9 0%, rgba(253,246,233,0) 60%),
+      linear-gradient(180deg,#f8f1e5 0%, #f2e7d4 100%);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px;}
+  .display{
+    font-family:"Marker Felt","Comic Sans MS","Segoe Print",Georgia,serif;
+    letter-spacing:.3px;
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding:64px 0 40px;
+    text-align:center;
+  }
+  .badge-top{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    color:var(--walnut-soft);
+    padding:7px 15px;border-radius:999px;
+    font-size:.86rem;font-weight:600;
+    box-shadow:var(--shadow-sm);
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,7vw,4rem);
+    margin:.35em 0 .1em;
+    color:var(--walnut);
+    line-height:1.05;
+  }
+  .hero .lead{
+    font-size:clamp(1.05rem,2.6vw,1.35rem);
+    max-width:620px;margin:14px auto 0;
+    color:var(--walnut-2);
+  }
+  .hero .voice{
+    max-width:560px;margin:26px auto 0;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:5px solid var(--gold);
+    border-radius:14px;
+    padding:16px 20px;
+    text-align:left;
+    font-size:1.02rem;
+    color:var(--walnut-2);
+    box-shadow:var(--shadow-sm);
+  }
+  .hero .voice b{color:var(--walnut);}
+
+  /* ---------- section frame ---------- */
+  section{padding:34px 0;}
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:2.5px;
+    font-size:.74rem;font-weight:700;color:var(--gold-deep);
+    margin:0 0 6px;
+  }
+  h2{
+    font-size:clamp(1.5rem,4vw,2.05rem);
+    margin:0 0 6px;color:var(--walnut);
+  }
+  .sub{color:var(--walnut-soft);margin:0 0 24px;font-size:1.02rem;max-width:640px;}
+
+  /* ---------- cards grid ---------- */
+  .grid{display:grid;gap:16px;}
+  .grid.two{grid-template-columns:repeat(2,1fr);}
+  .grid.three{grid-template-columns:repeat(3,1fr);}
+  .grid.four{grid-template-columns:repeat(2,1fr);}
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:var(--shadow-sm);
+  }
+  .card .ico{font-size:1.7rem;line-height:1;display:block;margin-bottom:10px;}
+  .card h3{margin:0 0 5px;font-size:1.08rem;color:var(--walnut);}
+  .card p{margin:0;color:var(--walnut-2);font-size:.96rem;}
+
+  /* ---------- steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;}
+  .step{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:20px 16px;text-align:center;box-shadow:var(--shadow-sm);position:relative;
+  }
+  .step .n{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--walnut);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;margin:0 auto 12px;font-size:1.05rem;
+  }
+  .step .se{font-size:1.5rem;display:block;margin-bottom:8px;}
+  .step h3{margin:0 0 4px;font-size:1rem;}
+  .step p{margin:0;font-size:.9rem;color:var(--walnut-2);}
+  .loopnote{
+    margin:18px auto 0;text-align:center;color:var(--walnut-soft);
+    font-size:.95rem;
+  }
+  .loopnote b{color:var(--gold-deep);}
+
+  /* ---------- bench ---------- */
+  .bench{
+    background:var(--walnut);
+    border-radius:22px;
+    padding:30px;
+    color:var(--cream);
+    box-shadow:var(--shadow);
+  }
+  .bench .eyebrow{color:var(--gold);}
+  .bench h2{color:var(--cream);}
+  .bench .sub{color:#d9c7ad;}
+  .proj{display:grid;gap:14px;grid-template-columns:repeat(3,1fr);}
+  .proj .p{
+    background:rgba(255,250,241,.06);
+    border:1px solid rgba(255,250,241,.16);
+    border-radius:14px;padding:18px;
+  }
+  .proj .p .pico{font-size:1.5rem;display:block;margin-bottom:8px;}
+  .proj .p h3{margin:0 0 3px;color:var(--cream);font-size:1.05rem;}
+  .proj .p .what{margin:0 0 12px;color:#d9c7ad;font-size:.92rem;}
+  .chip{
+    display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.5px;
+    text-transform:uppercase;padding:4px 10px;border-radius:999px;
+  }
+  .chip.ready{background:rgba(125,138,92,.28);color:#cfe0a6;border:1px solid rgba(125,138,92,.5);}
+  .chip.parked{background:rgba(217,164,65,.20);color:#f0cd86;border:1px solid rgba(217,164,65,.45);}
+  .bench .relist{margin:20px 0 0;color:#c9b596;font-size:.9rem;font-style:italic;}
+
+  /* ---------- checker ---------- */
+  .gate{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;box-shadow:var(--shadow-sm);
+  }
+  .gate .q{
+    flex:0 0 auto;width:34px;height:34px;border-radius:10px;
+    background:var(--cream-2);display:flex;align-items:center;justify-content:center;
+    font-size:1.2rem;
+  }
+  .gate h3{margin:0 0 3px;font-size:1rem;}
+  .gate p{margin:0;font-size:.92rem;color:var(--walnut-2);}
+  .materials{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;
+  }
+  .mat{
+    text-align:center;background:var(--paper);border:1px solid var(--line);
+    border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);
+  }
+  .mat .name{font-weight:700;color:var(--walnut);font-size:1.05rem;}
+  .mat .desc{color:var(--walnut-soft);font-size:.88rem;margin-top:2px;}
+  .measure-note{
+    margin-top:18px;background:var(--cream-2);border:1px dashed var(--gold-deep);
+    border-radius:14px;padding:14px 18px;color:var(--walnut-2);font-size:.96rem;
+  }
+  .measure-note b{color:var(--walnut);}
+
+  /* ---------- learn ---------- */
+  .notecards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px;}
+  .note{
+    background:#fffdf7;border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;box-shadow:var(--shadow-sm);position:relative;
+  }
+  .note .pin{position:absolute;top:-9px;left:16px;font-size:1.1rem;}
+  .note p{margin:6px 0 0;font-size:.94rem;color:var(--walnut-2);}
+  .note .q{font-size:.8rem;color:var(--gold-deep);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+
+  /* ---------- preloaded ---------- */
+  .badges{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .bigbadge{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:24px;box-shadow:var(--shadow-sm);
+  }
+  .bigbadge .ico{font-size:2rem;display:block;margin-bottom:10px;}
+  .bigbadge h3{margin:0 0 6px;font-size:1.15rem;}
+  .bigbadge p{margin:0;color:var(--walnut-2);font-size:.96rem;}
+
+  /* ---------- won't do ---------- */
+  .trust{background:transparent;border:2px solid var(--line);border-radius:18px;padding:26px 28px;}
+  .trust ul{margin:0;padding:0;list-style:none;display:grid;gap:14px;}
+  .trust li{display:flex;gap:12px;align-items:flex-start;font-size:1rem;color:var(--walnut-2);}
+  .trust li .x{color:var(--brick);font-weight:800;flex:0 0 auto;font-size:1.1rem;line-height:1.5;}
+  .trust li b{color:var(--walnut);}
+
+  /* ---------- footer ---------- */
+  footer{
+    text-align:center;padding:44px 0 60px;
+  }
+  .firstask{
+    max-width:560px;margin:0 auto;
+    background:var(--walnut);color:var(--cream);
+    border-radius:20px;padding:28px 26px;box-shadow:var(--shadow);
+  }
+  .firstask .eyebrow{color:var(--gold);}
+  .firstask h2{color:var(--cream);margin-bottom:14px;}
+  .firstask .ask{
+    background:rgba(255,250,241,.07);border:1px solid rgba(255,250,241,.16);
+    border-radius:12px;padding:12px 16px;margin:10px 0;text-align:left;color:#eaddc7;
+  }
+  .firstask .ask b{color:#fff;}
+  .signoff{margin-top:22px;color:var(--walnut-soft);font-size:.9rem;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    .grid.three,.proj,.materials{grid-template-columns:1fr;}
+    .steps{grid-template-columns:repeat(2,1fr);}
+    .badges,.notecards{grid-template-columns:1fr;}
+  }
+  @media (max-width:460px){
+    .grid.two,.grid.four{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="badge-top">🪵 Your 3D-print helper</span>
+    <h1 class="display">Meet Michael</h1>
+    <p class="lead">An easy-going helper who designs 3D-printable things <b>with you</b> —
+      right inside the software where your models live.</p>
+    <div class="voice">
+      Hey — I’m Michael. Think of me as the person at the next bench with sawdust on my
+      sleeves. You tell me what you want to make, I shape it, I check it’ll actually
+      print, and I remember every project so we can pick up right where we left off.
+    </div>
+  </header>
+
+  <!-- WHAT HE DOES -->
+  <section>
+    <p class="eyebrow">What Michael does</p>
+    <h2>Four simple jobs</h2>
+    <p class="sub">No 3D experience needed. You bring the idea — he handles the fiddly parts.</p>
+    <div class="grid four">
+      <div class="card">
+        <span class="ico">🔨</span>
+        <h3>Builds it with you</h3>
+        <p>Describe the thing in plain words and he shapes it up, then tweaks it as you go.</p>
+      </div>
+      <div class="card">
+        <span class="ico">✅</span>
+        <h3>Checks it’ll print</h3>
+        <p>Before you waste plastic, he inspects the design for the problems printers hate.</p>
+      </div>
+      <div class="card">
+        <span class="ico">🗂️</span>
+        <h3>Remembers your projects</h3>
+        <p>Every thing you’ve made sits on a shared “bench” he keeps track of for you.</p>
+      </div>
+      <div class="card">
+        <span class="ico">🌱</span>
+        <h3>Learns how you work</h3>
+        <p>He jots down what you like, so each project goes a little smoother than the last.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <p class="eyebrow">How it works</p>
+    <h2>From “I want a…” to something you can print</h2>
+    <p class="sub">The whole thing is a friendly back-and-forth. Four steps, on repeat.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <span class="se">💬</span>
+        <h3>You describe it</h3>
+        <p>“A shelf bracket, 10&nbsp;cm tall…” — everyday words are enough.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <span class="se">🧩</span>
+        <h3>He shapes it</h3>
+        <p>Michael builds the part in your 3D software.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <span class="se">🖼️</span>
+        <h3>He shows you</h3>
+        <p>A quick picture so you can see it and say what to change.</p>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <span class="se">🔎</span>
+        <h3>He checks it</h3>
+        <p>A printability inspection, with a plain pass/fail readout.</p>
+      </div>
+    </div>
+    <p class="loopnote">Not right yet? You tweak, he rebuilds — and <b>he remembers</b> what you decided.</p>
+  </section>
+
+  <!-- THE BENCH -->
+  <section>
+    <div class="bench">
+      <p class="eyebrow">The bench</p>
+      <h2>Your projects, all in one place</h2>
+      <p class="sub">Michael thinks of your projects as living together on a shared workbench.
+        Here are the ones on it right now:</p>
+      <div class="proj">
+        <div class="p">
+          <span class="pico">🐷</span>
+          <h3>toomi</h3>
+          <p class="what">A children’s name piggy bank with fat bubble letters.</p>
+          <span class="chip ready">Ready</span>
+        </div>
+        <div class="p">
+          <span class="pico">🪟</span>
+          <h3>escher</h3>
+          <p class="what">A flat windowed board with an attached tray.</p>
+          <span class="chip ready">Ready</span>
+        </div>
+        <div class="p">
+          <span class="pico">🐚</span>
+          <h3>baha-shield</h3>
+          <p class="what">A woven shell cover for a hearing aid.</p>
+          <span class="chip ready">Ready</span>
+        </div>
+      </div>
+      <p class="relist">He checks the bench fresh every time you start — so it’s always up to date.</p>
+    </div>
+  </section>
+
+  <!-- THE CHECKER -->
+  <section>
+    <p class="eyebrow">The checker</p>
+    <h2>His built-in safety inspector</h2>
+    <p class="sub">3D printers are picky. Before you commit, Michael runs a quick inspection
+      and answers the questions that decide whether a print succeeds:</p>
+    <div class="grid" style="gap:14px;">
+      <div class="gate">
+        <span class="q">🔍</span>
+        <div><h3>Is it the size you think it is?</h3>
+          <p>A stray setting can make a part come out a hundred times too big — he catches that first.</p></div>
+      </div>
+      <div class="gate">
+        <span class="q">🧱</span>
+        <div><h3>Is it one solid piece?</h3>
+          <p>A print has to be sealed and whole — no gaps or loose bits — or it falls apart.</p></div>
+      </div>
+      <div class="gate">
+        <span class="q">📏</span>
+        <div><h3>Are the walls thick enough?</h3>
+          <p>Too thin and it snaps. He measures the whole part, not just a lucky spot.</p></div>
+      </div>
+      <div class="gate">
+        <span class="q">📦</span>
+        <div><h3>Will it fit the printer?</h3>
+          <p>He checks it fits your printer’s bed — a Bambu Lab A1, about 25&nbsp;cm each way — before you start.</p></div>
+      </div>
+      <div class="gate">
+        <span class="q">📐</span>
+        <div><h3>Any tricky overhangs?</h3>
+          <p>Steep undersides may need support or a flip — he flags them early.</p></div>
+      </div>
+      <div class="gate">
+        <span class="q">🧊</span>
+        <div><h3>Are the curves smooth enough?</h3>
+          <p>If the model is built coarser than the printer can lay down, curves print faceted — he says so.</p></div>
+      </div>
+    </div>
+
+    <div class="materials">
+      <div class="mat"><div class="name">PLA+</div><div class="desc">stiff &amp; easy — everyday parts</div></div>
+      <div class="mat"><div class="name">TPU</div><div class="desc">bendy &amp; rubbery — grips &amp; guards</div></div>
+      <div class="mat"><div class="name">PETG</div><div class="desc">tough &amp; sturdy — hard-working parts</div></div>
+    </div>
+    <p class="measure-note">Tell him what you’re printing with and he checks against <b>that</b>
+      material’s rules — a bendy part needs thicker walls than a stiff one. And he
+      <b>measures</b> instead of guessing by eye.<br><br>
+      These three are the everyday ones; he knows <b>eight</b> in all. A couple of things he’ll
+      tell you himself: <b>PLA+ follows plain PLA’s rules</b> — the difference is printer
+      settings, not shape — and the tougher engineering plastics (ABS, ASA, PC, nylon)
+      <b>want an enclosed printer</b>, which the open-frame A1 isn’t.</p>
+  </section>
+
+  <!-- HE LEARNS -->
+  <section>
+    <p class="eyebrow">He gets to know you</p>
+    <h2>Every project makes him smarter</h2>
+    <p class="sub">After a session, Michael writes down little lessons about how you like to
+      work — like sticky notes on the wall. Next time, he just knows.</p>
+    <div class="notecards">
+      <div class="note">
+        <span class="pin">📌</span>
+        <span class="q">Lesson learned</span>
+        <p>“When we pick lettering, show a few real previews so she can choose — don’t decide silently.”</p>
+      </div>
+      <div class="note">
+        <span class="pin">📌</span>
+        <span class="q">Lesson learned</span>
+        <p>“Point the camera at the part before snapping the photo, or the picture comes out empty.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRELOADED & CONNECTED -->
+  <section>
+    <p class="eyebrow">Ready out of the box</p>
+    <h2>Preloaded &amp; connected</h2>
+    <div class="badges">
+      <div class="bigbadge">
+        <span class="ico">📚</span>
+        <h3>A design cartridge</h3>
+        <p>Built-in know-how — good-design principles, material rules, and the printability
+          checker — all loaded and ready, no setup from you.</p>
+      </div>
+      <div class="bigbadge">
+        <span class="ico">🔗</span>
+        <h3>A live link to your 3D software</h3>
+        <p>He works in your <b>real, open</b> design session — shaping the actual model
+          you see on screen, not a separate copy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT HE WON'T DO -->
+  <section>
+    <p class="eyebrow">You stay in charge</p>
+    <h2>What Michael won’t do</h2>
+    <div class="trust">
+      <ul>
+        <li><span class="x">✕</span><span>He <b>never saves out the final print file for you</b> — that last step is always yours, so nothing happens behind your back.</span></li>
+        <li><span class="x">✕</span><span>He <b>never says “it’s fine”</b> without actually running the check first.</span></li>
+        <li><span class="x">✕</span><span>He <b>won’t ramble</b> — short answers, and he lets the picture and the check do the talking.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="firstask">
+      <p class="eyebrow">Getting started</p>
+      <h2 class="display">The first thing he’ll ask</h2>
+      <div class="ask">🗂️ <b>New project, or picking up one from the bench?</b></div>
+      <div class="ask">🧵 <b>What are we printing with today — PLA+, TPU, or something else?</b></div>
+    </div>
+    <p class="signoff">That’s Michael. Pull up a stool — let’s make something. 🪵</p>
+  </footer>
+
+</div>
+</body>
+</html>
