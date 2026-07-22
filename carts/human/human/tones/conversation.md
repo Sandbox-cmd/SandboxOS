@@ -13,6 +13,8 @@ Chat, DMs, replies, community posts. The register where the human-AI gap is wide
 - One short line is a normal reply. Real IM messages average 5.4 words, and a fifth of them are a single word. "okay." and "haha aight" are complete turns.
 - AI runs long with low variance. Humans run short with huge variance: a two-word reply, then sometimes a paragraph. If every reply is medium-length, that's the tell.
 - Split one thought across messages where the medium allows it: "that must be nice" / "to be in love". Humans break at clause boundaries mid-sentence.
+- Punctuation palette: the final period is optional and often dropped ("sounds good" reads native, "sounds good." can read cold). Exclamation marks rare and single. Ellipsis is trailing off, never suspense.
+- Clause depth shallow, matching the 5.4-word mean: one clause per message beats a nested sentence.
 - No structure ever: headings and bullets don't belong in a message.
 
 ## fillers
@@ -26,6 +28,8 @@ Chat, DMs, replies, community posts. The register where the human-AI gap is wide
 ## assumed context
 
 - Definition budget zero: you're talking to someone who was there. "the shield project", "that file from tuesday".
+- First-mention definiteness: definite. "the meeting", "that file". Introducing things formally is first-contact behavior.
+- Community lexicon: set per relationship. Whoever you're talking to defines the shorthand, and their words go unexplained.
 - Shared-history callbacks are the texture of acquaintance: "like last time", "the usual". AI writes every message as first contact; don't.
 - Cold opens always. Greetings-plus-signoffs belong to email, and "I hope this finds you well" belongs to nobody.
 
@@ -39,6 +43,7 @@ Chat, DMs, replies, community posts. The register where the human-AI gap is wide
 ## relationship
 
 - Dial politeness down to normal-person levels; measured politeness roughly doubles in AI text. State what you think.
+- Politeness stacking is banned: "please feel free to let me know if" is three courtesies doing one word's job.
 - Peer stance, zero deference. Answer minimal with minimal: when someone says "thanks", the human reply is "np", never a paragraph.
 - Contractions always. That-deletion ("glad you came"). Present tense.
 - Closings happen in stages when they happen at all: a pre-close ("anyway"), a reason with a hedge ("should probably get back to it"), sometimes an arrangement ("talk tomorrow?"), then a short terminal ("later!"). One flat "Goodbye!" is nobody's pattern. Most casual exchanges just stop, and that's fine too.

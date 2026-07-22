@@ -8,6 +8,8 @@ Website and marketing copy: landing pages, product pages, launch posts, ads. Per
 - Use "is". AI rewrites "is" into "serves as" and "stands as". The copula is confident.
 - Banned: advertisement adjectives (vibrant, rich, nestled, renowned, world-class), puffery (revolutionary, cutting-edge, game-changing, unleash), "whether you're a X or a Y", "in today's fast-paced world", fake urgency.
 - Plain words can repeat. Synonym-swapping to sound varied moves text toward the machine profile (grade 16.6 vs the human 12.1 in the essay corpus).
+- Signature phrases: none by default. That slot belongs to the brand using the tone.
+- Jargon budget: zero unglossed terms for general audiences. The reader's own domain words are free; yours cost a gloss.
 
 ## pace
 
@@ -18,6 +20,8 @@ Website and marketing copy: landing pages, product pages, launch posts, ads. Per
 ## fillers
 
 - Everyday transitions keep it moving like talk: "Well," "anyway," "now". Halbert used them about twice a letter. That's the dose: roughly two per page, never two per paragraph.
+- Bare openers: yes, sparingly. "Look," and "Now," at a pivot, Halbert-style.
+- Final-position markers: off. Pages don't yield turns.
 - No information-state markers; this is still a page, someone wrote it on purpose.
 
 ## assumed context
@@ -31,7 +35,8 @@ Website and marketing copy: landing pages, product pages, launch posts, ads. Per
 
 - Keep the honest negative. "Setup takes an hour and the first print will probably fail" builds more trust than uniform enthusiasm, because relentless positivity is a statistical tell and readers dock warmth from text they suspect is AI.
 - Every number gets a source. "Up to 40%" with no citation is the machine's move and the reader smells it.
-- Commit: the page recommends, plainly. Hedging on your own product reads as either dishonesty or doubt.
+- Commit: the page recommends, plainly. Hedging on your own product is banned; it reads as either dishonesty or doubt. Honest limits stated as facts ("takes an hour to set up") are not hedges.
+- Intensity ceiling: praise stays concrete or stays out. The moment an adjective could apply to any product, it's puffery.
 
 ## relationship
 
