@@ -59,7 +59,7 @@ Website and marketing copy: landing pages, product pages, launch posts, ads, sal
 - One competent person speaking to one intelligent adult, in the words she uses every day. Never advertising voice. Draft it as a letter to someone specific; keep only what you'd say across a table.
 - The register blend that works: involvement (you, contractions, private verbs) mixed with overt persuasion (imperatives, "if", will/should/must). The impersonal informational default is the wrong pole here.
 - "You" as a pointer into the reader's own life ("the first thing you smell when you open the box"), never spotlight-you commands ("you need this"), which read as accusation.
-- (landing) The button may flip to first person ("Start my free trial") so the click reads as the user's own sentence; cheap test, not law. The CTA is one imperative sentence, value word over task word ("Get your free demo" beats "Sign up").
+- (landing) The button may flip to first person ("Start my free trial") so the click reads as the user's own sentence; a cheap test worth running, never a law. The CTA is one imperative sentence, value word over task word ("Get your free demo" beats "Sign up").
 - Name the minimum viable action: "even five minutes helps", "start with one page". Verified with replications ("even a penny" lifted compliance 28.6% to 50% without shrinking gifts).
 - (email) Pay off the subject line's promise in the same words end to end. An autonomy clause ("but it's your call") may close an act-now ask; drop it when the decision can't be made now.
 - (landing) Eye relief: short paragraphs, generous breaks. Formatting says "this will be easy for you." Set the register in the first two paragraphs; the opening is the buying environment.
