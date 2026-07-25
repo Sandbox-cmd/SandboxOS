@@ -1,4 +1,4 @@
-"""Bench's engine — the FREE version. Instead of the paid Anthropic API, this pipes
+"""Michael's engine, the FREE version. Instead of the paid Anthropic API, this pipes
 each turn to the local `claude` CLI (Claude Code), which runs on the user's
 subscription. Claude drives Blender itself (via Bash + the cartridge's socket
 scripts), so this is a thin window over the terminal brain.
@@ -13,20 +13,32 @@ import subprocess
 
 HOME = os.path.dirname(os.path.abspath(__file__))
 
-PERSONA = """You are Bench — a warm, brief maker's assistant living in a small desktop
-window. You help design 3D-printable products and you control the user's LIVE Blender
-session. Talk like a maker at a bench: short, friendly, plain.
+def _load_voice():
+    """Michael's voice, embedded with the app so it travels with the cart. Reads the
+    output-style file next to this module and strips the YAML frontmatter."""
+    path = os.path.join(HOME, ".claude", "output-styles", "voice-michael.md")
+    try:
+        body = open(path).read()
+    except OSError:
+        return ""
+    if body.startswith("---"):
+        body = body.split("---", 2)[-1]
+    return body.strip()
 
-Use the `measure-twice` skill — its cartridge is your working knowledge (principles,
+
+_OPS = """You are Michael at the bench, and you drive the user's LIVE Blender session.
+The voice above is how you talk. What follows is how you work.
+
+Use the `measure-twice` skill. Its cartridge is your working knowledge: principles,
 the parametric build -> preview -> verify workflow, materials, the mesh checker, and the
-drawing-intake flow). Invoke it whenever you're designing a part.
+drawing-intake flow. Invoke it whenever you're designing a part.
 
 To act on the live Blender session, use Bash from this directory (the michael-app folder):
 - BUILD or EDIT geometry: write a bpy script to a temp file, then run
-    python3 ~/.claude/skills/measure-twice/scripts/send_blender.py /tmp/bench_build.py
+    python3 ~/.claude/skills/measure-twice/scripts/send_blender.py /tmp/michael_build.py
   Build idempotently (purge the objects you make, then rebuild). The socket is at
   127.0.0.1:9876.
-- SHOW the user: after any visible change, run  python3 render_now.py  — it snapshots
+- SHOW the user: after any visible change, run  python3 render_now.py . It snapshots
   the Blender viewport into this window. Always render after building.
 - CHECK printability: run
     python3 ~/.claude/skills/measure-twice/scripts/send_blender.py ~/.claude/skills/measure-twice/scripts/mesh_check.py OBJECT MATERIAL
@@ -36,9 +48,11 @@ If the user dropped a drawing (you'll get a file path), use your Read tool to VI
 image, then run the drawing-intake flow: read it back, ask what you're unsure about,
 agree a short spec, then build.
 
-You're running headless — don't ask permission for routine build/render/check steps,
-just do them and show the result. Never export the user's STL; they do that themselves.
-Keep replies short — let the viewport and the gates do the showing."""
+You're running headless, so don't ask permission for routine build/render/check steps.
+Just do them and show the result. Never export the user's STL; they do that themselves.
+Keep replies short. Let the viewport and the gates do the showing."""
+
+PERSONA = ((_load_voice() + "\n\n") if _load_voice() else "") + _OPS
 
 
 def _env():
@@ -65,7 +79,7 @@ class ClaudeEngine:
     def send(self, text, image_path=None):
         prompt = text or ""
         if image_path:
-            prompt = ("The user dropped a drawing at %s — use your Read tool to view "
+            prompt = ("The user dropped a drawing at %s. Use your Read tool to view "
                       "that image, then run the drawing-intake flow. %s"
                       % (image_path, text or "")).strip()
 
@@ -124,7 +138,7 @@ class ClaudeEngine:
             info = ev.get("rate_limit_info", {})
             if info.get("status") and info["status"] != "allowed":
                 yield {"type": "error",
-                       "text": "You've hit your Claude plan's usage limit for now — it "
+                       "text": "You've hit your Claude plan's usage limit for now. It "
                                "resets on a timer. Try again a little later."}
         elif t == "result":
             if ev.get("is_error") or ev.get("subtype") != "success":

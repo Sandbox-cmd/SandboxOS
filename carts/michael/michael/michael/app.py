@@ -1,4 +1,4 @@
-"""Bench — a local desktop app for designing 3D-printable products by chatting.
+"""Michael, a local desktop app for designing 3D-printable products by chatting.
 
 FREE version: the brain is the local `claude` CLI (your Claude subscription), not the
 paid API. No API key needed.
@@ -6,7 +6,7 @@ paid API. No API key needed.
 Run:
     pip install flask
     python3 app.py           # then open http://127.0.0.1:5178
-    (or python3 window.py for a native window — needs pywebview)
+    (or python3 window.py for a native window, needs pywebview)
 Keep Blender open with the BlenderMCP add-on running.
 """
 
@@ -102,7 +102,7 @@ def chat():
 
 
 if __name__ == "__main__":
-    print("Bench (free / subscription brain) on http://127.0.0.1:5178")
+    print("Michael (free / subscription brain) on http://127.0.0.1:5178")
     print("Blender:", "connected" if blender.is_up() else "NOT reachable (open Blender + the add-on)")
     print("Brain:", "claude CLI found" if shutil.which("claude") else "claude CLI MISSING")
     app.run(host="127.0.0.1", port=5178, threaded=True, debug=False)

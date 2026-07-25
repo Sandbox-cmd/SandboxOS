@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bench</title>
+<title>Michael</title>
 <style>
   :root{
     --paper:#f5f2ea; --card:#fbf9f3; --ink:#22252a; --muted:#6f7168; --hair:#e2ddd0;
@@ -78,7 +78,7 @@
 </head>
 <body>
   <div class="top">
-    <span class="name">Bench</span>
+    <span class="name">Michael</span>
     <div class="dots">
       <span class="dot" id="d-blender"><i></i>blender</span>
       <span class="dot" id="d-key"><i></i>brain</span>
@@ -88,7 +88,7 @@
   <div class="grid">
     <div class="col chat">
       <div class="thread" id="thread">
-        <div class="bubble bot"><div class="who">Bench</div><div class="body">Hi Mira. Drop a drawing on the viewport, or just tell me what you want to make.</div></div>
+        <div class="bubble bot"><div class="who">Michael</div><div class="body">Hi Mira. Drop a drawing on the viewport, or just tell me what you want to make.</div></div>
       </div>
       <div class="composer">
         <button class="iconbtn" id="clip" title="Attach a drawing">✎</button>
@@ -130,7 +130,7 @@ function refreshPreview(){
 
 function bubble(role, html){
   const b=document.createElement("div"); b.className="bubble "+role;
-  if(role==="bot"){ b.innerHTML='<div class="who">Bench</div><div class="body"></div>'; b.querySelector(".body").textContent=""; }
+  if(role==="bot"){ b.innerHTML='<div class="who">Michael</div><div class="body"></div>'; b.querySelector(".body").textContent=""; }
   if(html!==undefined){ (role==="bot"?b.querySelector(".body"):b).innerHTML=html; }
   thread.appendChild(b); thread.scrollTop=thread.scrollHeight; return b;
 }
@@ -190,7 +190,7 @@ function handle(ev){
     if(!botBody){ botBody=bubble("bot").querySelector(".body"); }
     botBody.textContent+=ev.text; turnText+=ev.text; thread.scrollTop=thread.scrollHeight;
   }else if(ev.type==="tool_start"){ handle._chipName=ev.name; handle._chip=toolChip(ev.name+"…"); botBody=null;
-  }else if(ev.type==="tool_done"){ if(handle._chip){ const n=handle._chipName||"done"; handle._chip.className="tool "+(ev.error?"err":"done"); handle._chip.innerHTML='<i></i>'+n+(ev.error?" — failed":" — done"); }
+  }else if(ev.type==="tool_done"){ if(handle._chip){ const n=handle._chipName||"done"; handle._chip.className="tool "+(ev.error?"err":"done"); handle._chip.innerHTML='<i></i>'+n+(ev.error?": failed":": done"); }
   }else if(ev.type==="error"){ bubble("bot").querySelector(".body").textContent="⚠ "+ev.text;
   }else if(ev.type==="done"){ botBody=null; renderGates(turnText); refreshPreview(); }
 }
@@ -205,7 +205,7 @@ async function upload(file){
   if(r.error){ bubble("bot").querySelector(".body").textContent="Couldn't read that image."; return; }
   pendingImage={path:r.path,url:r.url};
   document.getElementById("sketchImg").src=r.url; document.getElementById("sketchBox").hidden=false;
-  msg.placeholder="Drawing attached — add a note or just hit send…"; msg.focus();
+  msg.placeholder="Drawing attached. Add a note or just hit send…"; msg.focus();
 }
 document.getElementById("clip").addEventListener("click",()=>document.getElementById("file").click());
 document.getElementById("file").addEventListener("change",e=>{ if(e.target.files[0]) upload(e.target.files[0]); });

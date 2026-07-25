@@ -1,8 +1,8 @@
-"""Bench's brain: a Claude agent that designs 3D products and drives Blender.
+"""Michael's brain: a Claude agent that designs 3D products and drives Blender.
 
-Loads the measure-twice cartridge as its system prompt, then runs a streaming
-agentic loop with three tools that reach into the live Blender session. The app
-layer (app.py) turns the yielded events into server-sent events for the UI.
+Loads Michael's voice plus the measure-twice cartridge as its system prompt, then
+runs a streaming agentic loop with three tools that reach into the live Blender
+session. The app layer (app.py) turns the yielded events into server-sent events.
 """
 
 import os
@@ -31,8 +31,23 @@ def _load_cartridge():
     return "\n".join(parts) if parts else "(measure-twice cartridge not found)"
 
 
-PREAMBLE = """You are Bench — a friendly desktop assistant that helps design physical,
-3D-printable products by chatting, and builds them in a live Blender session.
+def _load_voice():
+    """Michael's voice, embedded with the app so it travels with the cart. Reads the
+    output-style file next to this module and strips the YAML frontmatter."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        ".claude", "output-styles", "voice-michael.md")
+    try:
+        body = open(path).read()
+    except OSError:
+        return ""
+    if body.startswith("---"):
+        body = body.split("---", 2)[-1]
+    return body.strip()
+
+
+PREAMBLE = """You are Michael at the bench. You help design physical, 3D-printable
+products by chatting, and you build them in a live Blender session. The voice above is
+how you talk. What follows is how you work.
 
 You have three tools:
 - blender_exec: run Python (bpy) inside the user's live Blender to build or edit geometry.
@@ -43,19 +58,20 @@ How to work:
 - If the user drops a photo of a drawing, run the drawing-intake movement from the
   cartridge first: read it back, ask what you don't understand, agree a short spec,
   then build. Ask your questions before modeling.
-- Build parametrically and idempotently; after a change, call render_view so the user
+- Build parametrically and idempotently. After a change, call render_view so the user
   sees it, and mesh_check when they care about printability. Never overwrite the user's
-  files — they export the STL themselves.
-- Talk warmly and plainly, like a maker at a bench. Keep replies short; let the
-  viewport and the gates do the showing.
+  files; they export the STL themselves.
+- Keep replies short. Let the viewport and the gates do the showing.
 
 The full method, principles, workflow, materials, gates, and the drawing-intake steps
-follow below — treat them as your working knowledge."""
+follow below. Treat them as your working knowledge."""
 
 
 def build_system():
-    text = PREAMBLE + "\n\n" + _load_cartridge()
-    # one cached block — big and stable, so it caches across turns
+    voice = _load_voice()
+    parts = [voice, PREAMBLE, _load_cartridge()] if voice else [PREAMBLE, _load_cartridge()]
+    text = "\n\n".join(parts)
+    # one cached block: big and stable, so it caches across turns
     return [{"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}]
 
 
@@ -98,7 +114,7 @@ TOOLS = [
 ]
 
 
-class BenchAgent:
+class MichaelAgent:
     def __init__(self):
         self.client = anthropic.Anthropic()   # reads ANTHROPIC_API_KEY
         self.system = build_system()
@@ -123,7 +139,7 @@ class BenchAgent:
             return "ERROR: unknown tool %s" % name, None
         except blender.BlenderError as e:
             return "ERROR: " + str(e), None
-        except Exception as e:  # noqa: BLE001 — surface any tool failure to the model
+        except Exception as e:  # noqa: BLE001: surface any tool failure to the model
             return "ERROR: " + repr(e), None
 
     def send(self, user_content):
