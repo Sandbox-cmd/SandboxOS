@@ -1,0 +1,475 @@
+/* SPDX-License-Identifier: FSL-1.1-Apache-2.0 */
+/* ============================================================
+   commerceos — the teletext broadcast face.
+   direction: Bootleg OS / BROADCAST register (owner-ratified
+   2026-07-12 from a divergence pass). builds ON tokens.css —
+   every colour reaches for a semantic var, never raw hex.
+
+   the whole operator surface is ONE tuned channel, not a log:
+     · a masthead marquee identifies the station + the big count
+     · a nav teletext-bar routes the pages
+     · P-blocks (bell-blue bars) carry index rows, tables, state
+     · the block-mosaic meter is pure teletext material
+     · ONE amber accent per view (the call awaiting the operator)
+     · ONE slap per view, on a true finished + openable claim
+     · supercolor lives ONLY on /parts (the ownable parts)
+   ============================================================ */
+
+/* ---- the channel: everything sits in one tuned column ------ */
+.channel {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: var(--sp-5) var(--sp-4) var(--sp-7);
+}
+
+/* ---- masthead: the station identifier bar + marquee -------- */
+.masthead {
+  border: 1px solid var(--border-hard);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--border-hard) 30%, transparent);
+  margin-bottom: var(--sp-4);
+}
+.masthead .teletext-bar { border-radius: 0; }
+.masthead .marquee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+  background: var(--bg-sunken);
+  padding: var(--sp-4);
+}
+.marquee .count {
+  font-size: clamp(2.4rem, 8vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  font-weight: 700;
+}
+.marquee .count small {
+  display: block;
+  font-size: var(--fs-0);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 400;
+  margin-top: var(--sp-2);
+}
+.marquee .split {
+  display: flex;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.marquee .split b { color: var(--link); font-weight: 700; }
+.marquee .split span {
+  color: var(--text-faint);
+  font-size: var(--fs-0);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  display: block;
+}
+.marquee .split a { color: inherit; text-decoration: none; }
+
+/* ---- the nav teletext-bar — routes the pages --------------- */
+.channel-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  align-items: baseline;
+  margin-bottom: var(--sp-5);
+}
+.channel-nav .teletext-bar {
+  flex: 1 1 100%;
+  border-radius: var(--radius);
+}
+.channel-nav .teletext-bar a {
+  color: color-mix(in srgb, var(--signal) 78%, transparent);
+  text-decoration: none;
+}
+.channel-nav .teletext-bar a:hover { color: var(--signal); }
+.channel-nav .teletext-bar a.here {
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.channel-nav .links { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
+
+/* ---- the catalog sub-nav — the operations channel's own index --- */
+.sub-nav { margin-bottom: var(--sp-5); }
+.sub-nav .teletext-bar { border-radius: var(--radius); }
+.sub-nav .links { display: flex; gap: var(--sp-2) var(--sp-3); flex-wrap: wrap; align-items: baseline; }
+.sub-nav .links a {
+  color: color-mix(in srgb, var(--signal) 82%, transparent);
+  text-decoration: none;
+}
+.sub-nav .links a:hover { color: var(--signal); }
+.sub-nav .links a.here {
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sub-nav .soon { color: color-mix(in srgb, var(--signal) 55%, transparent); }
+.sub-nav .soon-tag {
+  font-size: var(--fs-0);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* the run affordance sits as a compact form in an index row --- */
+.idx-row form.run-form { flex: none; margin: 0; }
+
+/* ---- the two-column broadcast grid ------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: var(--sp-5);
+  align-items: start;
+}
+.grid--cards {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+/* ---- the teletext index rows — one per feature ------------- */
+.idx-row { align-items: baseline; flex-wrap: wrap; }
+.idx-row .no { min-width: 2.6em; font-weight: 700; }
+.idx-row .name {
+  flex: 1 1 8em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+.idx-row .stat { flex: 1 1 15em; color: var(--text-dim); }
+.idx-row .run { flex: none; }
+
+/* ---- the block-mosaic meter — pure teletext material ------- */
+.meter {
+  font-family: var(--font-mono);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.meter .fill { color: var(--link); }
+.meter .empty { color: var(--border); }
+.meter .pct { color: var(--link); letter-spacing: 0.04em; }
+
+/* ---- run-batch affordance — a broadcast fast-text link ------ */
+a.run, button.run {
+  color: var(--link);
+  background: transparent;
+  text-decoration: none;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  padding: 0 var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1.6;
+}
+a.run:hover, button.run:hover { color: var(--text); }
+a.run--act, button.run--act { color: var(--accent); }
+
+/* ---- the call — the one thing awaiting the operator's hand -- */
+.call {
+  border-inline-start: 3px solid var(--accent);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  margin-top: var(--sp-4);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.call .big { color: var(--accent); font-size: var(--fs-3); font-weight: 700; }
+.call .big a { color: inherit; }
+
+/* ---- state block — the lifecycle / counts ledger ----------- */
+.state-row { justify-content: space-between; align-items: baseline; }
+.state-row .k {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--fs-0);
+}
+.state-row .v { color: var(--text); font-weight: 700; }
+.state-row .v a { color: var(--link); }
+.state-row.total .k { color: var(--text); }
+
+/* ---- the win — carries the one slap ------------------------ */
+.win {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-hard);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-top: var(--sp-5);
+}
+.win p { margin: 0; color: var(--text-dim); font-size: var(--fs-1); }
+.win p b { color: var(--text); }
+.win p a { color: var(--link); }
+
+/* ---- the legend + subtle chrome ---------------------------- */
+.legend {
+  display: flex;
+  gap: var(--sp-4) var(--sp-5);
+  flex-wrap: wrap;
+  margin-top: var(--sp-5);
+  color: var(--text-faint);
+  font-size: var(--fs-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.legend b { color: var(--link); font-weight: 400; }
+.subtle { color: var(--text-faint); font-size: var(--fs-0); letter-spacing: 0.06em; }
+
+/* the P-block body — where index rows / tables live ---------- */
+.teletext > .tt-body { padding: 0; }
+.teletext + .teletext { margin-top: var(--sp-5); }
+
+/* ============================================================
+   the plainer pages — brief / approvals / record / economics /
+   findings ride the SAME frame: P-blocks, rows, and one table
+   style. these classes dress the markup the routes already
+   emit (.card / .muted) so nothing renders as the old log.
+   ============================================================ */
+.card {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-hard);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+.card > strong:first-child {
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--fs-1);
+}
+.card ul { margin: var(--sp-2) 0 0; padding-inline-start: var(--sp-5); }
+.card li { margin: var(--sp-1) 0; }
+.card form { margin-top: var(--sp-3); }
+.muted { color: var(--text-faint); }
+main a, .card a, .teletext a, td a { color: var(--link); }
+
+/* a table inside a P-block reads as broadcast data ----------- */
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-1); }
+td, th {
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--fs-0);
+  font-weight: 600;
+}
+code { color: var(--text-dim); }
+pre { color: var(--text-dim); font-size: var(--fs-0); overflow-x: auto; }
+
+/* the big headline number + its label (feature drill etc.) --- */
+.num { color: var(--accent); font-size: var(--fs-4); font-weight: 800; line-height: 1.05; }
+.sub { color: var(--text-dim); font-size: var(--fs-1); margin: 0; }
+
+/* a plain approve/recompute button in the plainer pages ------ */
+.btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-1);
+  cursor: pointer;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+}
+.btn:hover {
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* ============================================================
+   view 2 — the COMBINED BOARD: the stage pipeline fused with a
+   filter/sort/search bar over one surface. columns for where a
+   product IS, chips for which products you mean.
+   ============================================================ */
+
+/* the filter / sort / search bar — teletext chips + a compose form */
+.filterbar { margin-bottom: var(--sp-4); }
+.filterbar .fb-row {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3);
+  align-items: baseline; padding: var(--sp-2) var(--sp-4);
+}
+.filterbar .fb-label {
+  color: var(--text-faint); font-size: var(--fs-0);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-right: var(--sp-1);
+}
+.chip {
+  display: inline-block;
+  color: color-mix(in srgb, var(--link) 82%, transparent);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 0 var(--sp-2); font-family: var(--font-mono);
+  font-size: var(--fs-0); letter-spacing: 0.04em; text-decoration: none;
+  line-height: 1.7; white-space: nowrap;
+}
+a.chip:hover { color: var(--link); border-color: var(--link); }
+.chip.on {
+  color: var(--text); border-color: var(--link);
+  background: color-mix(in srgb, var(--link) 14%, transparent);
+}
+.chip--gap { color: var(--text-dim); border-color: var(--border); text-transform: none; }
+.chip--flag {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.filterbar form.fb-search {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3);
+  align-items: baseline; margin: 0;
+}
+.filterbar input[type=text], .filterbar select {
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: var(--fs-0);
+  padding: var(--sp-1) var(--sp-2);
+}
+
+/* the saved views as page-number tabs */
+.tabs {
+  display: flex; flex-wrap: wrap; gap: var(--sp-4);
+  align-items: baseline; margin-bottom: var(--sp-4);
+}
+.tabs .tab {
+  text-decoration: none; font-family: var(--font-mono); font-size: var(--fs-0);
+  color: color-mix(in srgb, var(--signal) 80%, transparent);
+}
+.tabs .tab .p { color: var(--text-faint); margin-right: var(--sp-1); }
+.tabs .tab:hover { color: var(--signal); }
+.tabs .tab.here {
+  color: var(--signal); text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* the board — the stage lanes side by side over one surface */
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-3);
+  align-items: start;
+}
+@media (max-width: 1080px) { .board { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .board { grid-template-columns: 1fr; } }
+.lane { min-width: 0; }
+.lane > .teletext-bar { border-radius: var(--radius) var(--radius) 0 0; }
+.lane-body {
+  border: 1px solid var(--border); border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: var(--sp-2);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  background: var(--bg-sunken);
+}
+.lane-empty { padding: var(--sp-3) var(--sp-2); font-size: var(--fs-0); margin: 0; }
+.lane-more { text-align: center; padding-top: var(--sp-1); }
+.lane-more a { color: var(--link); font-size: var(--fs-0); text-decoration: none; }
+.lane-more a:hover { text-decoration: underline; }
+
+/* a compact product card in a lane */
+.pcard {
+  display: block; text-decoration: none;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3); background: var(--bg);
+}
+.pcard:hover { border-color: var(--link); }
+.pcard-title {
+  display: block; color: var(--link);
+  font-size: var(--fs-0); font-weight: 600; line-height: 1.3;
+}
+.pcard-sub {
+  display: block; color: var(--text-faint);
+  font-size: var(--fs-0); margin-top: 2px;
+}
+.pcard .chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: var(--sp-1); }
+.pcard .chips .chip { line-height: 1.5; }
+
+/* the board's table density — one flat teletext data table replacing the
+   lanes; monospace columns, cyan openable ids (spec/experience-catalog.md) */
+.board-table td, .board-table th { font-family: var(--font-mono); }
+.board-table .chips { display: flex; flex-wrap: wrap; gap: 3px; }
+
+/* ============================================================
+   views 3–5 — workflow view, flag review, product drill. the
+   same P-block frame; a run-log receipt line, a history
+   timeline row, the claim ink chips, and the ruling buttons.
+   ============================================================ */
+
+/* the run-log ledger line — each verify-render a receipt */
+.receipt {
+  display: flex; gap: var(--sp-3); align-items: baseline;
+  padding: var(--sp-1) var(--sp-4);
+  font-family: var(--font-mono); font-size: var(--fs-0);
+  border-top: 1px solid var(--border);
+}
+.receipt .verdict {
+  flex: none; min-width: 12em;
+  color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.receipt .what { color: var(--text-dim); min-width: 0; word-break: break-word; }
+.receipt--ok .verdict { color: var(--ok); }
+.receipt--warn .verdict { color: var(--warn); }
+
+/* the history timeline — one move per row (who / when / why) */
+.tl-row { align-items: baseline; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); }
+.tl-row .when {
+  flex: none; min-width: 12em; color: var(--text-faint);
+  font-family: var(--font-mono); font-size: var(--fs-0);
+}
+.tl-row .move { flex: 1 1 12em; color: var(--text); }
+.tl-row .who {
+  flex: none; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--fs-0);
+}
+.tl-row .why { flex: 1 1 100%; color: var(--text-faint); font-size: var(--fs-0); }
+
+/* the claim ink chips — checked (verified) vs only-claimed */
+.chip--ok {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 55%, transparent);
+  text-transform: none;
+}
+.chip--claim {
+  color: var(--text-faint);
+  border-color: var(--border); text-transform: none;
+}
+.fc-mark {
+  color: var(--accent); font-size: var(--fs-0);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-inline-start: var(--sp-1);
+}
+
+/* the ruling buttons on a flag card / the drill */
+form.ruling {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3);
+  align-items: baseline; margin-top: var(--sp-3);
+}
+.flag-card > .muted { margin-top: var(--sp-2); }
+
+/* ---- /parts — the ONE surface where supercolor is earned.
+   parts are ownable, so each self-reporting part wears the
+   cassette rainbow spine within the same teletext frame. ----- */
+.parts-rack { display: grid; gap: var(--sp-4); padding: var(--sp-4); }
+.cassette h3 { margin: 0; font-size: var(--fs-2); }
+.cassette .verb { color: var(--accent); }
+.cassette .self { color: var(--text); margin: var(--sp-2) 0 0; }
+.cassette .meta {
+  color: var(--text-faint);
+  font-size: var(--fs-0);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: var(--sp-2);
+}
+.cassette .state { color: var(--link); }
+.cassette .drift-rows { margin-top: var(--sp-3); }

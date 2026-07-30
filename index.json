@@ -1,0 +1,9 @@
+{
+ "apps": {
+  "commerceos": {
+   "path": "apps/commerceos",
+   "version": "1.0.0",
+   "sha256": "499505a8e41bff6f56e7a05f887dfd0b5a1d2c3e741c31470a9d13c8cc4f19d3"
+  }
+ }
+}

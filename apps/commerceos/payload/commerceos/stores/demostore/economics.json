@@ -1,0 +1,36 @@
+{
+  "_note": "instance config for the demo store's economics (spec/parts/economics.md, mechanism vs config). two lanes: 'learnings' is optional read-only history that proves the engine reconciles \u2014 never company P&L; 'company' is the live entity, at zero until its own facts land. fee_stack and take_rates are the COMPANY's forward config. rates are basis points; money is integer minor units.",
+  "store": "demostore",
+  "fee_stack": {
+    "platform": {
+      "name": "shopify",
+      "rate_bps": 200,
+      "per_txn_minor": 0
+    },
+    "gateways": {
+      "stripe": {
+        "rate_bps": 290,
+        "per_txn_minor": 100
+      },
+      "tabby": {
+        "rate_bps": 650,
+        "per_txn_minor": 100
+      },
+      "tamara": {
+        "rate_bps": 690,
+        "per_txn_minor": 100
+      }
+    }
+  },
+  "take_rates": "stores/demostore/take-rates.json",
+  "learnings": {
+    "_note": "no history landed \u2014 the learnings lane stays empty until you land your own.",
+    "anchors": {}
+  },
+  "company": {
+    "_note": "the company's books \u2014 null until the entity's first period lands.",
+    "books_source": null,
+    "first_period": null
+  },
+  "tolerance_bps": 50
+}

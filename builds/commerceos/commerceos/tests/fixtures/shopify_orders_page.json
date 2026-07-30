@@ -1,0 +1,46 @@
+{
+  "_note": "synthetic fixture — hand-written for tests in the Admin GraphQL response shape; not captured from a live store. one order, two lines from different vendors; subtotal 769.00 = 605.00 + 164.00.",
+  "data": {
+    "orders": {
+      "pageInfo": { "hasNextPage": false, "endCursor": "orders-cursor-1" },
+      "nodes": [
+        {
+          "id": "gid://shopify/Order/5001",
+          "name": "#1001",
+          "createdAt": "2026-07-01T10:15:00Z",
+          "customer": { "id": "gid://shopify/Customer/9001" },
+          "currencyCode": "AED",
+          "subtotalPriceSet": { "shopMoney": { "amount": "769.00" } },
+          "totalDiscountsSet": { "shopMoney": { "amount": "0.00" } },
+          "totalShippingPriceSet": { "shopMoney": { "amount": "25.00" } },
+          "totalTaxSet": { "shopMoney": { "amount": "39.70" } },
+          "displayFinancialStatus": "PAID",
+          "displayFulfillmentStatus": "UNFULFILLED",
+          "lineItems": {
+            "pageInfo": { "hasNextPage": false },
+            "nodes": [
+              {
+                "id": "gid://shopify/LineItem/7001",
+                "quantity": 1,
+                "vendor": "SummitWorks",
+                "variant": { "id": "gid://shopify/ProductVariant/2001" },
+                "originalUnitPriceSet": { "shopMoney": { "amount": "605.00" } },
+                "totalDiscountSet": { "shopMoney": { "amount": "0.00" } },
+                "discountedTotalSet": { "shopMoney": { "amount": "605.00" } }
+              },
+              {
+                "id": "gid://shopify/LineItem/7002",
+                "quantity": 1,
+                "vendor": "CampCo",
+                "variant": { "id": "gid://shopify/ProductVariant/2003" },
+                "originalUnitPriceSet": { "shopMoney": { "amount": "164.00" } },
+                "totalDiscountSet": { "shopMoney": { "amount": "0.00" } },
+                "discountedTotalSet": { "shopMoney": { "amount": "164.00" } }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
