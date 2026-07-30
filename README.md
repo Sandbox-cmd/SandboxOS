@@ -1,45 +1,41 @@
-<img src="assets/title.svg" alt="THE SHELF" width="420">
+# The Shelf — shared builds for Sandbox OS
 
-saved builds, shared between a few people who trust each other. everyone
-with access runs SandboxOS. nobody else can add or take anything. the
-access list is the whole wall.
+saved builds people chose to share: each one a card plus one payload, with
+a checksum the card itself carries. this repo is public; the checksums are
+the trust, your keystroke is the gate.
 
-## what is here
+the system that reads this shelf lives at
+https://github.com/Sandbox-cmd/SandboxOS-core — clone it, `./sandbox init`,
+and you have your own workshop.
 
-```
-index.md          the list: every saved build, its checksum, when it was kept
-carts/<name>/     one saved build: CART.md (its card) plus the files it carries
-```
-
-every build keeps its card. the card says where the build came from, its
-checksum, and what was left out before sharing. nothing gets rewritten. a
-newer version arrives as a new commit and the card says so.
-
-## take one
-
-clone the repo, copy the build into `rack/` in your workshop, load it:
+## take a build
 
 ```
-git clone https://github.com/Sandbox-cmd/SandboxOS.git shelf
-cp -R shelf/carts/commerceos ~/Sandbox/rack/commerceos
-sandbox load commerceos
+git clone https://github.com/Sandbox-cmd/SandboxOS
+sandbox fetch --from ./SandboxOS            # list what's here
+sandbox fetch --from ./SandboxOS NAME       # pull one, hash-checked, your k decides
 ```
 
-## share one
+fetch verifies the bytes against the card BEFORE asking your key, and what
+lands on your shelf is marked origin: external — where a thing came from
+never washes off.
 
-copy one of yours in, add a line to `index.md`, commit, push:
+## give a build
 
 ```
-cp -R ~/Sandbox/rack/<name> shelf/carts/<name>
+sandbox share NAME --to ./SandboxOS
 ```
 
-one-line commands for both moves are coming (`sandbox share` and `sandbox
-fetch`). until then this is the whole move.
+the scrub runs first (nothing personal ships, git history never rides),
+then the push is your own hand, always.
 
-## the rules
+## the shapes on this shelf
 
-- the card says where a build came from. that never gets stripped.
-- the checksum on the card must match the files. if it does not, do not load it.
-- access is the only gate: a private repo and an invite list.
+- `builds/` — the current shape (BUILD.md + payload), what `sandbox fetch`
+  reads.
+- `carts/` — builds shared by the seventh body, kept as they were; their
+  cards and checksums still hold. read them by hand or re-press them into
+  the new shape.
 
-THANK YOU FOR USING.
+if a checksum here ever disagrees with a card, the card wins and this
+README owes a fix.
