@@ -1,0 +1,20 @@
+# junk never rides into a payload.
+#
+# a build's card pins a hash over every file in its payload, and that hash
+# does not skip these. one .DS_Store — which macOS writes just for opening
+# the folder in Finder — makes the bytes disagree with the card, and every
+# stranger's `sandbox fetch` refuses the build. this file is not tidiness;
+# it is the card staying true.
+#
+# .venv/ and .pytest_cache/ are here for a sharper reason: running an app's
+# own documented check writes them inside the payload, which moves the app's
+# hash and makes index.json stale. the check that proves a thing works must
+# not break the pin that proves it is intact.
+
+.DS_Store
+._*
+Thumbs.db
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

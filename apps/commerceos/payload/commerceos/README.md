@@ -13,7 +13,7 @@ credentials, no database, no numbers. those are yours to bring.
     uv sync
     uv run pytest -q
 
-you should see **503 passed, 51 skipped**. the skips are the point — each
+you should see **503 passed, 48 skipped**. the skips are the point — each
 one names a file you have not written yet, and wakes up on its own once
 you do. read them:
 
@@ -70,8 +70,8 @@ vertical; your taxonomy is where the domain lives.
 
 ## running it in your own workshop
 
-this arrived as a cart. `sandbox load commerceos` drops it into the
-project you are working on; start a channel for it and the record follows
-the same loop it came from — you build, notes stage, your keystroke lands.
+this arrived as a build off the shelf. `sandbox use commerceos` drops it
+into the project you are working on, and the record follows the same loop it
+came from — you build, notes stage, your keystroke lands.
 
 the specs are the contract. read `spec/build.md` first.

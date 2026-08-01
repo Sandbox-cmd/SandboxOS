@@ -1,7 +1,7 @@
 # commerceos
 version: 1.0.0
 min-core: 8.1.0
-description: a commerce operating system — mechanism, specs, packs, and its own 551-check suite; bring your own store data
+description: a template for running your own store — mechanism, specs, execution packs, and 551 checks of its own; it ships with nobody's catalog, credentials, or numbers
 
 ## placements
 apps/commerceos/

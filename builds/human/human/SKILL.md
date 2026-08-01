@@ -1,6 +1,6 @@
 ---
 name: human
-description: A language pack. Makes writing sound human instead of AI, in the tone the purpose needs. Tones: work (professional prose), conversation (chat and replies), copy (website and marketing), michael (the woodshop voice). Use when writing or editing any prose people will read, or when the user says "humanize this", "sounds like AI", "/human", or names a tone ("use conversation tone", "make it sound like michael").
+description: A language pack. Makes writing sound human instead of AI, in the tone the purpose needs. Tones: work (professional prose), conversation (chat and replies), copy (website and marketing), michael (the woodshop voice), artist (academic art writing for statements and curators). Use when writing or editing any prose people will read, or when the user says "humanize this", "sounds like AI", "/human", or names a tone ("use conversation tone", "make it sound like michael").
 ---
 
 # Human, the language pack
@@ -14,6 +14,7 @@ One skill, several tones. Each tone is a file in `tones/` that defines how a spe
    - email, doc, report, README, plan → `tones/work.md`
    - chat message, DM, reply, community post → `tones/conversation.md`
    - landing page, product page, ad, launch post → `tones/copy.md`
+   - artist statement, curatorial statement, wall text, exhibition or catalogue essay → `tones/artist.md`
    - the user asks for Michael or a workshop feel → `tones/michael.md`
 3. Genuinely ambiguous and the choice changes the voice? Ask one short question.
 4. Default is work.
@@ -50,7 +51,7 @@ Show the result. List the two or three biggest changes in one short line each, o
 
 ## Adding a tone
 
-A tone file needs: the four axes (funny-serious, formal-casual, respectful-irreverent, enthusiastic-matter-of-fact), how it talks (concrete moves, not adjectives), what's banned beyond the universal core, and one before/after sample. Copy the shape of `tones/michael.md`.
+Every tone is authored on the six-dimension framework in `references/framework.md`: word stock, pace, fillers, assumed context, opinion and certainty, relationship. Copy the blank template at the end of that file, set every knob (an unset knob means the AI default wins it), add one before/after sample. `tones/michael.md` is the worked example.
 
 ## Credits
 
