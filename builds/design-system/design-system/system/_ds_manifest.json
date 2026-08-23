@@ -1,0 +1,1516 @@
+{
+  "namespace": "SandboxOSDesignSystem_4526c4",
+  "components": [
+    {
+      "name": "GhostEye",
+      "sourcePath": "components/brand/GhostEye.jsx"
+    },
+    {
+      "name": "VHSHeadline",
+      "sourcePath": "components/brand/VHSHeadline.jsx"
+    },
+    {
+      "name": "BootCoin",
+      "sourcePath": "components/cartridge/BootCoin.jsx"
+    },
+    {
+      "name": "Cartridge",
+      "sourcePath": "components/cartridge/Cartridge.jsx"
+    },
+    {
+      "name": "Avatar",
+      "sourcePath": "components/core/Avatar.jsx"
+    },
+    {
+      "name": "Dialog",
+      "sourcePath": "components/core/Dialog.jsx"
+    },
+    {
+      "name": "FaceToggle",
+      "sourcePath": "components/core/FaceToggle.jsx"
+    },
+    {
+      "name": "Field",
+      "sourcePath": "components/core/Field.jsx"
+    },
+    {
+      "name": "Loader",
+      "sourcePath": "components/core/Loader.jsx"
+    },
+    {
+      "name": "SlapButton",
+      "sourcePath": "components/core/SlapButton.jsx"
+    },
+    {
+      "name": "Toast",
+      "sourcePath": "components/core/Toast.jsx"
+    },
+    {
+      "name": "Tooltip",
+      "sourcePath": "components/core/Tooltip.jsx"
+    },
+    {
+      "name": "Window",
+      "sourcePath": "components/core/Window.jsx"
+    },
+    {
+      "name": "Checkbox",
+      "sourcePath": "components/forms/Checkbox.jsx"
+    },
+    {
+      "name": "Radio",
+      "sourcePath": "components/forms/Checkbox.jsx"
+    },
+    {
+      "name": "Knob",
+      "sourcePath": "components/forms/Knob.jsx"
+    },
+    {
+      "name": "Select",
+      "sourcePath": "components/forms/Select.jsx"
+    },
+    {
+      "name": "Switch",
+      "sourcePath": "components/forms/Switch.jsx"
+    },
+    {
+      "name": "Tabs",
+      "sourcePath": "components/forms/Tabs.jsx"
+    },
+    {
+      "name": "CharacterSlap",
+      "sourcePath": "components/stickers/CharacterSlap.jsx"
+    },
+    {
+      "name": "Sticker",
+      "sourcePath": "components/stickers/Sticker.jsx"
+    },
+    {
+      "name": "Barcode",
+      "sourcePath": "components/stickers/Sticker.jsx"
+    },
+    {
+      "name": "Table",
+      "sourcePath": "components/data/Table.jsx"
+    },
+    {
+      "name": "List",
+      "sourcePath": "components/data/List.jsx"
+    },
+    {
+      "name": "Stat",
+      "sourcePath": "components/data/Stat.jsx"
+    },
+    {
+      "name": "KeyValue",
+      "sourcePath": "components/data/Stat.jsx"
+    },
+    {
+      "name": "CodeBlock",
+      "sourcePath": "components/data/CodeBlock.jsx"
+    },
+    {
+      "name": "Nav",
+      "sourcePath": "components/nav/Nav.jsx"
+    },
+    {
+      "name": "Menu",
+      "sourcePath": "components/nav/Menu.jsx"
+    },
+    {
+      "name": "Pagination",
+      "sourcePath": "components/nav/Pagination.jsx"
+    }
+  ],
+  "startingPoints": [],
+  "cards": [
+    {
+      "path": "components/brand/brand.card.html",
+      "group": "Brand",
+      "viewport": "700x300",
+      "subtitle": "The dithered gaze that watches your build come together (the mascot) + the kinetic poster voice",
+      "name": "GhostEye + VHS Headline"
+    },
+    {
+      "path": "guidelines/dither.html",
+      "group": "Brand",
+      "viewport": "700x240",
+      "subtitle": "The signature material — animated, lifts under the cursor",
+      "name": "The Dither Fabric"
+    },
+    {
+      "path": "guidelines/fx.html",
+      "group": "Brand",
+      "viewport": "700x420",
+      "subtitle": "lib/fx.js — scramble, glitch, magnetic, tilt, peel, ripple, reveal. Pointer + touch + gyro.",
+      "name": "The FX Layer"
+    },
+    {
+      "path": "guidelines/riso.html",
+      "group": "Brand",
+      "viewport": "700x240",
+      "subtitle": "2-ink misregister, halftone, hazard tape, stamp — for posters & physical",
+      "name": "Riso / Photocopy Register"
+    },
+    {
+      "path": "ui_kits/living-machine/index.html",
+      "group": "Brand",
+      "viewport": "1280x760",
+      "subtitle": "The flagship: a hand-assembled bootleg desktop — talk-back windows, teletext, stickerbomb, calm grain, the eye keeping an eye on your build",
+      "name": "The Living Machine"
+    },
+    {
+      "path": "guidelines/color-accents.html",
+      "group": "Colors",
+      "viewport": "700x190",
+      "subtitle": "Accents that earn their place; supercolor = cartridge only",
+      "name": "Earned Color — Phosphor + Slap"
+    },
+    {
+      "path": "guidelines/color-neutrals.html",
+      "group": "Colors",
+      "viewport": "700x180",
+      "subtitle": "The mono base: ink black to signal white",
+      "name": "Neutrals — CRT + Paper"
+    },
+    {
+      "path": "guidelines/one-accent.html",
+      "group": "Colors",
+      "viewport": "700x230",
+      "subtitle": "Mono base ~90%; one earned accent per context — never decorative",
+      "name": "One Accent Per View"
+    },
+    {
+      "path": "components/cartridge/cartridge.card.html",
+      "group": "Components",
+      "viewport": "700x440",
+      "subtitle": "The build object — rotating, plug-n-play, color-coded by kind",
+      "name": "Cartridge (3D)"
+    },
+    {
+      "path": "components/cartridge/objects.card.html",
+      "group": "Components",
+      "viewport": "700x260",
+      "subtitle": "Minted coins — boot token, scar-coins, achievements. Dimension = ownership.",
+      "name": "BootCoin (3D)"
+    },
+    {
+      "path": "components/core/core.card.html",
+      "group": "Components",
+      "viewport": "700x300",
+      "subtitle": "Die-cut slap — mono by default, color earned",
+      "name": "SlapButton"
+    },
+    {
+      "path": "components/core/dialogs.card.html",
+      "group": "Components",
+      "viewport": "700x340",
+      "subtitle": "Bootleg OS frames + talk-back dialogs + terminal input",
+      "name": "Window · Dialog · Field"
+    },
+    {
+      "path": "components/core/feedback.card.html",
+      "group": "Components",
+      "viewport": "700x300",
+      "subtitle": "Talk-back asides, THANK-YOU loader, the character switch",
+      "name": "Toast · Loader · FaceToggle"
+    },
+    {
+      "path": "components/forms/dials.card.html",
+      "group": "Components",
+      "viewport": "700x200",
+      "subtitle": "The cassette-deck dial + the hard power rocker",
+      "name": "Knob + Switch"
+    },
+    {
+      "path": "components/forms/forms.card.html",
+      "group": "Components",
+      "viewport": "700x320",
+      "subtitle": "Form controls + the character avatar, die-cut & mono",
+      "name": "Tabs · Checkbox · Radio · Select · Avatar · Tooltip"
+    },
+    {
+      "path": "components/stickers/slaps.card.html",
+      "group": "Components",
+      "viewport": "700x300",
+      "subtitle": "The rebel's mood badges + ribbon/price/stamp/callout die-cuts",
+      "name": "Character Slaps + Sticker Shapes"
+    },
+    {
+      "path": "components/stickers/stickers.card.html",
+      "group": "Components",
+      "viewport": "700x320",
+      "subtitle": "Die-cut slaps usable as UI — tag, pill, seal, burst, hazard, barcode",
+      "name": "Sticker System"
+    },
+    {
+      "path": "ui_kits/desktop/error.html",
+      "group": "Desktop",
+      "viewport": "1280x720",
+      "subtitle": "The one full-color blue takeover: VIRUS DETECTED / it's just you running your own machine. Talk-back.",
+      "name": "Crash — Error Takeover"
+    },
+    {
+      "path": "ui_kits/desktop/gate.html",
+      "group": "Desktop",
+      "viewport": "1280x720",
+      "subtitle": "The key gate: your keys, your machine. GhostEye cheering you on, terminal unlock.",
+      "name": "Gate — Key Access"
+    },
+    {
+      "path": "ui_kits/desktop/index.html",
+      "group": "Desktop",
+      "viewport": "1280x720",
+      "subtitle": "Boot → workbench → cartridge shelf → terminal. Composes the real components on the dither fabric.",
+      "name": "SandboxOS Desktop"
+    },
+    {
+      "path": "ui_kits/mobile/index.html",
+      "group": "Mobile",
+      "viewport": "1200x900",
+      "subtitle": "Touch-native phone kit: boot, workbench, cartridge shelf, the wall — substrate + FX + real components",
+      "name": "SandboxOS Mobile"
+    },
+    {
+      "path": "guidelines/motion.html",
+      "group": "Spacing",
+      "viewport": "700x250",
+      "subtitle": "Durations, easings, press-down — mechanical & snappy, reduced-motion safe",
+      "name": "Motion Spec"
+    },
+    {
+      "path": "guidelines/spacing.html",
+      "group": "Spacing",
+      "viewport": "700x200",
+      "subtitle": "4px base · hard 0px corners · hard offset shadows",
+      "name": "Spacing · Radii · Shadows"
+    },
+    {
+      "path": "guidelines/type-body.html",
+      "group": "Type",
+      "viewport": "700x320",
+      "subtitle": "Archivo for prose; lowercase, calm machine voice",
+      "name": "Body & Label Scale"
+    },
+    {
+      "path": "guidelines/type-display.html",
+      "group": "Type",
+      "viewport": "700x300",
+      "subtitle": "Archivo Black + Anton — the rebel voice, UPPERCASE",
+      "name": "Display & Poster Slaps"
+    },
+    {
+      "path": "guidelines/type-mono.html",
+      "group": "Type",
+      "viewport": "700x230",
+      "subtitle": "JetBrains Mono (data/serials), VT323 (teletext), Silkscreen (labels)",
+      "name": "Mono · CRT · Pixel"
+    },
+    {
+      "path": "guidelines/vhs.html",
+      "group": "Type",
+      "viewport": "700x240",
+      "subtitle": "RGB-split kinetic display — tracking, timecode, the broadcast headline",
+      "name": "VHS Motion Type"
+    },
+    {
+      "path": "ui_kits/website/cartridge.html",
+      "group": "Website",
+      "viewport": "1280x820",
+      "subtitle": "A build's page: 3D hero, provenance, side-A tracklist, install/fork/share",
+      "name": "Website — Cartridge Detail"
+    },
+    {
+      "path": "ui_kits/website/docs.html",
+      "group": "Website",
+      "viewport": "1280x820",
+      "subtitle": "Docs in the CEEFAX register: page-number index nav + mono articles",
+      "name": "Website — Docs (teletext)"
+    },
+    {
+      "path": "ui_kits/website/index.html",
+      "group": "Website",
+      "viewport": "1280x860",
+      "subtitle": "Marketing site: bootleg-OS hero, builder manifesto, cartridge format, the character — on the dither fabric",
+      "name": "SandboxOS — Landing"
+    },
+    {
+      "path": "ui_kits/website/marketplace.html",
+      "group": "Website",
+      "viewport": "1280x900",
+      "subtitle": "Peers' builds, plug-n-play: filter tabs, 3D cartridge grid, serials, install/fork",
+      "name": "The Wall — Cartridge Marketplace"
+    },
+    {
+      "path": "ui_kits/website/pricing.html",
+      "group": "Website",
+      "viewport": "1280x860",
+      "subtitle": "Pricing as cartridge packs: free / plus / super, 3D modules + slap CTAs",
+      "name": "Website — Pricing (packs)"
+    },
+    {
+      "path": "components/data/data.card.html",
+      "group": "Components",
+      "viewport": "900x520",
+      "subtitle": "Table · List · Stat · KeyValue · CodeBlock — the dense maker-data surfaces, die-cut & mono",
+      "name": "Data and competence"
+    },
+    {
+      "path": "components/nav/nav.card.html",
+      "group": "Components",
+      "viewport": "900x520",
+      "subtitle": "Nav rail · context Menu · Pagination — die-cut wayfinding, one earned accent",
+      "name": "Navigation"
+    },
+    {
+      "path": "guidelines/accessibility.html",
+      "group": "Guidelines",
+      "viewport": "700x440",
+      "subtitle": "Loud is not broken — measured contrast on the void, safe pairings, motion limits",
+      "name": "Accessibility and contrast"
+    },
+    {
+      "path": "guidelines/voice.html",
+      "group": "Guidelines",
+      "viewport": "760x620",
+      "subtitle": "Loud but legible — lowercase chrome, one slap per surface, talk-back on true facts",
+      "name": "Voice"
+    },
+    {
+      "path": "SandboxOS - Living Machine.html",
+      "group": "Flagship",
+      "viewport": "1280x900",
+      "subtitle": "the whole v2 system, inhabited — boot → workbench → workshop → shelf",
+      "name": "The Living Machine"
+    }
+  ],
+  "templates": [
+    {
+      "name": "SandboxOS Deck",
+      "description": "Bootleg-OS pitch deck — title, big-quote, cartridge-showcase slides on the dither register",
+      "folder": "templates/deck",
+      "entryPath": "templates/deck/Deck.dc.html"
+    },
+    {
+      "name": "SandboxOS Landing",
+      "description": "Bootleg-OS marketing hero on the dither fabric, using the SandboxOS component kit",
+      "folder": "templates/landing",
+      "entryPath": "templates/landing/Landing.dc.html"
+    },
+    {
+      "name": "SandboxOS Poster",
+      "description": "Stickerbomb + VHS + data-UI poster — a stand-out artifact using the SandboxOS kit",
+      "folder": "templates/poster",
+      "entryPath": "templates/poster/Poster.dc.html"
+    }
+  ],
+  "globalCssPaths": [
+    "tokens/fonts.css",
+    "tokens/colors.css",
+    "tokens/typography.css",
+    "tokens/responsive.css",
+    "tokens/effects.css",
+    "tokens/base.css",
+    "styles.css"
+  ],
+  "tokens": [
+    {
+      "name": "--crt-black",
+      "value": "#0B0B09",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-950",
+      "value": "#0F0F0D",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-900",
+      "value": "#15140F",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-850",
+      "value": "#1C1B15",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-800",
+      "value": "#24221B",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-700",
+      "value": "#322F25",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--crt-600",
+      "value": "#45402F",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--ash-500",
+      "value": "#6C6552",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--ash-400",
+      "value": "#8E8773",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--ash-300",
+      "value": "#B3AC97",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--paper",
+      "value": "#ECE5D2",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--paper-200",
+      "value": "#DCD2B8",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--paper-300",
+      "value": "#C8BC9C",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--signal",
+      "value": "#F6F2E7",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--ink",
+      "value": "#0B0B09",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--amber",
+      "value": "#FFB000",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--amber-deep",
+      "value": "#C77E00",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--amber-glow",
+      "value": "#FFD060",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--green",
+      "value": "#3DF07A",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--green-deep",
+      "value": "#1E9E4A",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--cyan",
+      "value": "#34E6E0",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--blue",
+      "value": "#0A5BD3",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--blue-bright",
+      "value": "#2C7BFF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--magenta",
+      "value": "#FF2E88",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--magenta-deep",
+      "value": "#C70F60",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--purple",
+      "value": "#A24BFF",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hazard",
+      "value": "#FFD400",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--alert",
+      "value": "#E8112D",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--slap-blue",
+      "value": "#1659E6",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--supercolor",
+      "value": "linear-gradient(90deg,\n                  #E8112D 0%, #FF7A00 16%, #FFD400 33%,\n                  #3DF07A 50%, #34E6E0 66%, #0A5BD3 83%, #A24BFF 100%)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css",
+      "annotation": "color"
+    },
+    {
+      "name": "--supercolor-v",
+      "value": "linear-gradient(180deg,\n                  #E8112D 0%, #FF7A00 16%, #FFD400 33%,\n                  #3DF07A 50%, #34E6E0 66%, #0A5BD3 83%, #A24BFF 100%)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css",
+      "annotation": "color"
+    },
+    {
+      "name": "--bg",
+      "value": "var(--crt-950)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bg-sunken",
+      "value": "var(--crt-black)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--bg-raised",
+      "value": "var(--crt-850)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--surface",
+      "value": "var(--crt-900)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--surface-2",
+      "value": "var(--crt-800)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--surface-paper",
+      "value": "var(--paper)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--text",
+      "value": "var(--signal)",
+      "kind": "font",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--text-dim",
+      "value": "var(--ash-300)",
+      "kind": "font",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--text-faint",
+      "value": "var(--ash-500)",
+      "kind": "font",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--text-inverse",
+      "value": "var(--ink)",
+      "kind": "font",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--text-brand",
+      "value": "var(--amber)",
+      "kind": "font",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--border",
+      "value": "var(--crt-700)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--border-strong",
+      "value": "var(--ash-500)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--border-ink",
+      "value": "var(--ink)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hairline",
+      "value": "color-mix(in srgb, var(--amber) 30%, transparent)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--accent",
+      "value": "var(--amber)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--accent-2",
+      "value": "var(--magenta)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--ok",
+      "value": "var(--green)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--warn",
+      "value": "var(--hazard)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--danger",
+      "value": "var(--alert)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--link",
+      "value": "var(--cyan)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--astral",
+      "value": "var(--purple)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--glow-amber",
+      "value": "color-mix(in srgb, var(--amber) 60%, transparent)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--glow-green",
+      "value": "color-mix(in srgb, var(--green) 55%, transparent)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--glow-cyan",
+      "value": "color-mix(in srgb, var(--cyan) 55%, transparent)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--glow-magenta",
+      "value": "color-mix(in srgb, var(--magenta) 60%, transparent)",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hw-shell",
+      "value": "#16150e",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hw-shell-lit",
+      "value": "#2a2718",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hw-shell-deep",
+      "value": "#100f0a",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hw-ridge",
+      "value": "#0d0b07",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--hw-label-dim",
+      "value": "#5a5444",
+      "kind": "color",
+      "definedIn": "tokens/colors.css"
+    },
+    {
+      "name": "--font-display",
+      "value": "'Archivo', 'Arial Narrow', sans-serif",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--font-poster",
+      "value": "'Anton', 'Archivo', sans-serif",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--font-sans",
+      "value": "'Archivo', system-ui, sans-serif",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--font-mono",
+      "value": "'JetBrains Mono', ui-monospace, monospace",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--font-crt",
+      "value": "'VT323', 'JetBrains Mono', monospace",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--font-pixel",
+      "value": "'Silkscreen', 'VT323', monospace",
+      "kind": "font",
+      "definedIn": "tokens/typography.css"
+    },
+    {
+      "name": "--t-3xs",
+      "value": "clamp(9px, 0.6vw + 7px, 10px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-2xs",
+      "value": "clamp(10px, 0.6vw + 8px, 11px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-xs",
+      "value": "clamp(11px, 0.6vw + 9px, 12px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-sm",
+      "value": "clamp(12px, 0.7vw + 10px, 13px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-base",
+      "value": "clamp(14px, 0.9vw + 11px, 15px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-md",
+      "value": "clamp(15px, 1.1vw + 12px, 17px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-lg",
+      "value": "clamp(18px, 1.6vw + 13px, 21px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-xl",
+      "value": "clamp(22px, 2.6vw + 14px, 27px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-2xl",
+      "value": "clamp(26px, 3.6vw + 15px, 34px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-3xl",
+      "value": "clamp(31px, 5vw + 15px, 44px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-4xl",
+      "value": "clamp(38px, 7vw + 14px, 58px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-5xl",
+      "value": "clamp(44px, 9.5vw + 11px, 78px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--t-6xl",
+      "value": "clamp(54px, 13vw + 8px, 108px)",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--w-regular",
+      "value": "400",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--w-medium",
+      "value": "500",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--w-semibold",
+      "value": "600",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--w-bold",
+      "value": "700",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--w-black",
+      "value": "900",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--lh-tight",
+      "value": "0.95",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--lh-snug",
+      "value": "1.1",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--lh-normal",
+      "value": "1.45",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--lh-mono",
+      "value": "1.5",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--ls-tight",
+      "value": "-0.02em",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--ls-normal",
+      "value": "0",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--ls-wide",
+      "value": "0.04em",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--ls-slap",
+      "value": "0.08em",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--ls-mega",
+      "value": "0.18em",
+      "kind": "font",
+      "definedIn": "tokens/typography.css",
+      "annotation": "font"
+    },
+    {
+      "name": "--bp-sm",
+      "value": "480px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--bp-md",
+      "value": "768px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--bp-lg",
+      "value": "1024px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--bp-xl",
+      "value": "1280px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--touch-min",
+      "value": "44px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--touch-gap",
+      "value": "8px",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--vh",
+      "value": "100dvh",
+      "kind": "other",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--safe-t",
+      "value": "env(safe-area-inset-top, 0px)",
+      "kind": "color",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--safe-b",
+      "value": "env(safe-area-inset-bottom, 0px)",
+      "kind": "color",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--safe-l",
+      "value": "env(safe-area-inset-left, 0px)",
+      "kind": "color",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--safe-r",
+      "value": "env(safe-area-inset-right, 0px)",
+      "kind": "color",
+      "definedIn": "tokens/responsive.css"
+    },
+    {
+      "name": "--gutter",
+      "value": "clamp(16px, 5vw, 48px)",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--stack",
+      "value": "clamp(24px, 6vw, 64px)",
+      "kind": "spacing",
+      "definedIn": "tokens/responsive.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--sp-0",
+      "value": "0",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--sp-1",
+      "value": "4px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-2",
+      "value": "8px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-3",
+      "value": "12px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-4",
+      "value": "16px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-5",
+      "value": "20px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-6",
+      "value": "24px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-8",
+      "value": "32px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-10",
+      "value": "40px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-12",
+      "value": "48px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-16",
+      "value": "64px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-20",
+      "value": "80px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--sp-24",
+      "value": "96px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--r-0",
+      "value": "0",
+      "kind": "radius",
+      "definedIn": "tokens/effects.css",
+      "annotation": "radius"
+    },
+    {
+      "name": "--r-1",
+      "value": "2px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--r-2",
+      "value": "4px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--r-3",
+      "value": "8px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--r-pill",
+      "value": "999px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--r-seal",
+      "value": "50%",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bw-hair",
+      "value": "1px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bw-1",
+      "value": "2px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bw-2",
+      "value": "3px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--bw-3",
+      "value": "5px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--border-line",
+      "value": "var(--bw-hair) solid var(--border)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--border-hard",
+      "value": "var(--bw-1) solid var(--ink)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--border-die",
+      "value": "var(--bw-2) solid var(--ink)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--shadow-slap",
+      "value": "3px 3px 0 var(--ink)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--shadow-slap-lg",
+      "value": "6px 6px 0 var(--ink)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--shadow-win",
+      "value": "5px 5px 0 rgba(0,0,0,0.55)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--shadow-float",
+      "value": "0 8px 0 rgba(0,0,0,0.4)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--halo",
+      "value": "0 0 0 3px var(--signal), 4px 5px 0 rgba(0,0,0,0.45)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css",
+      "annotation": "shadow"
+    },
+    {
+      "name": "--glow-sm",
+      "value": "0 0 6px var(--glow-amber)",
+      "kind": "color",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--glow-md",
+      "value": "0 0 14px var(--glow-amber)",
+      "kind": "color",
+      "definedIn": "tokens/effects.css"
+    },
+    {
+      "name": "--glow-text",
+      "value": "0 0 8px currentColor",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css",
+      "annotation": "shadow"
+    },
+    {
+      "name": "--inset-crt",
+      "value": "inset 0 0 60px rgba(0,0,0,0.6)",
+      "kind": "shadow",
+      "definedIn": "tokens/effects.css",
+      "annotation": "shadow"
+    },
+    {
+      "name": "--ease-snap",
+      "value": "cubic-bezier(0.2, 0.9, 0.2, 1)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--ease-out",
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--ease-step",
+      "value": "steps(4, end)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dur-1",
+      "value": "90ms",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dur-2",
+      "value": "160ms",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dur-3",
+      "value": "260ms",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--dur-4",
+      "value": "420ms",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--press-shift",
+      "value": "translate(2px, 2px)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--fx-scanlines",
+      "value": "repeating-linear-gradient(\n      to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.28) 2px 3px)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--fx-hazard",
+      "value": "repeating-linear-gradient(45deg,\n      var(--hazard) 0 14px, var(--ink) 14px 28px)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--fx-grid-dot",
+      "value": "radial-gradient(var(--crt-700) 1px, transparent 1px)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--fx-grid-dot-size",
+      "value": "16px 16px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--fx-halftone",
+      "value": "radial-gradient(var(--ash-500) 22%, transparent 23%)",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--fx-halftone-size",
+      "value": "5px 5px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--maxw-prose",
+      "value": "68ch",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--maxw-app",
+      "value": "1320px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--grid-unit",
+      "value": "8px",
+      "kind": "spacing",
+      "definedIn": "tokens/effects.css",
+      "annotation": "spacing"
+    },
+    {
+      "name": "--z-base",
+      "value": "0",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--z-raised",
+      "value": "10",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--z-sticky",
+      "value": "100",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--z-overlay",
+      "value": "1000",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    },
+    {
+      "name": "--z-toast",
+      "value": "2000",
+      "kind": "other",
+      "definedIn": "tokens/effects.css",
+      "annotation": "other"
+    }
+  ],
+  "themes": [],
+  "fonts": [],
+  "brandFonts": [
+    {
+      "family": "Archivo",
+      "status": "ok",
+      "tokens": [
+        "--font-display",
+        "--font-sans"
+      ],
+      "path": "tokens/typography.css"
+    },
+    {
+      "family": "Anton",
+      "status": "ok",
+      "tokens": [
+        "--font-poster"
+      ],
+      "path": "tokens/typography.css"
+    },
+    {
+      "family": "JetBrains Mono",
+      "status": "ok",
+      "tokens": [
+        "--font-mono"
+      ],
+      "path": "tokens/typography.css"
+    },
+    {
+      "family": "VT323",
+      "status": "ok",
+      "tokens": [
+        "--font-crt"
+      ],
+      "path": "tokens/typography.css"
+    },
+    {
+      "family": "Silkscreen",
+      "status": "ok",
+      "tokens": [
+        "--font-pixel"
+      ],
+      "path": "tokens/typography.css"
+    }
+  ],
+  "source": "spa"
+}

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x230" name="One Accent Per View" subtitle="Mono base ~90%; one earned accent per context — never decorative" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:22px 24px;font-family:var(--font-mono);}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 12px;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;}
+  .ex{flex:1;min-width:150px;border:2px solid var(--border);background:var(--surface);padding:12px;}
+  .ex .t{font-family:var(--font-display);font-weight:900;font-size:13px;text-transform:uppercase;color:var(--text-dim);}
+  .ex .m{font-size:10px;color:var(--ash-500);margin:6px 0 10px;line-height:1.4;}
+  .pill{display:inline-block;font-size:10px;border:1.5px solid currentColor;padding:2px 8px;text-transform:uppercase;letter-spacing:.06em;}
+  .bad{border-color:var(--alert);} .bad .x{color:var(--alert);}
+  .note{font-size:11px;color:var(--ash-400);line-height:1.6;margin-top:14px;}
+  .note b{color:var(--text);}
+</style></head>
+<body>
+  <div class="lbl">the rule — color is meaning, not decoration</div>
+  <div class="row">
+    <div class="ex"><div class="t">build view</div><div class="m">one amber action; rest mono</div><span class="pill" style="color:var(--amber)">▸ build it</span></div>
+    <div class="ex"><div class="t">her moment</div><div class="m">magenta = the character only</div><span class="pill" style="color:var(--magenta)">✦ rebel</span></div>
+    <div class="ex"><div class="t">cartridge</div><div class="m">supercolor reserved for builds</div><span class="pill" style="color:var(--cyan);background:var(--supercolor);border:0;color:var(--ink)">A1</span></div>
+    <div class="ex bad"><div class="t">don't</div><div class="m">many accents at once = noise</div><span class="x" style="font-size:18px">✕ ▸ ✦ ● ▲</span></div>
+  </div>
+  <div class="note"><b>One live accent per view.</b> Amber = active/build · Magenta = the rebel · Green = ok/built · Cyan = link/share · Supercolor = cartridges only. Status hues are single-ink, never fills. If two things shout, neither does.</div>
+</body></html>

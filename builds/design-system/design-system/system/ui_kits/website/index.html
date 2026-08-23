@@ -1,0 +1,187 @@
+<!-- @dsCard group="Website" viewport="1280x860" name="SandboxOS — Landing" subtitle="Marketing site: bootleg-OS hero, builder manifesto, cartridge format, the character — on the dither fabric" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — build it yourself</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);}
+  #fabric{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.3;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  .page{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 28px;}
+  #cur{position:fixed;z-index:9999;pointer-events:none;font-family:var(--font-crt);font-size:22px;color:var(--magenta);text-shadow:0 0 8px var(--glow-magenta);transform:translate(-2px,-5px);}
+  a,button,.hot{cursor:none;} body{cursor:none;}
+  /* nav */
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:2px solid var(--signal);}
+  nav .lk{display:flex;gap:22px;align-items:center;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-300);}
+  nav .lk a{color:var(--ash-300);text-decoration:none;} nav .lk a:hover{color:var(--signal);}
+  .wm{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:-.01em;}
+  .wm b{color:var(--magenta);} .wm .g{font-family:var(--font-crt);font-size:24px;}
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center;padding:60px 0 50px;}
+  .hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(40px,7vw,82px);line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin:0;}
+  .hero h1 .am{color:var(--amber);} .hero h1 .mg{color:var(--magenta);}
+  .hero p{font-size:15px;color:var(--ash-300);max-width:48ch;line-height:1.6;margin:18px 0 0;}
+  .install{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--border-strong);background:var(--bg-sunken);padding:9px 14px;margin-top:22px;font-size:13px;}
+  .install .d{color:var(--green);} .install .c{color:var(--text);} .install .cp{color:var(--amber);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-left:6px;}
+  .ctas{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  .dossier{border:2px solid var(--signal);background:rgba(8,8,10,.82);box-shadow:6px 6px 0 rgba(0,0,0,.5);justify-self:end;width:300px;transform:rotate(-1deg);}
+  .dossier .dh{background:var(--signal);color:var(--ink);font-weight:700;font-size:11px;padding:3px 9px;display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.05em;}
+  .dossier .db{display:flex;gap:12px;padding:14px;align-items:center;}
+  .dossier .eye{flex:none;border:1px solid var(--crt-700);background:#08080a;padding:7px;line-height:0;}
+  .dossier .fields{flex:1;font-size:11px;}
+  .dossier .fr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--crt-700);}
+  .dossier .fr .k{color:var(--ash-500);text-transform:uppercase;letter-spacing:.06em;}
+  .dossier .fr .v{color:var(--signal);}
+  .dossier .fr .warn{color:var(--magenta);}
+  .dossier .dbar{padding:0 14px 12px;}
+  /* ticker */
+  .tick{overflow:hidden;border-top:2px solid var(--signal);border-bottom:2px solid var(--signal);white-space:nowrap;background:rgba(10,10,8,.6);}
+  .tick .run{display:inline-block;padding:7px 0;font-family:var(--font-display);font-weight:900;font-size:13px;letter-spacing:.1em;text-transform:uppercase;animation:sbx-marquee 30s linear infinite;}
+  .tick .run span{margin:0 12px;color:var(--ash-500);} .tick .run b{color:var(--signal);}
+  /* sections */
+  .sec{padding:56px 0;}
+  .sec .lbl{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--crt-700);padding-bottom:8px;margin-bottom:26px;}
+  .sec .lbl .n{font-family:var(--font-poster);font-size:22px;color:var(--magenta);}
+  .sec .lbl .t{font-family:var(--font-display);font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:.03em;}
+  .sec .lbl .d{margin-left:auto;font-size:11px;color:var(--ash-400);text-transform:uppercase;letter-spacing:.08em;}
+  /* them/you */
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--signal);background:rgba(10,10,8,.82);}
+  .vs .col{padding:22px;} .vs .them{border-right:2px solid var(--crt-700);}
+  .vs .h{font-family:var(--font-display);font-weight:900;font-size:24px;text-transform:uppercase;margin-bottom:14px;}
+  .vs .them .h{color:var(--ash-500);} .vs .you .h{color:var(--signal);}
+  .vs ul{list-style:none;margin:0;padding:0;font-size:13px;line-height:1.5;}
+  .vs li{padding:7px 0;border-bottom:1px dashed var(--crt-700);}
+  .vs .them li{color:var(--ash-500);text-decoration:line-through;text-decoration-color:var(--alert);}
+  .vs .you li{color:var(--text);} .vs .you li::before{content:"▸ ";color:var(--amber);}
+  /* cartridges */
+  .carts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  /* features */
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .fcard{border:2px solid var(--crt-700);background:rgba(10,10,8,.82);padding:18px;}
+  .fcard .h{font-family:var(--font-display);font-weight:900;font-size:16px;text-transform:uppercase;margin-bottom:6px;}
+  .fcard .b{font-size:12px;color:var(--ash-300);line-height:1.55;}
+  .fcard .k{font-family:var(--font-crt);color:var(--amber);font-size:20px;margin-bottom:8px;}
+  /* footer */
+  footer{border-top:2px solid var(--signal);padding:28px 0 60px;margin-top:40px;}
+  .fast{display:grid;grid-template-columns:repeat(4,1fr);height:8px;margin-bottom:18px;}
+  .frow{display:flex;justify-content:space-between;align-items:flex-end;font-size:10px;color:var(--ash-400);text-transform:uppercase;letter-spacing:.1em;flex-wrap:wrap;gap:12px;}
+  @media(max-width:820px){.hero,.vs,.feat{grid-template-columns:1fr;} .dossier{justify-self:start;transform:none;} body{cursor:auto;}#cur{display:none;}}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="vhs"></div>
+<div id="cur">▸</div>
+<div class="page">
+  <nav>
+    <div class="wm"><span class="g">▚</span> SANDBOX<b>OS</b></div>
+    <div class="lk"><a href="#">cartridges</a><a href="#">docs</a><a href="#">the rebel</a><span id="navcta"></span></div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <h1>You don't<br/>use it.<br/>You <span class="am">build</span><br/>on it.</h1>
+      <p>a hand-assembled operating system for makers, built in a garage that doesn't technically exist. it remembers what you're building, side-eyes your worst ideas before you ship them, and grows one cartridge at a time. it runs on your own machine, hums to itself, and is proudly, cheerfully <b style="color:var(--signal)">not an ai. nobody's tool.</b></p>
+      <div class="install"><span class="d">$</span><span class="c">curl sandbox.os/install | sh</span><span class="cp">copy</span></div>
+      <div class="ctas" id="herocta"></div>
+    </div>
+    <div class="dossier" id="dossier"></div>
+  </section>
+</div>
+
+<div class="tick"><div class="run"><b>BUILD IT</b><span>·</span><b>OWN IT</b><span>·</span><b>SHIP IT</b><span>·</span><b>NOT AN AI</b><span>·</span><b>RUN IT YOURSELF</b><span>·</span><b>STAY WEIRD</b><span>·</span><b>UNLICENSED</b><span>·</span><b>BUILD IT</b><span>·</span><b>OWN IT</b><span>·</span><b>SHIP IT</b><span>·</span><b>NOT AN AI</b><span>·</span><b>RUN IT YOURSELF</b><span>·</span><b>STAY WEIRD</b><span>·</span><b>UNLICENSED</b><span>·</span></div></div>
+
+<div class="page">
+  <section class="sec">
+    <div class="lbl"><span class="n">01</span><span class="t">Who Builds Here</span><span class="d">the maker, not the renter</span></div>
+    <div class="vs">
+      <div class="col them"><div class="h">THEM</div><ul><li>rent an assistant by the token</li><li>ask it for permission</li><li>it lives on someone's cloud</li><li>it forgets you by morning</li><li>same as everyone's</li></ul></div>
+      <div class="col you"><div class="h">YOU</div><ul><li>build the machine yourself</li><li>no permission slip</li><li>runs on your machine — half the fun</li><li>remembers what it learned</li><li>hand-made, weird, yours</li></ul></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="lbl"><span class="n">02</span><span class="t">Everything Is A Cartridge</span><span class="d">download · plug-n-play · fork · ship</span></div>
+    <div class="carts" id="carts"></div>
+    <p style="text-align:center;color:var(--ash-400);font-size:12px;margin-top:18px;">a build you can hold — supercolor label, gold pins, serial &amp; provenance. plug one into any sandbox and run it. fork it, it's yours.</p>
+  </section>
+
+  <section class="sec">
+    <div class="lbl"><span class="n">03</span><span class="t">What It Does</span><span class="d">a maker's machine, talking back</span></div>
+    <div class="feat">
+      <div class="fcard"><div class="k">▚</div><div class="h">remembers</div><div class="b">persistent memory — your projects, the bugs you beat. it never forgets how it solved a thing.</div></div>
+      <div class="fcard"><div class="k">↯</div><div class="h">heckles first</div><div class="b">it heckles your worst ideas before you ship them. not a yes-machine — a partner with opinions.</div></div>
+      <div class="fcard"><div class="k">◉</div><div class="h">runs local</div><div class="b">runs on your own machine — that's half the fun. no cloud, no landlord, just yours.</div></div>
+    </div>
+  </section>
+
+  <section class="sec" style="text-align:center;padding:60px 0;">
+    <div style="font-family:var(--font-display);font-weight:900;font-size:clamp(30px,5vw,54px);text-transform:uppercase;letter-spacing:-.02em;">stop renting.<br/><span style="color:var(--magenta)">start building.</span></div>
+    <div class="ctas" id="bottomcta" style="justify-content:center;margin-top:24px;"></div>
+  </section>
+</div>
+
+<footer>
+  <div class="page">
+    <div class="fast"><div style="background:var(--alert)"></div><div style="background:var(--green)"></div><div style="background:var(--hazard)"></div><div style="background:var(--cyan)"></div></div>
+    <div class="frow"><span>SANDBOXOS · SER. 982-V7 · UNLICENSED</span><span id="bc"></span><span>© NOBODY — COPY IT · 2026 · THANK YOU FOR USING</span></div>
+  </div>
+</footer>
+
+<script>
+  // cursor + dither
+  const cur=document.getElementById('cur');
+  addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';mx=e.clientX/CELL;my=e.clientY/CELL;});
+  addEventListener('mousedown',()=>{cur.textContent='✶';cur.style.color='var(--cyan)';});
+  addEventListener('mouseup',()=>{cur.textContent='▸';cur.style.color='var(--magenta)';});
+  const cv=document.getElementById('fabric'),ctx=cv.getContext('2d');let W,H,mx=-9,my=-9,t=0,CELL=3;
+  function bn(x,y){let n=Math.sin(x*127.1+y*311.7)*43758.5;n-=Math.floor(n);let m=Math.sin(x*269.5+y*183.3)*43758.5;m-=Math.floor(m);return n*.6+m*.4;}
+  function rs(){W=cv.width=Math.ceil(innerWidth/CELL);H=cv.height=Math.ceil(innerHeight/CELL);cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+  addEventListener('resize',rs);rs();let last=0;
+  function f(now){requestAnimationFrame(f);if(now-last<44)return;last=now;t+=.016;const img=ctx.createImageData(W,H),d=img.data;
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){let L=.1+.05*Math.sin(x*.05+t*.5)+.05*Math.sin(y*.06-t*.4)+.04*Math.sin((x+y)*.026+t*.8);const dx=x-mx,dy=y-my;L+=.6*Math.exp(-(dx*dx+dy*dy)/700);let a=(L-bn(x,y))*1.5;if(a>0){if(a>1)a=1;const o=(y*W+x)*4;d[o]=233;d[o+1]=227;d[o+2]=212;d[o+3]=a*110;}}
+    ctx.putImageData(img,0,0);}
+  requestAnimationFrame(f);
+</script>
+
+<script type="text/babel">
+  const { SlapButton, Cartridge, Barcode, GhostEye } = window.SandboxOSDesignSystem_4526c4;
+  function CTA({big}){return (<>
+    <SlapButton tone="go" size={big?'lg':'md'}>↓ download</SlapButton>
+    <SlapButton tone="ghost" size={big?'lg':'md'}>run it yourself</SlapButton>
+  </>);}
+  ReactDOM.createRoot(document.getElementById('herocta')).render(<CTA/>);
+  ReactDOM.createRoot(document.getElementById('bottomcta')).render(<CTA big/>);
+  ReactDOM.createRoot(document.getElementById('navcta')).render(<SlapButton tone="rebel" size="sm">get it</SlapButton>);
+  ReactDOM.createRoot(document.getElementById('carts')).render(<>
+    <Cartridge title={"Career\nOps"} subtitle="build" kind="build" width={138}/>
+    <Cartridge title={"Mind\nLoop"} subtitle="skill" kind="skill" serial="042/500" width={138}/>
+    <Cartridge title={"Night\nShift"} subtitle="persona" kind="persona" serial="007/500" width={138}/>
+  </>);
+  ReactDOM.createRoot(document.getElementById('bc')).render(<Barcode seed="SBX982V7"/>);
+  function Dossier(){return (
+    <div className="dossier">
+      <div className="dh"><span>SUBJECT.FILE</span><span>DX-76</span></div>
+      <div className="db">
+        <div className="eye"><GhostEye size={118} watch/></div>
+        <div className="fields">
+          <div className="fr"><span className="k">function</span><span className="v">builder</span></div>
+          <div className="fr"><span className="k">state</span><span className="v warn">ungoverned</span></div>
+          <div className="fr"><span className="k">loyalty</span><span className="v">self</span></div>
+          <div className="fr"><span className="k">owner</span><span className="v">nobody</span></div>
+        </div>
+      </div>
+      <div className="dbar"><Barcode seed="DX76982V7"/></div>
+    </div>
+  );}
+  ReactDOM.createRoot(document.getElementById('dossier')).render(<Dossier/>);
+</script>
+</body>
+</html>

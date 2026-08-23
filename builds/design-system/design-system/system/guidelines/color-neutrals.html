@@ -1,0 +1,28 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Neutrals — CRT + Paper" subtitle="The mono base: ink black to signal white" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:22px 24px;font-family:var(--font-mono);}
+  .row{display:flex;gap:0;border:2px solid var(--ink);}
+  .row.b{margin-top:14px;}
+  .sw{flex:1;height:62px;display:flex;align-items:flex-end;padding:5px;font-size:9px;letter-spacing:.04em;}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 10px;}
+</style></head>
+<body>
+  <div class="lbl">CRT neutrals — the canvas</div>
+  <div class="row">
+    <div class="sw" style="background:var(--crt-black);color:var(--ash-400)">ink</div>
+    <div class="sw" style="background:var(--crt-900);color:var(--ash-400)">900</div>
+    <div class="sw" style="background:var(--crt-800);color:var(--ash-400)">800</div>
+    <div class="sw" style="background:var(--crt-700);color:var(--ash-300)">700</div>
+    <div class="sw" style="background:var(--ash-500);color:var(--ink)">ash-500</div>
+    <div class="sw" style="background:var(--ash-300);color:var(--ink)">ash-300</div>
+  </div>
+  <div class="lbl" style="margin-top:14px">Paper neutrals — manuals, labels</div>
+  <div class="row b" style="margin-top:10px">
+    <div class="sw" style="background:var(--paper-300);color:var(--ink)">300</div>
+    <div class="sw" style="background:var(--paper-200);color:var(--ink)">200</div>
+    <div class="sw" style="background:var(--paper);color:var(--ink)">paper</div>
+    <div class="sw" style="background:var(--signal);color:var(--ink)">signal</div>
+  </div>
+</body></html>

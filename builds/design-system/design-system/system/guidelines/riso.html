@@ -1,0 +1,18 @@
+<!-- @dsCard group="Brand" viewport="700x240" name="Riso / Photocopy Register" subtitle="2-ink misregister, halftone, hazard tape, stamp — for posters & physical" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:#E9E3D4;color:var(--ink);font-family:var(--font-mono);height:240px;position:relative;overflow:hidden;}
+  body::before{content:"";position:absolute;inset:0;opacity:.4;background:radial-gradient(var(--ink) 28%,transparent 29%) 0 0/4px 4px;mix-blend-mode:multiply;pointer-events:none;}
+  .ttl{position:absolute;top:24px;left:26px;font-family:var(--font-display);font-weight:900;font-size:52px;line-height:.84;text-transform:uppercase;}
+  .ttl .g{position:absolute;inset:0;color:var(--alert);transform:translate(3px,2px);mix-blend-mode:multiply;z-index:-1;}
+  .tape{position:absolute;bottom:70px;left:-10px;right:-10px;height:24px;background:var(--fx-hazard);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-2deg);}
+  .stamp{position:absolute;top:28px;right:26px;width:96px;height:96px;border-radius:50%;border:3px double var(--alert);color:var(--alert);font-family:var(--font-display);font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;transform:rotate(-13deg);line-height:1;opacity:.9;}
+  .cr{position:absolute;bottom:22px;left:26px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;}
+</style></head>
+<body>
+  <div class="ttl">RUN IT<br>YOUR<br>SELF<span class="g" aria-hidden="true">RUN IT<br>YOUR<br>SELF</span></div>
+  <div class="stamp">APPROVED<br>BY<br>NOBODY</div>
+  <div class="tape"></div>
+  <div class="cr">photocopied · not licensed · sbx 982-V7</div>
+</body></html>

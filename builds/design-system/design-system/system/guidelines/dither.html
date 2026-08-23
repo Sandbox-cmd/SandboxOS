@@ -1,0 +1,35 @@
+<!-- @dsCard group="Brand" viewport="700x240" name="The Dither Fabric" subtitle="The signature material — animated, lifts under the cursor" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-mono);overflow:hidden;}
+  #c{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  .ov{position:relative;z-index:2;padding:22px 24px;pointer-events:none;}
+  .ov .t{font-family:var(--font-display);font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;}
+  .ov .s{font-size:11px;color:var(--ash-300);max-width:52ch;line-height:1.6;margin-top:6px;}
+  .ov .h{font-size:10px;color:var(--magenta);letter-spacing:.1em;text-transform:uppercase;margin-top:10px;}
+</style></head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="ov">
+    <div class="t">the dither is the material</div>
+    <div class="s">a living blue-noise substrate everything emerges from — boot, loaders, the character. move your cursor; it lifts and things pop from under it.</div>
+    <div class="h">silk · cell 2 · blue-noise · local render</div>
+  </div>
+<script>
+  const cv=document.getElementById('c'),ctx=cv.getContext('2d');let W,H,mx=-9,my=-9,t=Math.random()*9,CELL=2;
+  function bn(x,y){let n=Math.sin(x*127.1+y*311.7)*43758.5;n-=Math.floor(n);let m=Math.sin(x*269.5+y*183.3)*43758.5;m-=Math.floor(m);return n*.6+m*.4;}
+  function rs(){W=cv.width=Math.ceil(innerWidth/CELL);H=cv.height=Math.ceil(innerHeight/CELL);cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+  addEventListener('resize',rs);rs();
+  addEventListener('mousemove',e=>{mx=e.clientX/CELL;my=e.clientY/CELL;});
+  let last=0;
+  function f(now){requestAnimationFrame(f);if(now-last<40)return;last=now;t+=.016;
+    const img=ctx.createImageData(W,H),d=img.data;
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;
+      let L=.22+.09*Math.sin(x*.05+t*.55)+.08*Math.sin(y*.06-t*.42)+.08*Math.sin((x+y)*.026+t*.85);
+      const dx=x-mx,dy=y-my;L+=1.0*Math.exp(-(dx*dx+dy*dy)/800);
+      let a=(L-bn(x,y))*1.6;if(a>0){if(a>1)a=1;const o=i*4;d[o]=233;d[o+1]=227;d[o+2]=212;d[o+3]=a*200;}}
+    ctx.putImageData(img,0,0);}
+  requestAnimationFrame(f);
+</script>
+</body></html>

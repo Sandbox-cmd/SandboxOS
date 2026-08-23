@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Character & Material Lab</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root{ --ns-ink:#0A0A08; --ns-paper:#E9E3D4; --ns-line:#2A2820; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--ns-ink); }
+  body{ color:var(--ns-paper); font-family:var(--font-mono); cursor:none; }
+  #fabric{ position:fixed; inset:0; width:100%; height:100%; z-index:0; image-rendering:pixelated; }
+  .wrap{ position:relative; z-index:2; max-width:1180px; margin:0 auto; padding:0 28px 120px; }
+  #cur{ position:fixed; z-index:9999; pointer-events:none; font-family:var(--font-crt); font-size:22px; color:var(--magenta); text-shadow:0 0 8px var(--glow-magenta); transform:translate(-2px,-5px); }
+  a,button,.hot{ cursor:none; }
+  .panel{ background:rgba(10,10,8,.84); }
+
+  .mast{ border-bottom:2px solid var(--ns-paper); padding:18px 0 12px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:22px; }
+  .mast .lock{ display:flex; align-items:center; gap:12px; } .glyph{ font-family:var(--font-crt); font-size:34px; }
+  .mast h1{ font-family:var(--font-display); font-weight:900; font-size:28px; letter-spacing:-.02em; text-transform:uppercase; } .mast h1 b{ color:var(--magenta); }
+  .mast .meta{ text-align:right; font-size:10px; letter-spacing:.1em; color:var(--ash-400); text-transform:uppercase; line-height:1.7; } .mast .meta .red{ color:var(--alert); }
+
+  .plate{ margin-top:56px; }
+  .plate > .lbl{ display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--ns-line); padding-bottom:8px; margin-bottom:22px; }
+  .plate > .lbl .n{ font-family:var(--font-poster); font-size:24px; color:var(--magenta); }
+  .plate > .lbl .t{ font-family:var(--font-display); font-weight:900; font-size:19px; text-transform:uppercase; letter-spacing:.03em; }
+  .plate > .lbl .d{ margin-left:auto; font-size:11px; color:var(--ash-400); letter-spacing:.08em; text-transform:uppercase; max-width:46ch; text-align:right; }
+  .note{ font-size:11.5px; color:var(--ash-400); letter-spacing:.04em; margin-top:10px; line-height:1.65; } .note b{ color:var(--ns-paper); } .note .gl{ color:var(--magenta); }
+
+  /* character gallery */
+  .portrait{ border:2px solid var(--ns-paper); position:relative; background:#0a0a08; }
+  .portrait canvas{ display:block; width:100%; image-rendering:pixelated; }
+  .portrait .scan{ position:absolute; inset:0; background:var(--fx-scanlines); opacity:.35; pointer-events:none; }
+  .portrait .tag{ position:absolute; left:8px; bottom:7px; font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); z-index:2; }
+  .portrait .ser{ position:absolute; right:8px; top:7px; font-family:var(--font-mono); font-size:8px; color:var(--ash-500); z-index:2; }
+  .pgrid{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:18px; align-items:start; }
+  .vibe{ font-family:var(--font-display); font-weight:900; font-size:14px; text-transform:uppercase; margin-top:8px; }
+  .vmsg{ font-family:var(--font-mono); font-size:9px; color:var(--ash-400); }
+
+  .ditherrow{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .dcell{ border:2px solid var(--ns-line); position:relative; height:150px; overflow:hidden; }
+  .dcell canvas{ position:absolute; inset:0; width:100%; height:100%; image-rendering:pixelated; }
+  .dcell .lab{ position:absolute; left:8px; bottom:7px; font-family:var(--font-mono); font-size:9px; color:var(--ns-paper); letter-spacing:.06em; text-transform:uppercase; z-index:2; background:rgba(10,10,8,.6); padding:1px 5px; }
+
+  .ideacol{ font-size:12px; line-height:1.6; }
+  .idea{ border-left:2px solid var(--magenta); padding:2px 0 2px 12px; margin-bottom:13px; }
+  .idea b{ color:var(--ns-paper); font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:12px; letter-spacing:.03em; }
+  .idea span{ display:block; font-size:11px; color:var(--ash-400); line-height:1.5; margin-top:2px; }
+
+  .packs{ display:flex; gap:14px; flex-wrap:wrap; }
+  .pack{ width:120px; }
+  .pack .body{ border:2px solid var(--ns-paper); border-radius:8px 8px 3px 3px; background:#16150e; padding:7px 7px 0; }
+  .pack .lab2{ background:var(--ns-paper); color:var(--ns-ink); border:1.5px solid var(--ns-ink); }
+  .pack .lab2 .sp{ height:8px; } .pack .lab2 .nm{ font-family:var(--font-display); font-weight:900; font-size:11px; text-transform:uppercase; padding:4px 6px; line-height:.9; }
+  .pack .pins{ background:#16150e; border:2px solid var(--ns-paper); border-top:0; border-radius:0 0 3px 3px; height:14px; display:flex; gap:2px; padding:3px 12px; }
+  .pack .pins i{ flex:1; background:linear-gradient(180deg,var(--amber-glow),var(--amber-deep)); }
+  .pack .cap{ font-family:var(--font-mono); font-size:8px; color:var(--ash-400); text-transform:uppercase; letter-spacing:.05em; margin-top:5px; text-align:center; }
+
+  @media (max-width:860px){ .pgrid,.ditherrow{ grid-template-columns:1fr 1fr; } body{cursor:auto;} #cur{display:none;} }
+</style>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="cur">▸</div>
+<div class="wrap">
+
+  <div class="mast">
+    <div class="lock"><span class="glyph">▚</span><h1>Sandbox<b>OS</b> · Character &amp; Material Lab</h1></div>
+    <div class="meta">DEEP STUDY · v4<br><span class="red">GENERATED — NOT PROVIDED</span><br>SER. 982-V7</div>
+  </div>
+
+  <div class="plate" style="margin-top:34px">
+    <p style="font-family:var(--font-display); font-weight:900; font-size:clamp(24px,3.4vw,38px); line-height:1.05; letter-spacing:-.02em; text-transform:uppercase; max-width:24ch;">
+      I can <span style="color:var(--magenta)">draw her myself</span> —<br>code, not a stock image.</p>
+    <p class="note" style="max-width:66ch; font-size:13px;">Every portrait below is <b>rendered procedurally in the browser</b> — vector form → luminance → <b>Floyd–Steinberg error-diffusion dithering</b>, in the exact retro-portrait idiom from your board. No file dropped in. That means she's <b>infinitely re-poseable, recolorable, animatable, and ownable</b> — a living asset the OS generates, not a picture it borrows. Color earns its place: she's mono except <span class="gl">one magenta accent</span>.</p>
+  </div>
+
+  <!-- 01 THE CHARACTER, GENERATED -->
+  <div class="plate">
+    <div class="lbl"><span class="n">01</span><span class="t">The Rebel — Generated, Dithered, Hers</span><span class="d">procedural · Floyd–Steinberg · one magenta accent · re-poseable by code</span></div>
+    <div class="pgrid">
+      <div>
+        <div class="portrait"><canvas id="pBig" width="240" height="320"></canvas><div class="scan"></div><span class="ser">982-V7</span><span class="tag">SUBJECT · DX-76</span></div>
+        <div class="vibe">nobody's tool</div><div class="vmsg">// hero · idle · the cover read</div>
+      </div>
+      <div>
+        <div class="portrait"><canvas id="pEyes" width="200" height="200"></canvas><div class="scan"></div><span class="tag">CROP · EYES</span></div>
+        <div class="vibe">i see your build</div><div class="vmsg">// watching · attention</div>
+        <div class="portrait" style="margin-top:14px;"><canvas id="pSmirk" width="200" height="200"></canvas><div class="scan"></div><span class="tag">CROP · SMIRK</span></div>
+        <div class="vibe">just vibes</div><div class="vmsg">// success · sly</div>
+      </div>
+      <div>
+        <div class="portrait"><canvas id="pProfile" width="200" height="260"></canvas><div class="scan"></div><span class="tag">PROFILE · ATTITUDE</span></div>
+        <div class="vibe">don't look back</div><div class="vmsg">// leaving · cool</div>
+      </div>
+    </div>
+    <p class="note"><b>How it works &amp; why it wins:</b> a stylized bust is drawn with canvas form + gradients, converted to luminance, then <b>error-diffusion dithered</b> to 1-bit at high resolution — the same technique behind the dithered portraits on your board. Because it's <b>code</b>, every parameter is a knob: crop, expression, hair, shades, the accent hue, even <b>animation</b> (she can blink, the dither can shimmer, she can dissolve into the fabric and re-form). <span class="gl">This is the unlock</span> — she's a generative system, not an asset we have to source. (Higher-fidelity passes &amp; true anime linework can layer on top; this is the engine.)</p>
+  </div>
+
+  <!-- 02 REFINED DITHER -->
+  <div class="plate">
+    <div class="lbl"><span class="n">02</span><span class="t">The Dither — Refined, Finer, Tunable</span><span class="d">you said too chunky — here's the resolution + algorithm ladder</span></div>
+    <div class="ditherrow">
+      <div class="dcell"><canvas id="d1"></canvas><div class="lab">v3 · bayer · cell 5 (chunky)</div></div>
+      <div class="dcell"><canvas id="d2"></canvas><div class="lab">v4 · bayer 8×8 · cell 2 (fine)</div></div>
+      <div class="dcell"><canvas id="d3"></canvas><div class="lab">v4 · blue-noise · cell 1 (silk)</div></div>
+    </div>
+    <p class="note">Three rungs, left→right: the old chunky grid, a <b>finer ordered (8×8 Bayer) weave at 2px</b>, and a <b>blue-noise stipple at 1px</b> that reads as soft analog grain rather than pixels. We can dial cell-size, algorithm, and contrast per surface — <b>loud and chunky for slaps, silky and fine for ambient fabric.</b> Move your cursor over each to lift it.</p>
+  </div>
+
+  <!-- 03 CARTRIDGES → PACKS -->
+  <div class="plate">
+    <div class="lbl"><span class="n">03</span><span class="t">Cartridges → Packs → A Whole Format</span><span class="d">the build object, expanded into a system</span></div>
+    <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:24px; align-items:start;">
+      <div>
+        <div class="packs">
+          <div class="pack"><div class="body"><div class="lab2"><div class="sp" style="background:var(--supercolor)"></div><div class="nm">Career<br>Ops</div></div></div><div class="pins"><i></i><i></i><i></i><i></i><i></i></div><div class="cap">cartridge · build</div></div>
+          <div class="pack"><div class="body"><div class="lab2"><div class="sp" style="background:linear-gradient(90deg,var(--cyan),var(--blue))"></div><div class="nm">Mind<br>Loop</div></div></div><div class="pins"><i></i><i></i><i></i><i></i><i></i></div><div class="cap">cartridge · skill</div></div>
+          <div class="pack"><div class="body"><div class="lab2"><div class="sp" style="background:linear-gradient(90deg,var(--magenta),var(--alert))"></div><div class="nm">Night<br>Shift</div></div></div><div class="pins"><i></i><i></i><i></i><i></i><i></i></div><div class="cap">cartridge · persona</div></div>
+        </div>
+        <p class="note" style="margin-top:14px;">A cartridge is one build. A <b>pack</b> is a labelled set (a shelf, a season, a starter kit). Same physical language — supercolor spine, gold pins, serial — but <b>color-coded by type</b> (build / skill / persona). You collect them, trade them, and a <b>3D shelf</b> holds your library; eject one to install.</p>
+      </div>
+      <div class="ideacol">
+        <div class="idea"><b>Provenance built in</b><span>each cart: serial, edition (001/500), © NOBODY, a fork-lineage you can trace.</span></div>
+        <div class="idea"><b>The shelf is the home screen</b><span>your installed packs as a rotating 3D rack — the OS's main navigation is physical.</span></div>
+        <div class="idea"><b>Eject = uninstall</b><span>real gestures: slot to install, eject to remove, snap two carts to combine builds.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 EXTEND THE 3D -->
+  <div class="plate">
+    <div class="lbl"><span class="n">04</span><span class="t">Where The 3D Aesthetic Extends</span><span class="d">flat everywhere, dimensional for the few things that are objects</span></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 32px;">
+      <div class="ideacol">
+        <div class="idea"><b>The cartridge shelf / library</b><span>a rotating rack of your builds — the flagship 3D moment &amp; home base.</span></div>
+        <div class="idea"><b>The boot token</b><span>a 3D spinning SBX medallion/coin that "inserts" to start the OS. provenance as a physical key.</span></div>
+        <div class="idea"><b>Achievement / scar coins</b><span>3D minted tokens for milestones &amp; weird bugs — "error-as-celebration" made collectible.</span></div>
+      </div>
+      <div class="ideacol">
+        <div class="idea"><b>The floppy / save object</b><span>saving a build = a 3D disk thunking into a drive. tactile persistence.</span></div>
+        <div class="idea"><b>Sticker peel</b><span>slaps lift at a 3D corner on hover — the only flat thing that gains a little depth.</span></div>
+        <div class="idea"><b>Her, optionally</b><span>the dithered portrait on a subtly parallaxing 3D card — she leans as you move.</span></div>
+      </div>
+    </div>
+    <p class="note"><b>Rule:</b> the whole UI stays flat and brutal; <b>3D is reserved for "objects you own"</b> — cartridges, coins, disks, her card. Dimension = ownership. That keeps it rare, special, and meaningful instead of gimmicky.</p>
+  </div>
+
+  <div style="margin-top:52px; border-top:2px solid var(--ns-paper); padding-top:12px; display:flex; justify-content:space-between; font-size:10px; color:var(--ash-400); letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap; gap:8px;">
+    <span>SANDBOXOS · CHARACTER &amp; MATERIAL LAB · v4</span><span>SHE'S GENERATED · NOBODY'S TOOL</span><span>© NOBODY — 2026</span>
+  </div>
+</div>
+
+<script>
+  const cur=document.getElementById('cur');
+  addEventListener('mousemove', e=>{ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+  addEventListener('mousedown', ()=>{ cur.textContent='✶'; cur.style.color='var(--cyan)'; });
+  addEventListener('mouseup', ()=>{ cur.textContent='▸'; cur.style.color='var(--magenta)'; });
+
+  // ===================== CHARACTER GENERATOR =====================
+  // draw a stylized rebel bust in grayscale, then Floyd–Steinberg dither to 1-bit.
+  function drawBust(g, W, H, mood){
+    g.clearRect(0,0,W,H); g.fillStyle='#000'; g.fillRect(0,0,W,H);
+    const cx=W*0.5, faceW=W*0.30, faceH=H*0.34, faceY=H*0.46;
+    function lg(x0,y0,x1,y1,stops){ const r=g.createLinearGradient(x0,y0,x1,y1); stops.forEach(s=>r.addColorStop(s[0],s[1])); return r; }
+    function rg(x,y,r0,r1,stops){ const r=g.createRadialGradient(x,y,r0,x,y,r1); stops.forEach(s=>r.addColorStop(s[0],s[1])); return r; }
+    const profile = mood==='profile';
+    // ---- HAIR (back mass) ----
+    g.fillStyle = lg(cx-faceW*1.6, 0, cx+faceW*1.6, H, [[0,'#3a3a3a'],[0.5,'#202020'],[1,'#101010']]);
+    g.beginPath();
+    g.moveTo(cx-faceW*1.7, H);
+    g.bezierCurveTo(cx-faceW*1.9, faceY-faceH, cx-faceW*1.2, faceY-faceH*1.9, cx, faceY-faceH*1.85);
+    g.bezierCurveTo(cx+faceW*1.2, faceY-faceH*1.9, cx+faceW*1.9, faceY-faceH, cx+faceW*1.7, H);
+    g.closePath(); g.fill();
+    // hair strands (lighter streaks)
+    g.strokeStyle='rgba(120,120,120,0.5)'; g.lineWidth=Math.max(1,W*0.006);
+    for(let k=-5;k<=5;k++){ g.beginPath(); const sx=cx+k*faceW*0.28; g.moveTo(sx, faceY-faceH*1.2); g.bezierCurveTo(sx+faceW*0.1, faceY, sx-faceW*0.1, faceY+faceH, sx+(k>0?faceW*0.2:-faceW*0.2), H); g.stroke(); }
+    // ---- JACKET / SHOULDERS (suggestive open collar) ----
+    g.fillStyle = lg(0, faceY+faceH, 0, H, [[0,'#2a2a2a'],[1,'#141414']]);
+    g.beginPath(); g.moveTo(0,H); g.lineTo(0, H-faceH*1.1);
+    g.bezierCurveTo(cx-faceW*1.1, H-faceH*1.5, cx-faceW*0.5, H-faceH*0.3, cx, H-faceH*0.2);
+    g.bezierCurveTo(cx+faceW*0.5, H-faceH*0.3, cx+faceW*1.1, H-faceH*1.5, W, H-faceH*1.1);
+    g.lineTo(W,H); g.closePath(); g.fill();
+    // collar highlight edge
+    g.strokeStyle='rgba(220,220,220,0.55)'; g.lineWidth=Math.max(1,W*0.012);
+    g.beginPath(); g.moveTo(cx-faceW*0.55, H-faceH*0.9); g.lineTo(cx, H-faceH*0.25); g.lineTo(cx+faceW*0.55, H-faceH*0.9); g.stroke();
+    // neck
+    g.fillStyle='#8a8378'; g.beginPath(); g.ellipse(cx, faceY+faceH*0.92, faceW*0.34, faceH*0.5, 0,0,7); g.fill();
+    // ---- FACE ----
+    const fox = profile ? cx+faceW*0.18 : cx;
+    g.fillStyle = rg(fox-faceW*0.35, faceY-faceH*0.15, faceW*0.2, faceW*1.7, [[0,'#efe7da'],[0.55,'#cdbfa8'],[1,'#9c8f78']]);
+    g.beginPath();
+    g.moveTo(fox-faceW, faceY-faceH*0.2);
+    g.bezierCurveTo(fox-faceW, faceY-faceH, fox-faceW*0.5, faceY-faceH*1.15, fox, faceY-faceH*1.12);
+    g.bezierCurveTo(fox+faceW*0.5, faceY-faceH*1.15, fox+faceW, faceY-faceH, fox+faceW, faceY-faceH*0.2);
+    g.bezierCurveTo(fox+faceW, faceY+faceH*0.55, fox+faceW*0.45, faceY+faceH*1.12, fox, faceY+faceH*1.12);
+    g.bezierCurveTo(fox-faceW*0.45, faceY+faceH*1.12, fox-faceW, faceY+faceH*0.55, fox-faceW, faceY-faceH*0.2);
+    g.closePath(); g.fill();
+    // cheek shadow (form)
+    g.fillStyle='rgba(70,60,48,0.35)'; g.beginPath(); g.ellipse(fox+faceW*0.6, faceY+faceH*0.2, faceW*0.4, faceH*0.7, 0,0,7); g.fill();
+    // ---- BANGS ----
+    g.fillStyle = lg(0,faceY-faceH, 0, faceY, [[0,'#262626'],[1,'#161616']]);
+    g.beginPath(); g.moveTo(fox-faceW*1.02, faceY-faceH*0.15);
+    g.bezierCurveTo(fox-faceW*0.9, faceY-faceH*1.15, fox+faceW*0.9, faceY-faceH*1.2, fox+faceW*1.02, faceY-faceH*0.2);
+    // jagged fringe
+    g.lineTo(fox+faceW*0.7, faceY-faceH*0.5); g.lineTo(fox+faceW*0.5, faceY-faceH*0.18); g.lineTo(fox+faceW*0.28, faceY-faceH*0.5);
+    g.lineTo(fox+faceW*0.05, faceY-faceH*0.12); g.lineTo(fox-faceW*0.2, faceY-faceH*0.5); g.lineTo(fox-faceW*0.42, faceY-faceH*0.2);
+    g.lineTo(fox-faceW*0.66, faceY-faceH*0.55); g.lineTo(fox-faceW*0.85, faceY-faceH*0.2);
+    g.closePath(); g.fill();
+    // ---- EYES / SHADES / SMIRK ----
+    const eyeY=faceY-faceH*0.02, eoff=faceW*0.42;
+    if(mood==='shades' || mood==='hero' || mood==='profile'){
+      // sunglasses
+      g.fillStyle='#0c0c0c';
+      const lensW=faceW*0.46, lensH=faceH*0.34;
+      if(!profile){ rr(g, fox-eoff-lensW/2, eyeY-lensH/2, lensW, lensH, 5); }
+      rr(g, fox+eoff-lensW/2, eyeY-lensH/2, lensW, lensH, 5);
+      g.fillStyle='#0c0c0c'; g.fillRect(fox-faceW*0.06, eyeY-faceH*0.04, faceW*0.12, Math.max(2,H*0.01)); // bridge
+      // reflection streak (bright)
+      g.strokeStyle='rgba(255,255,255,0.95)'; g.lineWidth=Math.max(1.5,W*0.014);
+      if(!profile){ g.beginPath(); g.moveTo(fox-eoff-lensW*0.3, eyeY+lensH*0.2); g.lineTo(fox-eoff+lensW*0.1, eyeY-lensH*0.3); g.stroke(); }
+      g.beginPath(); g.moveTo(fox+eoff-lensW*0.3, eyeY+lensH*0.2); g.lineTo(fox+eoff+lensW*0.1, eyeY-lensH*0.3); g.stroke();
+    } else {
+      // anime eyes
+      g.fillStyle='#fff';
+      eye(g, fox-eoff, eyeY, faceW*0.34, faceH*0.26);
+      eye(g, fox+eoff, eyeY, faceW*0.34, faceH*0.26);
+      g.fillStyle='#101010';
+      g.beginPath(); g.ellipse(fox-eoff, eyeY+faceH*0.02, faceW*0.13, faceH*0.16, 0,0,7); g.fill();
+      g.beginPath(); g.ellipse(fox+eoff, eyeY+faceH*0.02, faceW*0.13, faceH*0.16, 0,0,7); g.fill();
+      g.fillStyle='#fff'; g.beginPath(); g.arc(fox-eoff-faceW*0.04, eyeY-faceH*0.03, faceW*0.04,0,7); g.fill();
+      g.beginPath(); g.arc(fox+eoff-faceW*0.04, eyeY-faceH*0.03, faceW*0.04,0,7); g.fill();
+    }
+    // brows
+    g.strokeStyle='#1c1c1c'; g.lineWidth=Math.max(1.5,W*0.012);
+    g.beginPath(); g.moveTo(fox-eoff-faceW*0.2, eyeY-faceH*0.36); g.lineTo(fox-eoff+faceW*0.16, eyeY-faceH*0.30); g.stroke();
+    g.beginPath(); g.moveTo(fox+eoff-faceW*0.16, eyeY-faceH*0.30); g.lineTo(fox+eoff+faceW*0.2, eyeY-faceH*0.36); g.stroke();
+    // nose
+    g.strokeStyle='rgba(90,75,60,0.5)'; g.lineWidth=Math.max(1,W*0.008);
+    g.beginPath(); g.moveTo(fox+faceW*0.02, faceY+faceH*0.18); g.lineTo(fox-faceW*0.06, faceY+faceH*0.34); g.stroke();
+    // ---- EARRING (bright spec) ----
+    g.fillStyle='#fff'; g.beginPath(); g.arc(fox-faceW*0.92, faceY+faceH*0.45, Math.max(2,W*0.012),0,7); g.fill();
+  }
+  function rr(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); g.fill(); }
+  function eye(g,x,y,w,h){ g.beginPath(); g.ellipse(x,y,w*0.5,h*0.5,0,0,7); g.fill(); }
+
+  // accent (lips) grayscale -> magenta
+  function drawLips(g,W,H,mood){
+    g.clearRect(0,0,W,H);
+    if(mood==='eyes') return; // eyes crop hides mouth
+    const cx=W*0.5, my=H*0.46+H*0.34*0.62, mw=W*0.30*0.5;
+    g.fillStyle='#fff';
+    g.beginPath();
+    g.moveTo(cx-mw, my);
+    g.quadraticCurveTo(cx, my-H*0.012, cx+mw, my);             // upper
+    g.quadraticCurveTo(cx+mw*0.4, my+H*0.045, cx, my+H*0.04);  // lower right (smirk lift)
+    g.quadraticCurveTo(cx-mw*0.4, my+H*0.03, cx-mw, my);
+    g.closePath(); g.fill();
+  }
+
+  function floyd(buf,w,h){ // in-place threshold to 0/1
+    const out=new Uint8Array(w*h);
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){ const i=y*w+x; const old=buf[i]; const nv=old>0.5?1:0; out[i]=nv; const err=old-nv;
+      if(x+1<w)buf[i+1]+=err*7/16;
+      if(y+1<h){ if(x>0)buf[i-1+w]+=err*3/16; buf[i+w]+=err*5/16; if(x+1<w)buf[i+1+w]+=err*1/16; } }
+    return out;
+  }
+  function lumFrom(g,w,h){ const d=g.getImageData(0,0,w,h).data; const f=new Float32Array(w*h); for(let i=0;i<w*h;i++){ const a=d[i*4+3]/255; f[i]=a*((0.299*d[i*4]+0.587*d[i*4+1]+0.114*d[i*4+2])/255); } return f; }
+
+  function renderCharacter(canvas, mood){
+    const W=canvas.width, H=canvas.height;
+    const off=document.createElement('canvas'); off.width=W; off.height=H; const g=off.getContext('2d');
+    drawBust(g,W,H,mood);
+    const main=floyd(lumFrom(g,W,H),W,H);
+    // accent
+    const ac=document.createElement('canvas'); ac.width=W; ac.height=H; const ag=ac.getContext('2d');
+    drawLips(ag,W,H,mood); const acc=floyd(lumFrom(ag,W,H),W,H);
+    const ctx=canvas.getContext('2d'); const img=ctx.createImageData(W,H), o=img.data;
+    for(let i=0;i<W*H;i++){ if(acc[i]){ o[i*4]=255;o[i*4+1]=46;o[i*4+2]=136;o[i*4+3]=255; } else if(main[i]){ o[i*4]=233;o[i*4+1]=227;o[i*4+2]=212;o[i*4+3]=255; } }
+    ctx.putImageData(img,0,0);
+  }
+  // crops: render bigger then sample a region into the small canvas
+  function renderCrop(canvas, mood, region){
+    const W=canvas.width, H=canvas.height;
+    const big=document.createElement('canvas'); const BW=240, BH=320; big.width=BW; big.height=BH;
+    renderCharacter(big, mood);
+    const ctx=canvas.getContext('2d'); ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(big, region.x*BW, region.y*BH, region.w*BW, region.h*BH, 0,0,W,H);
+  }
+  renderCharacter(document.getElementById('pBig'),'hero');
+  renderCrop(document.getElementById('pEyes'),'eyes',{x:0.18,y:0.30,w:0.64,h:0.30});
+  renderCrop(document.getElementById('pSmirk'),'smirk',{x:0.2,y:0.45,w:0.6,h:0.32});
+  renderCharacter(document.getElementById('pProfile'),'profile');
+
+  // ===================== DITHER FABRICS =====================
+  const bay4=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+  const bay8=(function(){ const m=[]; for(let y=0;y<8;y++)for(let x=0;x<8;x++){ let v=0,mask=4,b=0; for(let i=0;i<3;i++){ const bx=(x>>(2-i))&1, by=(y>>(2-i))&1; v=v*4+((3*(bx^by))+by)*1; } m.push(((function(){ // standard recursive bayer8
+        let val=0; for(let p=0;p<3;p++){ const xx=(x>>(2-p))&1, yy=(y>>(2-p))&1; val=(val<<2)|((xx^yy)<<1|yy);} return val; })())); } return m; })();
+  function blueish(x,y){ // cheap hash stipple ~ blue-noise-ish
+    let n=Math.sin(x*127.1+y*311.7)*43758.5453; n-=Math.floor(n); let m=Math.sin(x*269.5+y*183.3)*43758.5453; m-=Math.floor(m); return (n*0.6+m*0.4); }
+  function makeFabric(canvas, host, opts){
+    const ctx=canvas.getContext('2d'); const CELL=opts.cell;
+    let W,H,mx=-999,my=-999,t=Math.random()*9;
+    function resize(){ const r=host.getBoundingClientRect(); W=canvas.width=Math.max(2,Math.ceil(r.width/CELL)); H=canvas.height=Math.max(2,Math.ceil(r.height/CELL)); canvas.style.width=r.width+'px'; canvas.style.height=r.height+'px'; }
+    addEventListener('resize',resize); setTimeout(resize,0); resize();
+    host.addEventListener('mousemove',e=>{ const r=host.getBoundingClientRect(); mx=(e.clientX-r.left)/CELL; my=(e.clientY-r.top)/CELL; });
+    host.addEventListener('mouseleave',()=>{ mx=my=-999; });
+    let last=0;
+    function frame(now){ requestAnimationFrame(frame); if(now-last<40)return; last=now; t+=0.016;
+      const img=ctx.createImageData(W,H), d=img.data;
+      for(let y=0;y<H;y++)for(let x=0;x<W;x++){ const i=y*W+x;
+        let L=opts.base + opts.amp*0.42*Math.sin(x*0.05+t*0.55) + opts.amp*0.36*Math.sin(y*0.06-t*0.42) + opts.amp*0.40*Math.sin((x+y)*0.026+t*0.85);
+        const dx=x-mx,dy=y-my; L+=opts.lift*Math.exp(-(dx*dx+dy*dy)/opts.rad);
+        let thr; if(opts.algo==='b4')thr=(bay4[((y&3)<<2)+(x&3)]+0.5)/16;
+        else if(opts.algo==='b8')thr=(bay8[((y&7)<<3)+(x&7)]+0.5)/64;
+        else thr=blueish(x,y);
+        let a=(L-thr)*1.6; if(a>0){ if(a>1)a=1; const o=i*4; d[o]=233;d[o+1]=227;d[o+2]=212;d[o+3]=a*opts.alpha; }
+      }
+      ctx.putImageData(img,0,0);
+    }
+    requestAnimationFrame(frame);
+  }
+  makeFabric(document.getElementById('fabric'), document.documentElement, {cell:3, base:0.12, amp:0.14, alpha:140, lift:0.85, rad:600, algo:'b8'});
+  makeFabric(document.getElementById('d1'), document.getElementById('d1').parentElement, {cell:5, base:0.3, amp:0.22, alpha:210, lift:1.0, rad:300, algo:'b4'});
+  makeFabric(document.getElementById('d2'), document.getElementById('d2').parentElement, {cell:2, base:0.3, amp:0.22, alpha:210, lift:1.0, rad:600, algo:'b8'});
+  makeFabric(document.getElementById('d3'), document.getElementById('d3').parentElement, {cell:1, base:0.3, amp:0.22, alpha:200, lift:1.0, rad:1500, algo:'blue'});
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!-- @dsCard group="Guidelines" viewport="700x440" name="Accessibility and contrast" subtitle="Loud is not broken — measured contrast on the void, safe pairings, motion limits" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:22px 24px;font-family:var(--font-mono);}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 12px;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
+  .c{border:2px solid var(--border);padding:8px 9px;background:var(--surface);}
+  .c .sw{font-family:var(--font-display);font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.04em;}
+  .c .v{font-family:var(--font-crt);font-size:21px;line-height:1;margin:7px 0 2px;color:var(--text);}
+  .c .k{font-size:9px;color:var(--ash-400);text-transform:uppercase;letter-spacing:.06em;}
+  .c .pass{color:var(--green);}
+  .c .large{color:var(--amber);}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch;}
+  .ex{flex:1;min-width:150px;border:2px solid var(--border);padding:0;display:flex;flex-direction:column;}
+  .ex .t{font-family:var(--font-display);font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px 0;}
+  .ex .body{font-size:10px;line-height:1.5;color:var(--ash-300);padding:8px 10px;margin:8px;background:var(--bg-sunken);border:1px solid var(--border);}
+  .ex.bad{border-color:var(--alert);}
+  .ex.bad .t{color:var(--alert);}
+  .ex.bad .body{color:var(--ink);background:var(--amber);border:1px solid var(--ink);}
+  .ex.bad .x{color:var(--alert);font-family:var(--font-display);font-weight:900;font-size:10px;padding:0 10px 8px;text-transform:uppercase;letter-spacing:.04em;}
+  .ex.ok .ratio{color:var(--green);font-size:9px;padding:0 10px 8px;letter-spacing:.06em;}
+  .ex.bad .ratio{color:var(--alert);font-size:9px;padding:0 10px 8px;letter-spacing:.06em;}
+  .rules{font-size:11px;color:var(--ash-300);line-height:1.65;margin-top:16px;border-top:2px solid var(--border);padding-top:12px;}
+  .rules b{color:var(--text);}
+  .rules .n{color:var(--amber);font-family:var(--font-crt);font-size:13px;margin-right:5px;}
+</style></head>
+<body>
+  <div class="lbl">measured on the void — bg #0F0F0D — AA needs 4.5:1 body / 3:1 large</div>
+  <div class="grid">
+    <div class="c"><div class="sw" style="color:var(--signal)">signal</div><div class="v">17.15<span style="font-size:11px">:1</span></div><div class="k pass">✓ AA · body</div></div>
+    <div class="c"><div class="sw" style="color:var(--green)">green</div><div class="v">12.74<span style="font-size:11px">:1</span></div><div class="k pass">✓ AA · body</div></div>
+    <div class="c"><div class="sw" style="color:var(--cyan)">cyan</div><div class="v">12.37<span style="font-size:11px">:1</span></div><div class="k pass">✓ AA · body</div></div>
+    <div class="c"><div class="sw" style="color:var(--amber)">amber</div><div class="v">10.47<span style="font-size:11px">:1</span></div><div class="k pass">✓ AA · body</div></div>
+    <div class="c"><div class="sw" style="color:var(--magenta)">magenta</div><div class="v">5.48<span style="font-size:11px">:1</span></div><div class="k pass">✓ AA · body</div></div>
+    <div class="c"><div class="sw" style="color:var(--text-faint)">faint</div><div class="v">3.31<span style="font-size:11px">:1</span></div><div class="k large">▲ AA · large only</div></div>
+    <div class="c"><div class="sw" style="color:var(--blue)">b-blue</div><div class="v">3.15<span style="font-size:11px">:1</span></div><div class="k large">▲ AA · large only</div></div>
+    <div class="c" style="border-color:var(--alert)"><div class="sw" style="color:var(--alert)">unsafe</div><div class="v" style="color:var(--alert)">1.64<span style="font-size:11px">:1</span></div><div class="k" style="color:var(--alert)">✕ signal-on-amber</div></div>
+  </div>
+  <div class="lbl">read on a plate, never on the live grain</div>
+  <div class="row">
+    <div class="ex ok"><div class="t">▸ do — solid plate</div><div class="body">Body copy sits on a solid filled panel. Edges stay crisp, the grain stays behind it.</div><div class="ratio">17.15:1 · signal on plate</div></div>
+    <div class="ex bad"><div class="t">✕ don't — signal on amber</div><div class="body">Light text laid over an amber fill smears to 1.64:1.</div><div class="x">amber takes ink only — on slaps</div><div class="ratio">1.64:1 · fails AA</div></div>
+  </div>
+  <div class="rules">
+    <div><span class="n">1</span><b>Body copy goes on a solid plate</b> — a filled panel, never directly on the live dither. The grain is texture behind the surface, not under the words.</div>
+    <div><span class="n">2</span><b>Amber, cyan, green, magenta carry text on the void</b> at AA. <b>Faint gray and broadcast blue (<code>--blue</code>, 3.15:1) are large-text only</b> (≥ 24px, or ≥ 19px bold) — never small body, never form labels; the brighter <code>--blue-bright</code> clears AA body at 4.92:1.</div>
+    <div><span class="n">3</span><b>Light text never rides an amber fill</b> (1.64:1, fails). On a slap or any amber surface, the text is ink. One earned accent carries meaning; it does not also carry the sentence.</div>
+    <div><span class="n">4</span><b>Reduced motion shows the end-state</b> — every reveal, press and flicker resolves to its final frame, motion skipped. Nothing essential lives only in the movement.</div>
+    <div><span class="n">5</span><b>No more than 3 flashes per second</b> — dither, scanlines and blink stay slow. A surface that strobes is a surface that hurts; keep the seasoning quiet.</div>
+  </div>
+</body></html>

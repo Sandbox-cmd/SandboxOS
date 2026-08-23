@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Stickerbomb Explorations II</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { margin: 0; background: #2A2722; color: var(--text); font-family: var(--font-sans);
+         background-image: radial-gradient(#35322b 1px, transparent 1px); background-size: 22px 22px; }
+  .page { max-width: 1380px; margin: 0 auto; padding: 56px 40px 100px; }
+  .head .kick { font-family: var(--font-mono); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--hazard); }
+  .head h1 { font-family: var(--font-display); font-weight: 900; font-size: 44px; letter-spacing: -.02em; color: var(--signal); margin: 10px 0 8px; }
+  .head p { max-width: 74ch; color: var(--ash-300); font-size: 16px; }
+  .head p b { color: var(--signal); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px 44px; margin-top: 46px; }
+  .cap { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .cap .no { font-family: var(--font-poster); font-size: 22px; color: var(--signal); letter-spacing: .04em; }
+  .cap .nm { font-family: var(--font-display); font-weight: 800; font-size: 18px; text-transform: uppercase; letter-spacing: .04em; color: var(--signal); }
+  .cap .dsc { font-family: var(--font-mono); font-size: 11px; color: var(--ash-400); margin-left: auto; text-transform: uppercase; letter-spacing: .1em; }
+  .poster { position: relative; aspect-ratio: 4/5; overflow: hidden; border: 2px solid var(--ink); box-shadow: 8px 8px 0 rgba(0,0,0,.5); }
+
+  /* shared sticker primitive */
+  .stk { position:absolute; font-family:var(--font-display); font-weight:900; text-transform:uppercase;
+         border:2px solid var(--ink); box-shadow: 0 0 0 3px var(--signal), 4px 5px 0 rgba(0,0,0,.45);
+         display:flex; align-items:center; justify-content:center; text-align:center; line-height:.92; }
+  .barcode { display:flex; gap:2px; align-items:stretch; }
+  .barcode i { display:block; background: currentColor; }
+
+  /* ====================================================================
+     05 — MAXIMAL WALL
+     ==================================================================== */
+  .d5 { background: #141310; }
+  .d5 .stk { letter-spacing:-.01em; }
+  .d5 .a { top:18px; left:16px; background:var(--hazard); color:var(--ink); padding:10px 16px; font-size:34px; transform:rotate(-8deg); }
+  .d5 .b { top:14px; right:14px; background:var(--alert); color:var(--signal); padding:6px 11px; font-size:14px; transform:rotate(7deg); letter-spacing:.04em; }
+  .d5 .c { top:88px; right:20px; width:96px; height:96px; border-radius:50%;
+           background: conic-gradient(from 30deg,#ff2e88,#34e6e0,#ffd400,#a24bff,#ff2e88); color:var(--ink);
+           font-size:15px; transform:rotate(10deg); }
+  .d5 .c span{ background:var(--signal); padding:3px 5px; border:1.5px solid var(--ink);}
+  .d5 .d { top:120px; left:22px; background:var(--ink); color:var(--green); border-color:var(--green); padding:12px 18px; font-size:46px;
+           box-shadow:0 0 0 3px var(--ink), 5px 6px 0 rgba(0,0,0,.6); transform:rotate(-3deg); }
+  .d5 .e { top:210px; right:30px; background:var(--blue); color:var(--signal); padding:8px 13px; font-size:18px; transform:rotate(-6deg); letter-spacing:.03em;}
+  .d5 .f { top:250px; left:18px; width:120px; padding:5px 0; background:var(--fx-hazard); color:var(--ink); font-size:13px; letter-spacing:.08em; transform:rotate(4deg);}
+  .d5 .f span{ background:var(--signal); padding:2px 6px;}
+  .d5 .g { bottom:120px; left:50%; transform:translateX(-50%) rotate(2deg); background:var(--magenta); color:var(--signal); padding:9px 20px; font-size:30px; border-radius:999px;}
+  .d5 .h { bottom:64px; left:24px; background:var(--cyan); color:var(--ink); padding:6px 12px; font-size:16px; transform:rotate(-9deg); letter-spacing:.04em;}
+  .d5 .i { bottom:72px; right:22px; font-family:var(--font-poster); color:var(--hazard); font-size:40px; transform:rotate(8deg); text-shadow:3px 3px 0 var(--ink); border:0; box-shadow:none;}
+  .d5 .j { bottom:22px; left:50%; transform:translateX(-50%); color:var(--signal); border:0; box-shadow:none;}
+  .d5 .smiley{ position:absolute; bottom:118px; right:26px; width:58px;height:58px;border-radius:50%;background:var(--hazard);border:3px solid var(--ink);transform:rotate(-12deg);box-shadow:0 0 0 3px var(--signal);}
+  .d5 .smiley::before{content:"";position:absolute;top:18px;left:14px;width:6px;height:12px;background:var(--ink);box-shadow:20px 0 0 var(--ink);}
+  .d5 .smiley::after{content:"";position:absolute;bottom:13px;left:15px;width:26px;height:13px;border:0 solid var(--ink);border-bottom-width:4px;border-radius:0 0 40px 40px;}
+
+  /* ====================================================================
+     06 — HOLO CHROME (Y2K)
+     ==================================================================== */
+  .d6 { background: radial-gradient(120% 90% at 50% 0%, #1a1330, #0a0710 70%); display:flex; align-items:center; justify-content:center;}
+  .d6 .chrome { font-family:var(--font-display); font-weight:900; font-size:92px; letter-spacing:-.04em; line-height:.85; text-align:center;
+                background: linear-gradient(180deg, #fff 0%, #a9c7ff 28%, #2c7bff 50%, #0a2a66 51%, #88e0ff 70%, #ffffff 100%);
+                -webkit-background-clip:text; background-clip:text; color:transparent;
+                filter: drop-shadow(0 2px 0 rgba(0,0,0,.6)); }
+  .d6 .holo { position:absolute; border-radius:50%; border:2px solid rgba(255,255,255,.7);
+              background: conic-gradient(from 0deg,#ff2e88,#34e6e0,#ffd400,#a24bff,#ff7ad9,#34e6e0,#ff2e88);
+              box-shadow: 0 0 22px rgba(120,200,255,.5), inset 0 0 18px rgba(255,255,255,.5);
+              display:flex;align-items:center;justify-content:center;text-align:center;}
+  .d6 .holo span{ font-family:var(--font-display); font-weight:900; text-transform:uppercase; color:var(--ink);
+                  background:rgba(255,255,255,.85); padding:3px 6px; border-radius:3px; line-height:1;}
+  .d6 .h1{ width:120px;height:120px; top:26px; left:24px; transform:rotate(-12deg);}
+  .d6 .h1 span{ font-size:15px;}
+  .d6 .h2{ width:84px;height:84px; top:40px; right:30px; transform:rotate(14deg);}
+  .d6 .h2 span{ font-size:12px;}
+  .d6 .h3{ width:96px;height:96px; bottom:48px; right:36px; transform:rotate(-8deg);}
+  .d6 .h3 span{ font-size:13px;}
+  .d6 .pill{ position:absolute; top:14px; left:50%; transform:translateX(-50%); font-family:var(--font-mono); font-size:11px;
+             letter-spacing:.2em; color:#bfe0ff; border:1px solid #3a5a8a; padding:4px 12px; border-radius:999px; text-transform:uppercase;}
+  .d6 .sub{ position:absolute; bottom:54px; left:0; right:0; text-align:center; font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; color:#9fd0ff; text-transform:uppercase;}
+  .d6 .star{ position:absolute; bottom:40px; left:34px; color:#fff; font-size:34px; filter: drop-shadow(0 0 10px #34e6e0);}
+  .d6 .ver{ position:absolute; bottom:20px; left:0;right:0;text-align:center; font-family:var(--font-pixel); font-size:10px; color:#5a7bb0;}
+
+  /* ====================================================================
+     07 — BOOTLEG ERROR-OS
+     ==================================================================== */
+  .d7 { background: var(--blue); }
+  .d7::before{ content:""; position:absolute; inset:0; background: var(--fx-scanlines); opacity:.25; }
+  .d7 .win { position:absolute; background: var(--blue); border:2px solid var(--signal); box-shadow: 4px 4px 0 rgba(0,0,0,.45); }
+  .d7 .win .tb { display:flex; align-items:center; justify-content:space-between; background:var(--signal); color:var(--ink);
+                 font-family:var(--font-mono); font-weight:700; font-size:11px; padding:2px 6px; letter-spacing:.04em; text-transform:uppercase;}
+  .d7 .win .tb b{ border:1.5px solid var(--ink); width:13px;height:13px; display:flex; align-items:center; justify-content:center; line-height:1; font-size:10px;}
+  .d7 .win .bd { padding:12px 13px; color:var(--signal); font-family:var(--font-mono); font-size:12px; line-height:1.5;}
+  .d7 .btn { display:inline-block; background:var(--signal); color:var(--ink); border:1.5px solid var(--ink);
+             font-family:var(--font-display); font-weight:900; font-size:12px; padding:3px 10px; text-transform:uppercase; margin-top:4px; box-shadow:2px 2px 0 var(--ink);}
+  .d7 .w1{ top:24px; left:20px; width:230px; transform:rotate(-2deg); z-index:3;}
+  .d7 .w2{ top:150px; right:18px; width:200px; transform:rotate(3deg); z-index:4;}
+  .d7 .w3{ bottom:30px; left:30px; width:240px; transform:rotate(-1.5deg); z-index:5;}
+  .d7 .hero{ font-family:var(--font-display); font-weight:900; font-size:40px; line-height:.9; color:var(--signal); text-transform:uppercase; margin-bottom:8px;}
+  .d7 .skull{ position:absolute; top:64px; right:40px; font-size:88px; color:var(--signal); opacity:.9; transform:rotate(6deg); z-index:2; line-height:1;}
+  .d7 .tsu{ position:absolute; bottom:120px; right:40px; font-family:var(--font-crt); font-size:30px; color:var(--signal); border:2px solid var(--signal); padding:4px 12px; transform:rotate(-4deg); z-index:6; background:var(--blue);}
+
+  /* ====================================================================
+     08 — RISO PHOTOCOPY
+     ==================================================================== */
+  .d8 { background: #E9E2CE; color: var(--ink); }
+  .d8::before{ content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+               background: radial-gradient(var(--ink) 28%, transparent 29%); background-size:4px 4px; mix-blend-mode:multiply;}
+  .d8 .reg{ position:absolute; width:18px;height:18px; }
+  .d8 .reg::before,.d8 .reg::after{content:"";position:absolute;background:var(--ink);}
+  .d8 .reg::before{ left:8px; top:0; width:1.5px; height:18px;}
+  .d8 .reg::after{ top:8px; left:0; height:1.5px; width:18px;}
+  .d8 .reg.tl{ top:12px; left:12px;} .d8 .reg.tr{ top:12px; right:12px;} .d8 .reg.br{ bottom:12px; right:12px;}
+  .d8 .title{ position:absolute; top:50px; left:26px; font-family:var(--font-display); font-weight:900; font-size:58px; line-height:.86; text-transform:uppercase;}
+  .d8 .title .ghost{ position:absolute; inset:0; color:var(--alert); transform:translate(3px,2px); mix-blend-mode:multiply; z-index:-1;}
+  .d8 .htape{ position:absolute; top:215px; left:-12px; right:-12px; height:26px; background:var(--fx-hazard); transform:rotate(-2deg); border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);}
+  .d8 .price{ position:absolute; top:266px; left:26px; border:2px solid var(--ink); padding:6px 12px; background:var(--signal); transform:rotate(-4deg); box-shadow:3px 3px 0 var(--ink);}
+  .d8 .price b{ font-family:var(--font-poster); font-size:38px; color:var(--alert); display:block; line-height:.9;}
+  .d8 .price small{ font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase;}
+  .d8 .stamp{ position:absolute; top:262px; right:26px; width:104px;height:104px;border-radius:50%; border:3px double var(--alert); color:var(--alert);
+              font-family:var(--font-display); font-weight:900; font-size:13px; text-transform:uppercase; display:flex; align-items:center; justify-content:center; text-align:center;
+              transform:rotate(-14deg); line-height:1; opacity:.92;}
+  .d8 .ribbon{ position:absolute; bottom:74px; left:24px; background:var(--ink); color:var(--signal); font-family:var(--font-display); font-weight:900;
+               font-size:13px; padding:6px 16px; letter-spacing:.06em; text-transform:uppercase; transform:rotate(-2deg);}
+  .d8 .bc{ position:absolute; bottom:26px; left:26px; color:var(--ink);}
+  .d8 .credit{ position:absolute; bottom:30px; right:26px; font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; text-align:right; line-height:1.6;}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="head">
+      <div class="kick">SANDBOXOS · STICKERBOMB STUDY · 002</div>
+      <h1>You picked the slaps. Here are four ways to slap.</h1>
+      <p>All four keep <b>Direction 02's</b> die-cut, anti-corporate, use-as-UI energy — but each pulls a different thread from the board: <b>maximal Flyerwrk density</b>, <b>holographic Y2K foil</b>, <b>the talk-back error-box OS</b>, and <b>2-ink riso zine print</b>. Same brand, four attitudes. Pick one or mix.</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- 05 MAXIMAL WALL -->
+      <div>
+        <div class="cap"><span class="no">05</span><span class="nm">Maximal Wall</span><span class="dsc">flyerwrk density · brand from chaos</span></div>
+        <div class="poster d5">
+          <div class="stk a">SANDBOX OS</div>
+          <div class="stk b">LIMITED ED.</div>
+          <div class="stk c"><span>RUN IT<br>YOURSELF</span></div>
+          <div class="stk d">NOT AN AI</div>
+          <div class="stk e">BOOTLEG ✦ LOCAL</div>
+          <div class="stk f"><span>HANDMADE</span></div>
+          <div class="stk g">JUST VIBES</div>
+          <div class="stk h">STAY WEIRD</div>
+          <div class="i">$0.00</div>
+          <div class="smiley"></div>
+          <div class="j">
+            <div class="barcode" style="height:22px"><i style="width:3px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:5px"></i><i style="width:2px"></i><i style="width:3px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:5px"></i><i style="width:1px"></i><i style="width:3px"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 HOLO CHROME -->
+      <div>
+        <div class="cap"><span class="no">06</span><span class="nm">Holo Chrome</span><span class="dsc">y2k foil · iridescent · sticker pack</span></div>
+        <div class="poster d6">
+          <div class="pill">FUTURE READY · 2026</div>
+          <div class="holo h1"><span>NO BAD<br>VIBES</span></div>
+          <div class="holo h2"><span>100%<br>FREE</span></div>
+          <div class="holo h3"><span>STAY<br>WEIRD</span></div>
+          <div class="chrome">SBX<br>OS</div>
+          <div class="star">✦</div>
+          <div class="sub">BOOTLEG · LOCAL · NOBODY'S TOOL</div>
+          <div class="ver">v2.0 — RUN IT YOURSELF</div>
+        </div>
+      </div>
+
+      <!-- 07 BOOTLEG ERROR-OS -->
+      <div>
+        <div class="cap"><span class="no">07</span><span class="nm">Bootleg Error-OS</span><span class="dsc">stickers = dialogs · talk-back</span></div>
+        <div class="poster d7">
+          <div class="skull">☠</div>
+          <div class="win w1">
+            <div class="tb"><span>SANDBOX_OS.EXE</span><b>✕</b></div>
+            <div class="bd"><div class="hero">NOT<br>AN AI</div>this machine is yours. proceed?<br><span class="btn">RUN IT</span> <span class="btn">JUST VIBES</span></div>
+          </div>
+          <div class="win w2">
+            <div class="tb"><span>⚠ ERROR</span><b>✕</b></div>
+            <div class="bd">no smile detected.<br>that's allowed here.<br><span class="btn">RETRY</span> <span class="btn">CANCEL</span></div>
+          </div>
+          <div class="win w3">
+            <div class="tb"><span>VIRUS DETECTED</span><b>✕</b></div>
+            <div class="bd">it's not a virus. it's<br>just yours.<br><span class="btn">CLICK FIX</span> <span class="btn">STAY WEIRD</span></div>
+          </div>
+          <div class="tsu">つづく</div>
+        </div>
+      </div>
+
+      <!-- 08 RISO PHOTOCOPY -->
+      <div>
+        <div class="cap"><span class="no">08</span><span class="nm">Riso Photocopy</span><span class="dsc">2-ink zine · halftone · misregister</span></div>
+        <div class="poster d8">
+          <div class="reg tl"></div><div class="reg tr"></div><div class="reg br"></div>
+          <div class="title">RUN<br>IT YOUR<br>SELF<span class="ghost" aria-hidden="true">RUN<br>IT YOUR<br>SELF</span></div>
+          <div class="htape"></div>
+          <div class="price"><small>BOOTLEG BUILD</small><b>$0.00</b><small>OPEN · OWNED</small></div>
+          <div class="stamp">APPROVED<br>BY<br>NOBODY</div>
+          <div class="ribbon">LIMITED RUN · 001/500</div>
+          <div class="bc"><div class="barcode" style="height:26px"><i style="width:3px"></i><i style="width:1px"></i><i style="width:5px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:3px"></i><i style="width:1px"></i><i style="width:5px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:4px"></i></div></div>
+          <div class="credit">PHOTOCOPIED<br>NOT LICENSED<br>SBX · 1997</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!-- @dsCard group="Website" viewport="1280x820" name="Website — Docs (teletext)" subtitle="Docs in the CEEFAX register: page-number index nav + mono articles" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Docs</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);}
+  .page{max-width:1180px;margin:0 auto;padding:0 28px;}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:2px solid var(--signal);}
+  .wm{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:20px;text-transform:uppercase;} .wm b{color:var(--magenta);} .wm .g{font-family:var(--font-crt);font-size:24px;}
+  nav .lk{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-300);}
+  .doc{display:grid;grid-template-columns:240px 1fr;gap:34px;padding:34px 0 80px;}
+  /* teletext index nav */
+  .idx{background:#0b1ed1;border:2px solid var(--signal);font-family:var(--font-crt);align-self:start;}
+  .idx .h{background:#000;color:#fff;font-size:14px;padding:3px 9px;display:flex;justify-content:space-between;}
+  .idx .h .y{color:var(--hazard);}
+  .idx a{display:flex;justify-content:space-between;color:#fff;text-decoration:none;font-size:19px;padding:5px 10px;}
+  .idx a .n{color:var(--hazard);} .idx a:hover{background:rgba(255,255,255,.12);}
+  .idx a.on{background:var(--hazard);color:#000;} .idx a.on .n{color:#000;}
+  .idx .fast{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px;}
+  .idx .fast div{height:14px;}
+  /* article */
+  .art .crumb{font-size:11px;color:var(--ash-400);letter-spacing:.1em;text-transform:uppercase;}
+  .art h1{font-family:var(--font-display);font-weight:900;font-size:42px;text-transform:uppercase;letter-spacing:-.02em;margin:8px 0 4px;}
+  .art .sub{color:var(--ash-300);font-size:13px;}
+  .art h2{font-family:var(--font-display);font-weight:900;font-size:18px;text-transform:uppercase;margin:28px 0 10px;border-bottom:1px solid var(--crt-700);padding-bottom:6px;}
+  .art p{font-size:14px;line-height:1.7;color:var(--text-dim);max-width:62ch;}
+  .art p b{color:var(--signal);}
+  .code{border:2px solid var(--border-strong);background:var(--bg-sunken);padding:13px 15px;font-size:13px;line-height:1.7;margin:14px 0;}
+  .code .d{color:var(--green);} .code .c{color:var(--amber);} .code .m{color:var(--ash-400);}
+  .cb{display:inline-flex;gap:7px;align-items:center;border:2px solid var(--amber-deep);color:var(--amber);font-family:var(--font-crt);font-size:13px;letter-spacing:.06em;padding:3px 9px;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav><div class="wm"><span class="g">▚</span> SANDBOX<b>OS</b></div><div class="lk">docs · P400 · build 982-V7</div></nav>
+  <div class="doc">
+    <aside class="idx">
+      <div class="h"><span>P<span class="y">400</span> DOCS</span><span>MENU 100</span></div>
+      <a class="on"><span><span class="n">401</span> quickstart</span><span>go</span></a>
+      <a><span><span class="n">402</span> cartridges</span><span>07</span></a>
+      <a><span><span class="n">403</span> the mind</span><span>on</span></a>
+      <a><span><span class="n">404</span> all yours</span><span>local</span></a>
+      <a><span><span class="n">405</span> the rebel</span><span>982</span></a>
+      <a><span><span class="n">406</span> arm / guard</span><span>off</span></a>
+      <div class="fast"><div style="background:var(--alert)"></div><div style="background:var(--green)"></div><div style="background:var(--hazard)"></div><div style="background:var(--cyan)"></div></div>
+    </aside>
+    <article class="art">
+      <div class="crumb">401 · quickstart · ~3 min</div>
+      <h1>Run it yourself</h1>
+      <div class="sub">install the machine, mount your first cartridge, build a thing. no permission slip required.</div>
+
+      <h2>01 · install</h2>
+      <p>one line. it runs <b>local</b> — on your own machine, and that's half the fun. no cloud in the loop.</p>
+      <div class="code"><span class="d">$</span> <span class="c">curl sandbox.os/install | sh</span><br/><span class="m"># warming up the workbench… memory: the bugs you beat, kept… ready.</span></div>
+
+      <h2>02 · mount a cartridge</h2>
+      <p>a cartridge is a <b>shareable, plug-n-play build</b>. download one, slot it, run it. fork it and it's yours — serial, edition, <b>© nobody</b>.</p>
+      <div class="code"><span class="d">$</span> <span class="c">sbx mount career-ops</span> <span class="m">--serial 001/500</span><br/><span class="d">$</span> <span class="c">sbx run</span></div>
+
+      <h2>03 · build</h2>
+      <p>tell it what you're making. it <b>remembers</b>, it <b>heckles your worst ideas</b> before you ship them, it <b>keeps the bugs you beat</b>. it is not an assistant — it's the thing you built.</p>
+      <div class="cb">▸ THANK YOU FOR USING</div>
+    </article>
+  </div>
+</div>
+</body>
+</html>

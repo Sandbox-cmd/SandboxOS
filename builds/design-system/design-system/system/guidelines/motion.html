@@ -1,0 +1,33 @@
+<!-- @dsCard group="Spacing" viewport="700x250" name="Motion Spec" subtitle="Durations, easings, press-down — mechanical & snappy, reduced-motion safe" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:22px 24px;font-family:var(--font-mono);}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 12px;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+  .d{border:1px solid var(--border);padding:8px 10px;}
+  .d .v{font-family:var(--font-crt);font-size:20px;color:var(--amber);}
+  .d .k{font-size:9px;color:var(--ash-400);text-transform:uppercase;letter-spacing:.08em;}
+  .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .chip{font-size:10px;color:var(--ash-300);border:1px solid var(--border);padding:4px 8px;}
+  .slap{font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:12px;background:var(--signal);color:var(--ink);border:2px solid var(--signal);padding:7px 14px;box-shadow:3px 3px 0 var(--signal);transition:transform 90ms var(--ease-snap),box-shadow 90ms;cursor:pointer;}
+  .slap:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--signal);}
+</style></head>
+<body>
+  <div class="lbl">durations</div>
+  <div class="grid">
+    <div class="d"><div class="v">90ms</div><div class="k">dur-1 · press</div></div>
+    <div class="d"><div class="v">160ms</div><div class="k">dur-2 · toggle</div></div>
+    <div class="d"><div class="v">260ms</div><div class="k">dur-3 · entrance</div></div>
+    <div class="d"><div class="v">420ms</div><div class="k">dur-4 · reveal</div></div>
+  </div>
+  <div class="lbl">easings</div>
+  <div class="row" style="margin-bottom:18px">
+    <span class="chip">ease-snap · toggles</span>
+    <span class="chip">ease-out · entrances</span>
+    <span class="chip">ease-step · CRT/teletext</span>
+    <span class="chip">prefers-reduced-motion → end-state, no anim</span>
+  </div>
+  <div class="lbl">press = slap-down (no soft scale) — click it</div>
+  <div class="row"><button class="slap">BUILD IT</button><span class="chip">shadow collapses · element depresses into the drop</span></div>
+</body></html>

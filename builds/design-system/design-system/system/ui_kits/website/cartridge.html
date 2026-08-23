@@ -1,0 +1,70 @@
+<!-- @dsCard group="Website" viewport="1280x820" name="Website — Cartridge Detail" subtitle="A build's page: 3D hero, provenance, side-A tracklist, install/fork/share" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Cartridge</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);}
+  .page{max-width:1180px;margin:0 auto;padding:0 28px 80px;}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:2px solid var(--signal);}
+  .wm{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:20px;text-transform:uppercase;} .wm b{color:var(--magenta);} .wm .g{font-family:var(--font-crt);font-size:24px;}
+  nav .lk{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-300);}
+  .detail{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;padding:40px 0;align-items:center;}
+  .meta .crumb{font-size:11px;color:var(--ash-400);text-transform:uppercase;letter-spacing:.1em;}
+  .meta h1{font-family:var(--font-display);font-weight:900;font-size:54px;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;margin:8px 0 4px;}
+  .meta .by{color:var(--ash-300);font-size:13px;}
+  .specs{margin-top:20px;border-top:2px solid var(--signal);}
+  .specs .r{display:flex;justify-content:space-between;font-size:12px;padding:7px 0;border-bottom:1px solid var(--crt-800);}
+  .specs .r .k{color:var(--ash-400);text-transform:uppercase;letter-spacing:.06em;} .specs .r .v{color:var(--signal);}
+  .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .track{margin-top:28px;}
+  .track .h{font-family:var(--font-display);font-weight:900;font-size:14px;text-transform:uppercase;margin-bottom:8px;}
+  .track .t{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px dashed var(--crt-700);color:var(--text-dim);}
+  .track .t .n{color:var(--magenta);}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div class="page">
+  <nav><div class="wm"><span class="g">▚</span> SANDBOX<b>OS</b></div><div class="lk">cartridges › career ops</div></nav>
+  <div class="detail">
+    <div id="cart" style="display:flex;justify-content:center;"></div>
+    <div class="meta">
+      <div class="crumb">SBX-CART · side a · build</div>
+      <h1>Career<br/>Ops</h1>
+      <div class="by">a build that argues with your résumé until it's true. by <b style="color:var(--signal)">@nobody</b>.</div>
+      <div class="specs">
+        <div class="r"><span class="k">edition</span><span class="v">001 / 500</span></div>
+        <div class="r"><span class="k">runtime</span><span class="v">local · all yours</span></div>
+        <div class="r"><span class="k">forks</span><span class="v">342 · all yours</span></div>
+        <div class="r"><span class="k">provenance</span><span class="v">© NOBODY · 982-V7</span></div>
+      </div>
+      <div class="actions" id="actions"></div>
+      <div class="track">
+        <div class="h">side a · what's inside</div>
+        <div class="t"><span><span class="n">01</span> boot.seq</span><span>0:42</span></div>
+        <div class="t"><span><span class="n">02</span> memory.keep</span><span>∞</span></div>
+        <div class="t"><span><span class="n">03</span> argue.first</span><span>1:13</span></div>
+        <div class="t"><span><span class="n">04</span> ship.it</span><span>go</span></div>
+      </div>
+      <div id="bc" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</div>
+<script type="text/babel">
+  const { Cartridge, SlapButton, Barcode, Sticker } = window.SandboxOSDesignSystem_4526c4;
+  ReactDOM.createRoot(document.getElementById('cart')).render(<Cartridge title={"Career\nOps"} subtitle="SBX-CART · build" kind="build" width={210}/>);
+  ReactDOM.createRoot(document.getElementById('actions')).render(<>
+    <SlapButton tone="go" size="lg">↓ install</SlapButton>
+    <SlapButton tone="ghost" size="lg">⑂ fork</SlapButton>
+    <SlapButton tone="ghost" size="lg">↗ share</SlapButton>
+  </>);
+  ReactDOM.createRoot(document.getElementById('bc')).render(<Barcode seed="CAREEROPS001"/>);
+</script>
+</body>
+</html>

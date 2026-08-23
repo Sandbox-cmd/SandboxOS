@@ -1,0 +1,88 @@
+/* ============================================================
+   SandboxOS — TYPOGRAPHY
+   Two voices: lowercase UI (calm machine) + UPPERCASE SLAPS (rebel).
+   ============================================================ */
+
+:root {
+  /* ---- FAMILIES ------------------------------------------ */
+  --font-display: 'Archivo', 'Arial Narrow', sans-serif;       /* headings, slaps      */
+  --font-poster:  'Anton', 'Archivo', sans-serif;              /* tall condensed slaps */
+  --font-sans:    'Archivo', system-ui, sans-serif;            /* body / labels        */
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;   /* terminal / data      */
+  --font-crt:     'VT323', 'JetBrains Mono', monospace;        /* teletext / boot      */
+  --font-pixel:   'Silkscreen', 'VT323', monospace;            /* bitmap badge labels  */
+
+  /* ---- TYPE SCALE (fluid-ish, 1.250 major third) --------- */
+  --t-3xs:  10px;   /* serials, fine print            */
+  --t-2xs:  11px;
+  --t-xs:   12px;   /* mono caption, badges           */
+  --t-sm:   13px;
+  --t-base: 15px;   /* body                           */
+  --t-md:   17px;
+  --t-lg:   21px;
+  --t-xl:   27px;
+  --t-2xl:  34px;
+  --t-3xl:  44px;
+  --t-4xl:  58px;
+  --t-5xl:  78px;   /* poster slaps                   */
+  --t-6xl:  108px;  /* boot-screen hero               */
+
+  /* ---- WEIGHTS ------------------------------------------- */
+  --w-regular: 400; /* @kind font */
+  --w-medium:  500; /* @kind font */
+  --w-semibold:600; /* @kind font */
+  --w-bold:    700; /* @kind font */
+  --w-black:   900; /* @kind font */
+
+  /* ---- LINE HEIGHT --------------------------------------- */
+  --lh-tight:  0.95;   /* @kind font */
+  --lh-snug:   1.1;    /* @kind font */
+  --lh-normal: 1.45;   /* @kind font */
+  --lh-mono:   1.5;    /* @kind font */
+
+  /* ---- TRACKING ------------------------------------------ */
+  --ls-tight:  -0.02em;  /* @kind font */
+  --ls-normal: 0;        /* @kind font */
+  --ls-wide:   0.04em;   /* @kind font */
+  --ls-slap:   0.08em;   /* @kind font */
+  --ls-mega:   0.18em;   /* @kind font */
+}
+
+/* ---- HELPER CLASSES (optional, foundations + cards) ------ */
+.sbx-display {
+  font-family: var(--font-display);
+  font-weight: var(--w-black);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+}
+.sbx-poster {
+  font-family: var(--font-poster);
+  text-transform: uppercase;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-slap);
+}
+.sbx-slap {
+  font-family: var(--font-display);
+  font-weight: var(--w-black);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-slap);
+}
+.sbx-mono {
+  font-family: var(--font-mono);
+  letter-spacing: var(--ls-normal);
+}
+.sbx-crt {
+  font-family: var(--font-crt);
+  letter-spacing: var(--ls-wide);
+}
+.sbx-pixel {
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.sbx-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+}

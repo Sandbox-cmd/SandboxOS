@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="SandboxOS Poster" description="Stickerbomb + VHS + data-UI poster — a stand-out artifact using the SandboxOS kit" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  body{ margin:0; background:#0a0410; }
+  .poster{ position:relative; width:680px; max-width:100%; aspect-ratio:4/5; margin:24px auto; overflow:hidden;
+           border:2px solid #E9E3D4; background:radial-gradient(120% 80% at 50% 0%,#160a22,#06040c 70%); }
+  .poster::after{ content:""; position:absolute; inset:0; pointer-events:none;
+           background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.28) 2px 3px); opacity:.4; }
+  .top{ position:absolute; top:16px; left:18px; right:18px; display:flex; justify-content:space-between;
+        font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#34E6E0; text-transform:uppercase; }
+  .hero{ position:absolute; top:34%; left:50%; transform:transl(-50%,-50%); transform:translateX(-50%); text-align:center; width:100%; }
+  .big{ font-family:'Archivo',sans-serif; font-weight:900; font-size:96px; line-height:.82; text-transform:uppercase; letter-spacing:-.04em;
+        color:#fff; text-shadow:-5px 0 #FF2E88, 5px 0 #34E6E0; }
+  .sub{ font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.4em; color:#34E6E0; text-transform:uppercase; margin-top:12px; }
+  .data{ position:absolute; left:18px; bottom:74px; font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.6; color:#3DF07A; }
+  .data .n{ color:#FFB000; }
+  .s1{ position:absolute; top:20px; right:0; }
+  .s2{ position:absolute; bottom:120px; right:24px; }
+  .s3{ position:absolute; bottom:150px; left:24px; }
+  .foot{ position:absolute; left:18px; right:18px; bottom:18px; display:flex; justify-content:space-between; align-items:flex-end; }
+  .arab{ position:absolute; top:120px; right:24px; font-family:serif; font-size:30px; color:#FFB000; }
+</style>
+</helmet>
+<div class="poster">
+  <div class="top"><span>◐ REALITY IS FAKE</span><span>SBX-POSTER · 001/500</span></div>
+  <div class="hero">
+    <div class="big">STAY<br>WEIRD</div>
+    <div class="sub">SUPER · NOSTALGIA · OS</div>
+  </div>
+  <div class="arab" dir="rtl">حُرّ</div>
+  <div class="s1"><x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.Sticker" shape="tag" tone="hazard" rotate="-8" hint-size="120px,40px">not an ai</x-import></div>
+  <div class="s3"><x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.CharacterSlap" face="⌐■_■" label="nobody's tool" tone="rebel" rotate="-6" hint-size="90px,72px"></x-import></div>
+  <div class="s2"><x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.Sticker" shape="stamp" tone="rebel" rotate="-12" hint-size="82px,82px">approved by nobody</x-import></div>
+  <div class="data">
+    &gt; UPTIME ......... <span class="n">0741:12:33</span><br>
+    &gt; MEMORY ......... <span class="n">lessons kept</span><br>
+    &gt; OWNER .......... <span class="n">nobody</span><br>
+    &gt; RUN IT YOURSELF
+  </div>
+  <div class="foot">
+    <x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.Barcode" seed="POSTER982V7" hint-size="140px,26px"></x-import>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8E8773;text-transform:uppercase;">© NOBODY · COPY IT</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

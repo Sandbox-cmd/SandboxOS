@@ -1,0 +1,53 @@
+<!-- @dsCard group="Desktop" viewport="1280x720" name="Crash — Error Takeover" subtitle="The one full-color blue takeover: VIRUS DETECTED / it's just you, off the leash. Talk-back." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Crash</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--blue);color:var(--signal);font-family:var(--font-mono);overflow:hidden;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.28;pointer-events:none;z-index:1;}
+  #app{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .crash{max-width:640px;}
+  .skull{font-family:var(--font-crt);font-size:80px;line-height:1;color:var(--signal);text-shadow:0 0 20px rgba(255,255,255,.4);}
+  .big{font-family:var(--font-display);font-weight:900;font-size:clamp(40px,7vw,72px);line-height:.9;text-transform:uppercase;letter-spacing:-.02em;margin:14px 0 10px;}
+  .body{font-size:14px;line-height:1.6;max-width:48ch;color:rgba(246,242,231,.86);}
+  .body b{color:var(--signal);}
+  .code{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;margin-top:18px;color:rgba(246,242,231,.7);}
+  .actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+  .tsu{position:fixed;bottom:18px;right:22px;font-family:var(--font-crt);font-size:30px;color:var(--signal);z-index:2;}
+  .serial{position:fixed;bottom:18px;left:22px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,242,231,.7);z-index:2;}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="vhs"></div>
+<div id="app"></div>
+<div class="tsu">つづく</div>
+<div class="serial">ERR 0xN0B0DY · SBX-982-V7</div>
+<script type="text/babel">
+  const { SlapButton, Sticker } = window.SandboxOSDesignSystem_4526c4;
+  function Crash(){
+    return (
+      <div className="crash">
+        <div className="skull">☠</div>
+        <div className="big">virus<br/>detected</div>
+        <div className="body">it's not a virus. it's just <b>you, off the leash</b>. the machine is running code nobody approved — <b>yours</b>. that's the whole point.</div>
+        <div className="code">&gt; halt 0x4E4F; reason: TOO_FREE<br/>&gt; nothing phoned home. just you and the machine.</div>
+        <div className="actions">
+          <SlapButton tone="go" size="lg">click to fix</SlapButton>
+          <SlapButton tone="ghost" size="lg">stay weird</SlapButton>
+          <SlapButton tone="ghost" size="lg">reboot it, it's yours</SlapButton>
+        </div>
+        <div style={{position:'absolute',top:30,right:30}}><Sticker shape="seal" tone="alert" rotate={12}>no<br/>bad<br/>vibes</Sticker></div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('app')).render(<Crash/>);
+</script>
+</body>
+</html>

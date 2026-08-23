@@ -1,0 +1,32 @@
+<!-- @dsCard group="Components" viewport="700x260" name="BootCoin (3D)" subtitle="Minted coins — boot token, scar-coins, achievements. Dimension = ownership." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><link rel="stylesheet" href="../../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:20px;font-family:var(--font-mono);}
+  .row{display:flex;gap:30px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .lbl{text-align:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-top:8px;}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { BootCoin } = window.SandboxOSDesignSystem_4526c4;
+  function Demo(){
+    return (
+      <div className="row">
+        <div><BootCoin label="SBX" serial="982-V7" tone="amber"/><div className="lbl">boot token</div></div>
+        <div><BootCoin label="SCAR" glyph="☠" serial="ERR-404" tone="rebel"/><div className="lbl">scar-coin · error-as-celebration</div></div>
+        <div><BootCoin label="100" glyph="✦" serial="builds shipped" tone="green"/><div className="lbl">achievement · hover to spin</div></div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

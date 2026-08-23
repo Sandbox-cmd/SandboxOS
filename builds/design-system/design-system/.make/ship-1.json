@@ -1,0 +1,264 @@
+{
+ "bench": "design-system",
+ "ship": 1,
+ "generated": "2026-07-19T07:37:50Z",
+ "checks_hash": "7d321bb232feaf51809bd5561f72117bdc2d086a8ad341cacbec8e7e41411fd0",
+ "artifacts": [
+  {
+   "path": "CANON.md",
+   "sha256": "73b966f0066ea804d788bfe8911c3961a2fb8c9896296409709a8fc555ba554c"
+  },
+  {
+   "path": "CHANNEL.md",
+   "sha256": "8c9dbad6fa291b6befe5d83e6c40025f3f6dec95e75fdfd324ea8e238cd0ce54"
+  },
+  {
+   "path": "inherited/context.md",
+   "sha256": "24880c1450febeac7c1411d60d696e21a645aa7e499f31cf20fe736d03ad741d"
+  },
+  {
+   "path": "inherited/loud-bootleg-foundation-lock.md",
+   "sha256": "e93f9b1ea925c6e98e28a7e0fb068a5cc679c57f0df7e16ed07076a446ad9532"
+  },
+  {
+   "path": "system/_ds_bundle.js",
+   "sha256": "1fdf62ab6b31cdafdd9625a4309250f27434eaab24d334d2f20036be3c4be515"
+  },
+  {
+   "path": "system/assets/arabic-seal.svg",
+   "sha256": "5cc2c9543df88d0977f0bd00ac1c273597ef6c169bc11d43cf0fd8febe0847de"
+  },
+  {
+   "path": "system/assets/barcode.svg",
+   "sha256": "1e29f28c37e85dbec0f5ceea7c96bd8a7134c5186ea06fc54b6aa48f99bf59ee"
+  },
+  {
+   "path": "system/assets/fonts/anton-400-latin-ext.woff2",
+   "sha256": "ae1a8ac1c2899a66eed47a851201bb78a56664bf8da6d34a9ee226582d15ac19"
+  },
+  {
+   "path": "system/assets/fonts/anton-400-latin.woff2",
+   "sha256": "23aab0b2692a0c89eb7997d3c7cf5bda41276d6cd4ab6cc0edc3edfcece32b09"
+  },
+  {
+   "path": "system/assets/fonts/archivo-400-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-400-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-500-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-500-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-600-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-600-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-700-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-700-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-700i-latin-ext.woff2",
+   "sha256": "71d5c4e5da1cc99cf78fe92f2fb9880dfc03dfef7122b0d1ed1d56f25452e824"
+  },
+  {
+   "path": "system/assets/fonts/archivo-700i-latin.woff2",
+   "sha256": "e1989a5727374fcd299979407c8087669ca223f5281f8645891e5400f3e61aeb"
+  },
+  {
+   "path": "system/assets/fonts/archivo-800-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-800-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-900-latin-ext.woff2",
+   "sha256": "a999e009fdcd0f939c138e04043b3b2ad083b26252b644e8f94c083d48b77af0"
+  },
+  {
+   "path": "system/assets/fonts/archivo-900-latin.woff2",
+   "sha256": "7150c0ec5ad356453013d11affec1fbab95de0dd2dcecb043b4f1cb7f87c4ba4"
+  },
+  {
+   "path": "system/assets/fonts/archivo-900i-latin-ext.woff2",
+   "sha256": "71d5c4e5da1cc99cf78fe92f2fb9880dfc03dfef7122b0d1ed1d56f25452e824"
+  },
+  {
+   "path": "system/assets/fonts/archivo-900i-latin.woff2",
+   "sha256": "e1989a5727374fcd299979407c8087669ca223f5281f8645891e5400f3e61aeb"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-400-latin-ext.woff2",
+   "sha256": "9c38cb2d0d2d93c1ee6e21fa78db76f13ea7e15e15cc64214c7ca89b6aaa35c4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-400-latin.woff2",
+   "sha256": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-400i-latin-ext.woff2",
+   "sha256": "3c6c272187a97d8e519af98b6c1255dc02108ef26e3b4bef205e3021128d7dc2"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-400i-latin.woff2",
+   "sha256": "e3918da535efc38ebdd4e5d2748de8ecf317e930bb74cd600e8e290ca271fc82"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-500-latin-ext.woff2",
+   "sha256": "9c38cb2d0d2d93c1ee6e21fa78db76f13ea7e15e15cc64214c7ca89b6aaa35c4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-500-latin.woff2",
+   "sha256": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-700-latin-ext.woff2",
+   "sha256": "9c38cb2d0d2d93c1ee6e21fa78db76f13ea7e15e15cc64214c7ca89b6aaa35c4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-700-latin.woff2",
+   "sha256": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-700i-latin-ext.woff2",
+   "sha256": "3c6c272187a97d8e519af98b6c1255dc02108ef26e3b4bef205e3021128d7dc2"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-700i-latin.woff2",
+   "sha256": "e3918da535efc38ebdd4e5d2748de8ecf317e930bb74cd600e8e290ca271fc82"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-800-latin-ext.woff2",
+   "sha256": "9c38cb2d0d2d93c1ee6e21fa78db76f13ea7e15e15cc64214c7ca89b6aaa35c4"
+  },
+  {
+   "path": "system/assets/fonts/jetbrainsmono-800-latin.woff2",
+   "sha256": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4"
+  },
+  {
+   "path": "system/assets/fonts/silkscreen-400-latin-ext.woff2",
+   "sha256": "5ae60a8bb15c2065126fdf5af9912cd548be48fd43f19d543b69b95ee0314240"
+  },
+  {
+   "path": "system/assets/fonts/silkscreen-400-latin.woff2",
+   "sha256": "17bb6d80eeea10c69887aa64a1b48e70a3f540de50480da9ec933fac1996bf97"
+  },
+  {
+   "path": "system/assets/fonts/silkscreen-700-latin-ext.woff2",
+   "sha256": "1bec363fff2816f3a27a015e2bdc8005d2cdab5909ce1208d863ed6482c492cd"
+  },
+  {
+   "path": "system/assets/fonts/silkscreen-700-latin.woff2",
+   "sha256": "30ad65d8dff39d9154b3e43fedfaeaea9767468238ea633272304b6fc82bdca7"
+  },
+  {
+   "path": "system/assets/fonts/vt323-400-latin-ext.woff2",
+   "sha256": "dcbaf698a44537496c6d2774f775af8b6f382d9f1773f1b408bd01fe515ae8bc"
+  },
+  {
+   "path": "system/assets/fonts/vt323-400-latin.woff2",
+   "sha256": "043a60145af2ddbcd0a6452625cb0bfc4e18b222c76dcd1d4a0106715472faba"
+  },
+  {
+   "path": "system/assets/mark.svg",
+   "sha256": "3813689cbcc9d6b1f98cdb954d3be697ebf3c4bafbd926eb5b10b592f3c86883"
+  },
+  {
+   "path": "system/assets/sticker-burst.svg",
+   "sha256": "d4a1d9debdc4b0bfdca63ec9bdfe7fa20ab81cae9f4f6a8d45adb41854253b58"
+  },
+  {
+   "path": "system/assets/sticker-hazard.svg",
+   "sha256": "bc7ba1a947eadaa8e3f6e3fb40c6b278c80ce4847aefbfd0a7cd53557c8767d3"
+  },
+  {
+   "path": "system/assets/sticker-seal.svg",
+   "sha256": "37221691f109b9993adde9d7030ae360ce0851ddc414624ed2d4248a92b25193"
+  },
+  {
+   "path": "system/assets/wordmark.svg",
+   "sha256": "69d2d992b21cee09cc1e30e834772a6c70d27f7cda296c7dcd9460810355be25"
+  },
+  {
+   "path": "system/lib/dither.js",
+   "sha256": "31254d5b34951c0207ec49bb5529f17de53f251596bc985186862a6122a115c3"
+  },
+  {
+   "path": "system/lib/fx.js",
+   "sha256": "1cad332b2ab2bb19dc121f43841ee0b125ad9418f676de8fc574c05453bb29aa"
+  },
+  {
+   "path": "system/lib/sound.js",
+   "sha256": "395e436ac96800c1c948d24ddfb7ff499d37f11134d876d1d4de87b15b1be7d5"
+  },
+  {
+   "path": "system/lib/substrate.js",
+   "sha256": "db1fed42e38fba89f6a5e2f1e0a50d68b8b897960c8de98524f285cf56499075"
+  },
+  {
+   "path": "system/mint/README.md",
+   "sha256": "f6033114dcdbe86368dbad93914068602c0c6024243ef7907c488cfdcecd224b"
+  },
+  {
+   "path": "system/mint/chrome.css",
+   "sha256": "9fdcf7db23a2a03db91cb62de0812d6d32239a1cc6ef2bbee63b67114c7331c1"
+  },
+  {
+   "path": "system/mint/chrome.html",
+   "sha256": "fe8745b272ba7da7b19f2937de596b969fb01273da2e0d743de8c1bc29fcdd3e"
+  },
+  {
+   "path": "system/mint/site-kit.css",
+   "sha256": "56abd41054f1f7d5f5016647b5edd0850fb4e5b3d78f870b47c1cfc71646dd6e"
+  },
+  {
+   "path": "system/mint/site-kit.html",
+   "sha256": "5111d1af3dc34924c732196d10aa609fa4e3ac5e3ae1ebd86f58535dc8f1f87c"
+  },
+  {
+   "path": "system/styles.css",
+   "sha256": "d1da2795f649a629af23b545ee57c3d3a7df1c9bd4dfcd5e6b484cdc048485ee"
+  },
+  {
+   "path": "system/tokens/base.css",
+   "sha256": "211bca4950d44d5a6d4d790d91211a4f47534b6d7b3598a68bc66bd403fb3b3a"
+  },
+  {
+   "path": "system/tokens/colors.css",
+   "sha256": "dfdd4b08e1ce33266754a2f4941e60f33c96f2ad8582fe8c637e65106b1e7b45"
+  },
+  {
+   "path": "system/tokens/effects.css",
+   "sha256": "a869031dc465dec79887d33a2d570899ff49a0608fcdea7b59a5cbfa0e33d6b7"
+  },
+  {
+   "path": "system/tokens/fonts.css",
+   "sha256": "61d4ca6a7ed95b86cc2d3bf9e6c486bf9e39becbc02087908cff4279a8a36d61"
+  },
+  {
+   "path": "system/tokens/responsive.css",
+   "sha256": "b7c91050055e75e695c4b5de7de43aee6b2bf1f8c157d5a95b31254f40d0cfdf"
+  },
+  {
+   "path": "system/tokens/typography.css",
+   "sha256": "f0e2f4b2df94657743525946358eb5127160b221d08cf995c4c3d41246dfe5a2"
+  }
+ ]
+}

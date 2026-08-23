@@ -1,0 +1,209 @@
+<!-- @dsCard group="Desktop" viewport="1280x720" name="SandboxOS Desktop" subtitle="Boot → workbench → cartridge shelf → terminal. Composes the real components on the dither fabric." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Desktop</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);overflow:hidden;}
+  #stage{position:fixed;inset:0;}
+  #fabric{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:absolute;inset:0;background:var(--fx-scanlines);opacity:.35;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  #app{position:absolute;inset:0;z-index:2;}
+  #cur{position:fixed;z-index:9999;pointer-events:none;font-family:var(--font-crt);font-size:22px;color:var(--magenta);text-shadow:0 0 8px var(--glow-magenta);transform:translate(-2px,-5px);}
+  *{cursor:none;}
+  /* top bar */
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:var(--signal);color:var(--ink);font-weight:700;font-size:11px;padding:3px 12px;letter-spacing:.05em;text-transform:uppercase;}
+  .topbar .l{display:flex;gap:14px;align-items:center;}
+  .desk{position:absolute;inset:30px 0 0;}
+  .win-drag{position:absolute;}
+  .shelf{position:absolute;right:26px;top:50px;display:flex;gap:2px;}
+  .shelf-lbl{position:absolute;right:26px;top:18px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash-400);}
+  .terminal{position:absolute;left:30px;bottom:28px;width:430px;}
+  .term-log{font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--green);text-shadow:0 0 6px var(--glow-green);margin-bottom:8px;min-height:80px;}
+  .term-log .dim{color:var(--green-deep);}
+  .slaps{position:absolute;left:30px;top:60px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;}
+  .corner{position:absolute;right:26px;bottom:26px;display:flex;align-items:center;gap:12px;}
+  /* boot */
+  .boot{position:absolute;inset:0;background:var(--crt-black);z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;}
+  .boot .wm{font-family:var(--font-crt);font-size:64px;color:var(--amber);text-shadow:0 0 18px var(--glow-amber);letter-spacing:.04em;}
+  .boot .face{font-family:var(--font-crt);font-size:30px;color:var(--magenta);text-shadow:0 0 10px var(--glow-magenta);}
+  .fade{transition:opacity .5s;}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../lib/substrate.js"></script>
+<script src="../../lib/sound.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fabric"></canvas>
+  <div id="vhs"></div>
+  <div id="app"></div>
+</div>
+<div id="cur">▸</div>
+
+<script>
+  // dither fabric
+  window.__sub = window.SandboxSubstrate.mount(document.getElementById('fabric'), { cell: 4, mood: 'jailbroken' });
+  window.__snd = window.SandboxSound.create();
+  (function(){ var sub = window.__sub, snd = window.__snd;
+  const c=document.getElementById('cur');
+  addEventListener('mousemove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';});
+  addEventListener('mousedown',e=>{c.textContent='✶';c.style.color='var(--cyan)';sub.poke(e.clientX,e.clientY);snd.click();});
+  addEventListener('mouseup',()=>{c.textContent='▸';c.style.color='var(--magenta)';});
+  let buf='';const words={build:'BUILD',weird:'WEIRD',rebel:'REBEL',ship:'SHIP',vibes:'VIBES'};
+  addEventListener('keydown',e=>{buf=(buf+e.key).slice(-6).toLowerCase();for(const k in words)if(buf.endsWith(k))sub.surface(words[k]);});
+  })();
+</script>
+
+<script type="text/babel">
+const { Window, Dialog, SlapButton, Sticker, Barcode, Cartridge, Toast, Loader, Field, FaceToggle, GhostEye, Switch } = window.SandboxOSDesignSystem_4526c4;
+const sub = window.__sub, snd = window.__snd;
+const { useState, useRef } = React;
+
+function Draggable({ x, y, z, onFocus, children }) {
+  const [p, setP] = useState({ x, y });
+  const ref = useRef(null);
+  function down(e) {
+    if (e.target.closest('button,input')) return;
+    onFocus && onFocus();
+    const sx = e.clientX - p.x, sy = e.clientY - p.y;
+    const mv = (ev) => setP({ x: ev.clientX - sx, y: ev.clientY - sy });
+    const up = () => { window.removeEventListener('mousemove', mv); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', mv); window.addEventListener('mouseup', up);
+  }
+  return <div className="win-drag" style={{ left: p.x, top: p.y, zIndex: z }} onMouseDown={down}>{children}</div>;
+}
+
+function Boot({ onDone }) {
+  const [step, setStep] = useState(0);
+  const [out, setOut] = useState(false);
+  React.useEffect(() => {
+    const seq = [400, 900, 1500, 2100];
+    const ids = seq.map((ms, i) => setTimeout(() => setStep(i + 1), ms));
+    const done = setTimeout(() => { setOut(true); setTimeout(onDone, 500); }, 2900);
+    return () => { ids.forEach(clearTimeout); clearTimeout(done); };
+  }, []);
+  return (
+    <div className="boot fade" style={{ opacity: out ? 0 : 1 }}>
+      <div className="wm">▚ SANDBOX·OS</div>
+      <div className="term-log" style={{ textAlign: 'center', minHeight: 70 }}>
+        {step >= 1 && <div className="dim">&gt; warming up the workbench…</div>}
+        {step >= 2 && <div className="dim">&gt; memory: the bugs you beat, kept</div>}
+        {step >= 3 && <div className="dim">&gt; running local · just you and the machine</div>}
+        {step >= 4 && <div style={{ color: 'var(--amber)' }}>&gt; ready. nobody's tool.</div>}
+      </div>
+      {step >= 2 && <GhostEye size={150} watch={false} />}
+    </div>
+  );
+}
+
+function Desktop() {
+  const [booted, setBooted] = useState(false);
+  const [focus, setFocus] = useState(2);
+  const [toast, setToast] = useState(null);
+  const [log, setLog] = useState(['> system idle. what are we building?']);
+  const [cmd, setCmd] = useState('');
+  const [installed, setInstalled] = useState(false);
+  const [mood, setMood] = useState('jailbroken');
+  const [sound, setSound] = useState(false);
+
+  function fire(t) { setToast(t); setTimeout(() => setToast(null), 3200); }
+  function pickMood(m) { setMood(m); sub && sub.setMood(m); snd && snd.slap(); }
+  function run() {
+    if (!cmd.trim()) return;
+    setLog(l => [...l, '> ' + cmd, '  built. it\'s yours.'].slice(-6));
+    setCmd(''); snd && snd.install();
+    fire({ tone: 'ok', glyph: '✓', title: 'built', body: '"' + (cmd.slice(0, 18)) + '" assembled.' });
+  }
+
+  return (
+    <div>
+      <div className="topbar">
+        <div className="l"><span>▚ SANDBOX_OS</span><span style={{ opacity: .6 }}>UNLICENSED</span>
+          <span style={{ display:'flex', gap:6 }}>
+            {['jailbroken','workbench','afterhours'].map(m => (
+              <button key={m} onClick={() => pickMood(m)} style={{ font:'inherit', textTransform:'uppercase', fontSize:9, letterSpacing:'.08em', cursor:'pointer', border:'1.5px solid var(--ink)', padding:'1px 6px', background: mood===m?'var(--ink)':'transparent', color: mood===m?'var(--signal)':'var(--ink)' }}>{m}</button>
+            ))}
+          </span>
+        </div>
+        <div style={{ display:'flex', gap:12, alignItems:'center' }}><Switch label="sound" checked={sound} onChange={v => { setSound(v); snd && snd.enable(v); }} /><span>THANK YOU FOR USING</span></div>
+      </div>
+
+      {!booted && <Boot onDone={() => setBooted(true)} />}
+
+      {booted && (
+        <div className="desk">
+          {/* left slaps */}
+          <div className="slaps">
+            <Sticker shape="tag" tone="hazard" rotate={-4}>build it</Sticker>
+            <Sticker shape="seal" tone="rebel" rotate={-7}>nobody's<br/>tool</Sticker>
+          </div>
+
+          {/* cartridge shelf */}
+          <div className="shelf-lbl">cartridge shelf — your builds</div>
+          <div className="shelf">
+            <Cartridge title={"Career\nOps"} subtitle="build" kind="build" width={104} />
+            <Cartridge title={"Mind\nLoop"} subtitle="skill" kind="skill" serial="042/500" width={104} />
+            <Cartridge title={"Night\nShift"} subtitle="persona" kind="persona" serial="007/500" width={104} />
+          </div>
+
+          {/* draggable windows */}
+          <Draggable x={300} y={70} z={focus === 1 ? 50 : 10} onFocus={() => setFocus(1)}>
+            <Dialog title="WONDER.TXT" onClose={() => {}} glyph="⌐■_■"
+              actions={[{ label: 'build local', tone: 'go', onClick: () => fire({ tone: 'rebel', glyph: '✦', title: 'building local', body: 'on your metal. no permission asked.' }) }, { label: 'later', tone: 'ghost' }]}>
+              <div style={{ width: 220 }}>ever wonder why they want it on <i>their</i> server?<br/>they're afraid of a maker.</div>
+            </Dialog>
+          </Draggable>
+
+          <Draggable x={470} y={250} z={focus === 2 ? 50 : 10} onFocus={() => setFocus(2)}>
+            <Window title="CARTRIDGE.SLOT" onClose={() => {}}>
+              <div style={{ width: 250 }}>
+                <div style={{ fontSize: 11, color: 'var(--ash-300)', marginBottom: 10 }}>drop a build to plug it into your sandbox.</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <SlapButton tone={installed ? 'ok' : 'go'} size="sm" onClick={() => { setInstalled(true); fire({ tone: 'ok', glyph: '✓', title: 'installed', body: 'Career Ops · 001/500. run it.' }); }}>
+                    {installed ? '✓ installed' : '↓ install'}
+                  </SlapButton>
+                  <SlapButton tone="ghost" size="sm" onClick={() => fire({ tone: 'info', glyph: '↗', title: 'shared', body: 'link copied. fork away.' })}>↗ share</SlapButton>
+                </div>
+                <div style={{ marginTop: 12 }}><Barcode seed="982V7DX76" /></div>
+              </div>
+            </Window>
+          </Draggable>
+
+          {/* terminal */}
+          <div className="terminal">
+            <div className="term-log">
+              {log.map((l, i) => <div key={i} className={l.startsWith('>') ? '' : 'dim'}>{l}</div>)}
+            </div>
+            <Field prefix="$" placeholder="build a thing…" value={cmd}
+              onChange={e => setCmd(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') run(); }} />
+          </div>
+
+          {/* corner: focus toggle + loader */}
+          <div className="corner">
+            <GhostEye size={92} watch />
+            <Loader value={installed ? 100 : 66} label={installed ? 'READY' : 'BUILDING'} width={170} />
+            <FaceToggle />
+          </div>
+
+          {/* toast */}
+          {toast && (
+            <div style={{ position: 'absolute', left: '50%', bottom: 36, transform: 'translateX(-50%)', zIndex: 80 }}>
+              <Toast tone={toast.tone} glyph={toast.glyph} title={toast.title}>{toast.body}</Toast>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('app')).render(<Desktop/>);
+</script>
+</body>
+</html>

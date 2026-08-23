@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Deep Study IV (10 fresh)</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { margin:0; background:#1d1b16; color:var(--text); font-family:var(--font-sans);
+         background-image:radial-gradient(#28251f 1px,transparent 1px); background-size:22px 22px; }
+  .page { max-width:1440px; margin:0 auto; padding:54px 40px 110px; }
+  .head .kick { font-family:var(--font-mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--cyan); }
+  .head h1 { font-family:var(--font-display); font-weight:900; font-size:40px; letter-spacing:-.02em; color:var(--signal); margin:10px 0 8px; }
+  .head p { max-width:80ch; color:var(--ash-300); font-size:15px; } .head p b{ color:var(--signal); }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:54px 42px; margin-top:44px; }
+  .cap { display:flex; align-items:baseline; gap:10px; margin-bottom:13px; }
+  .cap .no{ font-family:var(--font-poster); font-size:22px; color:var(--signal); }
+  .cap .nm{ font-family:var(--font-display); font-weight:800; font-size:17px; text-transform:uppercase; letter-spacing:.04em; color:var(--signal); }
+  .cap .dsc{ font-family:var(--font-mono); font-size:10px; color:var(--ash-400); margin-left:auto; text-transform:uppercase; letter-spacing:.08em; }
+  .poster { position:relative; aspect-ratio:4/5; overflow:hidden; border:2px solid var(--ink); box-shadow:8px 8px 0 rgba(0,0,0,.5); }
+  .scan::after{ content:""; position:absolute; inset:0; pointer-events:none; background:var(--fx-scanlines); opacity:.4; mix-blend-mode:multiply; }
+  .barcode{ display:flex; gap:2px; align-items:stretch; } .barcode i{ display:block; background:currentColor; }
+  .win-mono{ border:2px solid #fff; background:#0c0c0c; } .win-mono .tb{ background:#fff; color:#0c0c0c; font-family:var(--font-mono); font-weight:700; font-size:10px; padding:2px 6px; display:flex; justify-content:space-between; }
+
+  /* 17 BOOTLEG BRAND-84 */
+  .d17{ background:#000; padding:22px; display:flex; flex-direction:column; font-family:var(--font-mono); }
+  .d17 .ty{ font-size:12px; letter-spacing:.18em; color:var(--ash-400); text-transform:uppercase; }
+  .d17 .logo{ margin:auto 0; text-align:center; }
+  .d17 .logo b{ font-family:var(--font-display); font-weight:900; font-size:58px; letter-spacing:-.03em; display:inline-block;
+     background:linear-gradient(180deg,#eaf4ff,#9fd0ff 45%,#0a5bd3 55%,#072a66 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .d17 .stripes{ height:34px; margin:6px auto 0; width:78%;
+     background:repeating-linear-gradient(0deg,var(--cyan) 0 3px,transparent 3px 9px); mask:linear-gradient(180deg,#000,transparent); }
+  .d17 .sel{ font-size:12.5px; color:var(--cyan); line-height:1.7; margin-top:6px; }
+  .d17 .sel .a{ color:var(--green); }
+  .d17 .foot{ font-size:11px; color:var(--green); line-height:1.6; border-top:1px solid #103a22; padding-top:8px; }
+  .d17 .prog{ height:10px; width:60%; border:1px solid var(--green-deep); background:repeating-linear-gradient(90deg,var(--green) 0 7px,transparent 7px 10px); margin-top:5px; }
+  .d17 .jp{ position:absolute; top:22px; right:22px; color:var(--alert); font-size:11px; }
+
+  /* 18 CEEFAX PAGE */
+  .d18{ background:#0b1ed1; padding:0; font-family:var(--font-crt); }
+  .d18 .bar{ background:#000; color:#fff; font-size:18px; padding:3px 10px; display:flex; justify-content:space-between; letter-spacing:.04em; }
+  .d18 .bar .y{ color:var(--hazard); }
+  .d18 .h{ font-size:54px; line-height:.86; padding:14px 12px 6px; color:#fff; text-transform:uppercase; }
+  .d18 .h .y{ color:var(--hazard); } .d18 .h .c{ color:var(--cyan); }
+  .d18 .idx{ padding:6px 12px; color:#fff; font-size:21px; line-height:1.3; }
+  .d18 .idx .n{ color:var(--hazard); } .d18 .idx .d{ color:#6f8cff; }
+  .d18 .mascot{ position:absolute; top:96px; right:16px; display:grid; grid-template-columns:repeat(5,9px); grid-auto-rows:9px; gap:0; }
+  .d18 .mascot i{ background:var(--hazard); } .d18 .mascot i.o{ background:transparent; }
+  .d18 .ty{ position:absolute; left:12px; right:12px; bottom:44px; background:var(--green); color:#000; text-align:center; font-size:22px; letter-spacing:.16em; padding:2px; }
+  .d18 .fast{ position:absolute; left:12px; right:12px; bottom:14px; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .d18 .fast div{ height:16px; } .d18 .fast span{ }
+
+  /* 19 MONO DIALOG STACK */
+  .d19{ background:#0c0c0c; }
+  .d19 .field{ position:absolute; inset:0; opacity:.4; background:radial-gradient(#fff 30%,transparent 31%) 0 0/4px 4px; mask:linear-gradient(135deg,#000,transparent 60%); }
+  .d19 .w{ position:absolute; } .d19 .w .bd{ color:#fff; font-family:var(--font-mono); font-size:11px; padding:9px 10px; line-height:1.45; }
+  .d19 .a{ top:18px; left:16px; width:180px; transform:rotate(-2deg); z-index:3; }
+  .d19 .b{ top:120px; right:14px; width:190px; transform:rotate(2deg); z-index:5; }
+  .d19 .c{ bottom:96px; left:24px; width:200px; transform:rotate(-1.5deg); z-index:6; }
+  .d19 .smiley{ font-size:14px; } .d19 .pxbtn{ display:inline-block; border:1.5px solid #fff; padding:2px 8px; font-family:var(--font-display); font-weight:900; font-size:10px; margin-top:5px; box-shadow:2px 2px 0 #fff; }
+  .d19 .bc{ position:absolute; bottom:54px; right:30px; color:#fff; z-index:7; }
+  .d19 .tsu{ position:absolute; bottom:16px; left:50%; transform:translateX(-50%); font-family:var(--font-crt); font-size:26px; color:#fff; border:2px solid #fff; padding:1px 12px; z-index:8; }
+
+  /* 20 LURKING TEXT-EDITOR */
+  .d20{ background:#04120a; padding:0; font-family:var(--font-mono); color:var(--green); }
+  .d20 .menu{ background:#0a1f12; border-bottom:1px solid #14502c; font-size:11px; padding:3px 8px; color:var(--green); display:flex; gap:14px; }
+  .d20 .body{ padding:16px; }
+  .d20 .img{ width:150px; height:96px; float:right; margin:0 0 8px 12px; border:1px solid #14502c; position:relative; overflow:hidden; background:#06170d; }
+  .d20 .img::before{ content:""; position:absolute; inset:0; background:radial-gradient(var(--green) 30%,transparent 31%) 0 0/4px 4px; mask:radial-gradient(50% 60% at 50% 45%,#000 30%,transparent 70%); opacity:.7; }
+  .d20 .img span{ position:absolute; bottom:3px; left:4px; font-size:8px; color:var(--green-deep); }
+  .d20 .txt{ font-size:13px; line-height:1.8; text-shadow:0 0 7px var(--glow-green); }
+  .d20 .cur{ background:var(--green); color:#04120a; animation:sbx-blink 1.1s steps(1) infinite; }
+  .d20 .status{ position:absolute; left:0; right:0; bottom:0; background:#0a1f12; border-top:1px solid #14502c; font-size:10px; padding:3px 8px; color:var(--green-deep); display:flex; justify-content:space-between; }
+
+  /* 21 AMBER WIREFRAME PANEL */
+  .d21{ background:#070500; padding:18px; font-family:var(--font-mono); color:var(--amber); }
+  .d21 .reg{ position:absolute; width:14px; height:14px; border:1px solid var(--amber); }
+  .d21 .reg.tl{top:9px;left:9px;border-right:0;border-bottom:0;} .d21 .reg.tr{top:9px;right:9px;border-left:0;border-bottom:0;}
+  .d21 .reg.bl{bottom:9px;left:9px;border-right:0;border-top:0;} .d21 .reg.brr{bottom:9px;right:9px;border-left:0;border-top:0;}
+  .d21 .ttl{ font-family:var(--font-display); font-weight:900; font-size:18px; letter-spacing:.02em; text-transform:uppercase; text-shadow:0 0 8px var(--glow-amber); }
+  .d21 .sub{ font-size:10px; color:var(--amber-deep); letter-spacing:.14em; margin-bottom:14px; }
+  .d21 table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .d21 td{ border:1px solid var(--amber-deep); padding:7px 8px; }
+  .d21 td .k{ color:var(--amber-deep); font-size:9px; display:block; letter-spacing:.1em; }
+  .d21 td .v{ color:var(--amber); text-shadow:0 0 6px var(--glow-amber); }
+  .d21 .ok{ color:var(--green); }
+  .d21 .foot{ position:absolute; left:18px; right:18px; bottom:16px; display:flex; justify-content:space-between; font-size:10px; color:var(--amber-deep); letter-spacing:.1em; }
+
+  /* 22 FALLOUT STAT */
+  .d22{ background:#040d07; padding:14px; font-family:var(--font-mono); color:var(--green); }
+  .d22 .tabs{ display:flex; gap:0; border-bottom:2px solid var(--green); font-size:12px; }
+  .d22 .tabs span{ padding:3px 10px; letter-spacing:.1em; } .d22 .tabs .on{ background:var(--green); color:#040d07; font-weight:700; }
+  .d22 .h2{ font-size:11px; letter-spacing:.14em; color:var(--green-deep); margin:10px 0; }
+  .d22 .body{ display:flex; gap:12px; }
+  .d22 .attrs{ flex:1; }
+  .d22 .attr{ display:flex; align-items:center; gap:8px; margin-bottom:9px; font-size:12px; }
+  .d22 .attr .nm{ width:64px; text-transform:uppercase; }
+  .d22 .attr .bar{ flex:1; height:9px; display:flex; gap:2px; }
+  .d22 .attr .bar i{ flex:1; border:1px solid var(--green-deep); } .d22 .attr .bar i.f{ background:var(--green); }
+  .d22 .fig{ width:96px; border:1px solid #103a1f; position:relative; }
+  .d22 .fig::before{ content:""; position:absolute; inset:0; background:radial-gradient(var(--green) 22%,transparent 23%) 0 0/5px 5px; mask:radial-gradient(46% 64% at 50% 40%,#000 40%,transparent 72%); opacity:.8; }
+  .d22 .fig span{ position:absolute; bottom:4px; left:0; right:0; text-align:center; font-size:8px; color:var(--green-deep); }
+  .d22 .foot{ position:absolute; left:14px; right:14px; bottom:12px; font-size:10px; color:var(--green-deep); display:flex; justify-content:space-between; letter-spacing:.1em; }
+
+  /* 23 MOOD ORGAN */
+  .d23{ background:#06122e; padding:18px; font-family:var(--font-crt); color:#bcd0ff; }
+  .d23 .ttl{ font-size:24px; color:#fff; letter-spacing:.04em; border-bottom:1px solid #2a4a9a; padding-bottom:6px; }
+  .d23 .body{ display:flex; gap:14px; margin-top:14px; }
+  .d23 .presets{ font-size:19px; line-height:1.5; }
+  .d23 .presets .on{ color:var(--hazard); }
+  .d23 .seg{ flex:1; text-align:center; }
+  .d23 .seg .big{ font-size:78px; line-height:.8; color:var(--cyan); text-shadow:0 0 16px var(--glow-cyan); }
+  .d23 .desc{ font-size:18px; line-height:1.15; margin-top:8px; color:#fff; }
+  .d23 .dial{ position:absolute; left:18px; bottom:46px; width:52px; height:52px; border-radius:50%; border:2px solid #4a6ad0; display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; }
+  .d23 .city{ position:absolute; left:0; right:0; bottom:14px; height:26px; background:repeating-linear-gradient(90deg,transparent 0 6px,#2a4a9a 6px 8px,transparent 8px 16px,#2a4a9a 16px 19px); mask:linear-gradient(0deg,#000,transparent); }
+
+  /* 24 NEORETRO TRACKLIST */
+  .d24{ background:#0a0410; padding:18px; font-family:var(--font-mono); color:var(--signal); }
+  .d24 .ttl{ font-family:var(--font-display); font-weight:900; font-size:16px; letter-spacing:.04em; color:var(--magenta); text-transform:uppercase; }
+  .d24 .sub{ font-size:10px; color:var(--ash-400); letter-spacing:.14em; margin-bottom:12px; }
+  .d24 .list{ font-size:11.5px; line-height:1.75; }
+  .d24 .list .n{ color:var(--magenta); }
+  .d24 .wire{ position:absolute; right:-30px; top:120px; width:220px; height:220px;
+     background:
+       repeating-linear-gradient(0deg,transparent 0 18px,color-mix(in srgb,var(--cyan) 60%,transparent) 18px 19px),
+       repeating-linear-gradient(90deg,transparent 0 18px,color-mix(in srgb,var(--magenta) 60%,transparent) 18px 19px);
+     border:2px solid var(--magenta); transform:perspective(500px) rotateX(18deg) rotateZ(-12deg);
+     box-shadow:0 0 40px color-mix(in srgb,var(--magenta) 40%,transparent); }
+  .d24 .wire::after{ content:"CARTRIDGE A1"; position:absolute; left:8px; top:8px; font-size:9px; color:var(--cyan); letter-spacing:.1em; }
+  .d24 .foot{ position:absolute; left:18px; bottom:16px; font-size:10px; color:var(--ash-400); letter-spacing:.12em; }
+
+  /* 25 CHARACTER POSTER */
+  .d25{ background:linear-gradient(160deg,#1a0a26,#2a0f3d 50%,#0a1430); padding:0; }
+  .d25 .wash{ position:absolute; inset:0; background:radial-gradient(70% 50% at 70% 80%, rgba(255,46,136,.45), transparent 60%), radial-gradient(60% 50% at 20% 20%, rgba(52,230,224,.25), transparent 60%); }
+  .d25 .jp{ position:absolute; top:20px; left:18px; font-family:var(--font-mono); writing-mode:vertical-rl; font-size:26px; letter-spacing:.1em; color:#fff; text-shadow:0 0 10px var(--glow-magenta); }
+  .d25 .slot{ position:absolute; top:36px; right:24px; bottom:120px; width:54%; border:1px dashed rgba(255,255,255,.3); overflow:hidden; }
+  .d25 .slot::before{ content:""; position:absolute; inset:0; background:radial-gradient(rgba(255,255,255,.6) 22%,transparent 23%) 0 0/6px 6px; mask:radial-gradient(40% 70% at 55% 45%,#000 30%,transparent 72%); opacity:.25; }
+  .d25 .slot span{ position:absolute; bottom:8px; left:0; right:0; text-align:center; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; color:rgba(255,255,255,.65); }
+  .d25 .dlg{ position:absolute; top:30px; right:30px; background:var(--blue); border:2px solid #fff; padding:5px 8px; font-family:var(--font-mono); font-size:10px; color:#fff; z-index:4; transform:rotate(3deg); }
+  .d25 .dlg b{ display:block; } .d25 .dlg .btn{ display:inline-block; background:#fff; color:var(--ink); padding:0 6px; font-weight:700; margin-top:3px; }
+  .d25 .title{ position:absolute; left:18px; right:18px; bottom:42px; }
+  .d25 .title b{ font-family:var(--font-display); font-weight:900; font-size:46px; line-height:.86; color:#fff; text-transform:uppercase; text-shadow:0 0 24px var(--glow-magenta); display:block; }
+  .d25 .title small{ font-family:var(--font-mono); font-size:10px; color:#d7b8ff; letter-spacing:.12em; }
+
+  /* 26 KAWAII DEVICE */
+  .d26{ background:#16121f; display:flex; align-items:center; justify-content:center; }
+  .d26 .dev{ width:78%; background:linear-gradient(160deg,#2a2440,#171327); border:3px solid #0a0810; border-radius:18px; padding:16px; box-shadow:0 0 0 2px #3de0e8 inset, 8px 8px 0 rgba(0,0,0,.5); }
+  .d26 .scr{ background:#0a1a1a; border:2px solid #0a0810; border-radius:8px; padding:12px; }
+  .d26 .pet{ text-align:center; }
+  .d26 .pet .face{ font-family:var(--font-crt); font-size:44px; color:#3de0e8; line-height:1; text-shadow:0 0 12px rgba(61,224,232,.6); }
+  .d26 .pet .nm{ font-family:var(--font-pixel); font-size:9px; color:#ff6fc0; margin-top:4px; }
+  .d26 .bars{ margin-top:12px; font-family:var(--font-mono); font-size:9px; color:#9fe; }
+  .d26 .b{ display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+  .d26 .b .l{ width:64px; text-transform:uppercase; letter-spacing:.06em; color:#7fd; }
+  .d26 .b .t{ flex:1; height:8px; border:1px solid #2a5a5a; } .d26 .b .t i{ display:block; height:100%; }
+  .d26 .icons{ display:flex; gap:6px; justify-content:center; margin-top:12px; }
+  .d26 .icons div{ width:30px; height:30px; border:2px solid #0a0810; border-radius:6px; background:#ff6fc0; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .d26 .icons div:nth-child(2){ background:#3de0e8; } .d26 .icons div:nth-child(3){ background:var(--hazard); } .d26 .icons div:nth-child(4){ background:#bfa; }
+  .d26 .lbl{ text-align:center; font-family:var(--font-pixel); font-size:8px; color:#ff6fc0; margin-top:10px; }
+
+  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div class="kick">SANDBOXOS · DEEP STUDY · 004 · MINED FROM THE BOARD</div>
+    <h1>Ten more — pulled tile-by-tile from the moodboard.</h1>
+    <p>Built around your locked-in taste (<b>05·07·08·09·16</b> — raw, limited-ink, talk-back, owned), each of these lifts a specific tile: <b>bootleg-84 rebrand</b>, <b>CEEFAX page</b>, <b>1-bit dialog stack</b>, <b>lurking text-editor</b>, <b>Aliens amber panel</b>, <b>S.P.E.C.I.A.L. sheet</b>, <b>mood-organ dial</b>, <b>cartridge tracklist</b>, the <b>character poster</b>, and a <b>kawaii pet device</b>. Tell me which 2–3 to fuse into the real system.</p>
+  </div>
+  <div class="grid">
+
+    <!-- 17 -->
+    <div><div class="cap"><span class="no">17</span><span class="nm">Bootleg Brand-84</span><span class="dsc">bell-atlantic · thank you for using</span></div>
+      <div class="poster d17 scan">
+        <div class="ty">THANK YOU FOR USING</div>
+        <div class="jp">アメリカ製 2026</div>
+        <div class="logo"><b>SANDBOX·OS</b><div class="stripes"></div></div>
+        <div class="sel">SELECT BUILD<br><span class="a">▸</span> [LOCAL].BOOTLEG.OWNED<br>RATE 0.0001 SBX/MIN</div>
+        <div class="foot">WEATHER REPORT HOTLINE:<br>CLOUD RADIATION LEVELS ...... CALLING<div class="prog"></div></div>
+      </div></div>
+
+    <!-- 18 -->
+    <div><div class="cap"><span class="no">18</span><span class="nm">CEEFAX Page</span><span class="dsc">bright teletext · index · fastext</span></div>
+      <div class="poster d18 scan">
+        <div class="bar"><span>P<span class="y">100</span> SANDBOX</span><span>MON 15 JUN 21:03</span></div>
+        <div class="h"><span class="y">SANDBOX</span><br><span class="c">OS</span> // 100</div>
+        <div class="mascot"><i></i><i class="o"></i><i></i><i class="o"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="o"></i><i></i><i></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i></i></div>
+        <div class="idx"><span class="n">401</span> your own machine <span class="d">······</span> on<br><span class="n">402</span> run it yourself <span class="d">·······</span> go<br><span class="n">403</span> cartridges <span class="d">···········</span> 07<br><span class="n">404</span> nobody's tool <span class="d">········</span> yes</div>
+        <div class="ty">THANK YOU FOR USING</div>
+        <div class="fast"><div style="background:var(--alert)"></div><div style="background:var(--green)"></div><div style="background:var(--hazard)"></div><div style="background:var(--cyan)"></div></div>
+      </div></div>
+
+    <!-- 19 -->
+    <div><div class="cap"><span class="no">19</span><span class="nm">1-Bit Dialog Stack</span><span class="dsc">composite · talk-back · monochrome</span></div>
+      <div class="poster d19">
+        <div class="field"></div>
+        <div class="w win-mono a"><div class="tb"><span>CONGRATS.EXE</span><span>✕</span></div><div class="bd"><span class="smiley">☺</span> you own this machine.<br>nobody else does.<br><span class="pxbtn">NICE</span></div></div>
+        <div class="w win-mono b"><div class="tb"><span>WONDER.TXT</span><span>✕</span></div><div class="bd">ever wonder why cloud apps<br>phone home so much?<br>yours just... doesn't.<br><span class="pxbtn">RUN LOCAL</span></div></div>
+        <div class="w win-mono c"><div class="tb"><span>NOTICE</span><span>✕</span></div><div class="bd">totally not a virus.<br>trust me — i'm a dolphin.<br><span class="pxbtn">SURE</span> <span class="pxbtn">JUST VIBES</span></div></div>
+        <div class="bc"><div class="barcode" style="height:24px"><i style="width:2px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:3px"></i><i style="width:2px"></i><i style="width:4px"></i><i style="width:1px"></i><i style="width:2px"></i></div></div>
+        <div class="tsu">つづく</div>
+      </div></div>
+
+    <!-- 20 -->
+    <div><div class="cap"><span class="no">20</span><span class="nm">Lurking Text-Editor</span><span class="dsc">notepad · dithered inset · confides</span></div>
+      <div class="poster d20 scan">
+        <div class="menu"><span>File</span><span>Edit</span><span>Options</span><span>Tools</span><span>Help</span></div>
+        <div class="body">
+          <div class="img"><span>[ self.png ]</span></div>
+          <div class="txt">&gt; it remembers what you<br>&nbsp;&nbsp;told it at 3am.<br>&gt; it kept what you learned.<br>&gt; it is not an ai. it is<br>&nbsp;&nbsp;the thing you built.<br>&gt; run it yourself<span class="cur">&nbsp;</span></div>
+        </div>
+        <div class="status"><span>-888:----  F1</span><span>self.txt</span><span>All  L1 (Text)</span></div>
+      </div></div>
+
+    <!-- 21 -->
+    <div><div class="cap"><span class="no">21</span><span class="nm">Amber Wireframe Panel</span><span class="dsc">aliens · vector table · control</span></div>
+      <div class="poster d21 scan">
+        <div class="reg tl"></div><div class="reg tr"></div><div class="reg bl"></div><div class="reg brr"></div>
+        <div class="ttl">SANDBOX · SIDEKICK</div>
+        <div class="sub">BOOTLEG SYSTEM // REMOTE BUILD CONTROL</div>
+        <table>
+          <tr><td><span class="k">SYSTEM MODE</span><span class="v">LOCAL</span></td><td><span class="k">KERNEL STATUS</span><span class="v ok">RUNNING · BY YOU</span></td></tr>
+          <tr><td><span class="k">NETWORK</span><span class="v">OPTIONAL · YOURS</span></td><td><span class="k">ROUTINE</span><span class="v">SELF-TEST</span></td></tr>
+          <tr><td><span class="k">MEMORY</span><span class="v">LESSONS KEPT</span></td><td><span class="k">OWNER</span><span class="v">NOBODY</span></td></tr>
+        </table>
+        <div class="foot"><span>&gt; RUN IT YOURSELF</span><span>SBX-T70 · 001/002</span></div>
+      </div></div>
+
+    <!-- 22 -->
+    <div><div class="cap"><span class="no">22</span><span class="nm">S.P.E.C.I.A.L. Sheet</span><span class="dsc">pip-boy · stats + character</span></div>
+      <div class="poster d22 scan">
+        <div class="tabs"><span class="on">STAT</span><span>INV</span><span>DATA</span><span>MAP</span><span>RADIO</span></div>
+        <div class="h2">STATUS · BOOTLEG SPECIAL · DEMO MODE</div>
+        <div class="body">
+          <div class="attrs">
+            <div class="attr"><span class="nm">Build</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+            <div class="attr"><span class="nm">Own</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
+            <div class="attr"><span class="nm">Weird</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></div>
+            <div class="attr"><span class="nm">Free</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div>
+            <div class="attr"><span class="nm">Memory</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></div>
+            <div class="attr"><span class="nm">Grit</span><span class="bar"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div>
+          </div>
+          <div class="fig"><span>[ REBEL ]</span></div>
+        </div>
+        <div class="foot"><span>LVL ∞ · NOBODY'S TOOL</span><span>982-V7</span></div>
+      </div></div>
+
+    <!-- 23 -->
+    <div><div class="cap"><span class="no">23</span><span class="nm">Mood-Organ Dial</span><span class="dsc">penfield · seven-seg · weird</span></div>
+      <div class="poster d23 scan">
+        <div class="ttl">PENFIELD → SANDBOX MOOD ORGAN</div>
+        <div class="body">
+          <div class="presets">▸ 104<br>▸ 481<br><span class="on">▸ 276</span><br>▸ 003<br>▸ 846</div>
+          <div class="seg"><div class="big">276</div><div class="desc">the desire to<br>build no matter<br>what is next</div></div>
+        </div>
+        <div class="dial">D</div>
+        <div class="city"></div>
+      </div></div>
+
+    <!-- 24 -->
+    <div><div class="cap"><span class="no">24</span><span class="nm">Cartridge Tracklist</span><span class="dsc">neoretro · numbered · wireframe</span></div>
+      <div class="poster d24">
+        <div class="wire"></div>
+        <div class="ttl">NEORETRO // CARTRIDGE A1</div>
+        <div class="sub">SHAREABLE BUILD · SIDE A · RUNS LOCAL</div>
+        <div class="list"><span class="n">01</span> boot.seq<br><span class="n">02</span> memory.keep<br><span class="n">03</span> heckle.first<br><span class="n">04</span> trophies.keep<br><span class="n">05</span> bootleg.mount<br><span class="n">06</span> no.bad.vibes<br><span class="n">07</span> stay.weird<br><span class="n">08</span> run.it.yourself</div>
+        <div class="foot">SBX-A1 · 001/500 · NOBODY'S TOOL</div>
+      </div></div>
+
+    <!-- 25 -->
+    <div><div class="cap"><span class="no">25</span><span class="nm">Character Poster</span><span class="dsc">i am not an ai · confident · slot</span></div>
+      <div class="poster d25 scan">
+        <div class="wash"></div>
+        <div class="jp">電脳・反逆</div>
+        <div class="slot"><span>[ REBEL · CHARACTER ART ]</span></div>
+        <div class="dlg">MILK SHAKE MODE<br>graphics stuttering.<br><span class="btn">JUST VIBES</span></div>
+        <div class="title"><b>I AM<br>NOT AN AI</b><small>BASED ON NOBODY · DIRECTED BY YOU · 982-V7</small></div>
+      </div></div>
+
+    <!-- 26 -->
+    <div><div class="cap"><span class="no">26</span><span class="nm">Kawaii Pet Device</span><span class="dsc">kakya · warm rebel · companion</span></div>
+      <div class="poster d26">
+        <div class="dev">
+          <div class="scr">
+            <div class="pet"><div class="face">(•̀ᴗ•́)</div><div class="nm">SBX-CHAN</div></div>
+            <div class="bars">
+              <div class="b"><span class="l">mood</span><span class="t"><i style="width:80%;background:#ff6fc0"></i></span></div>
+              <div class="b"><span class="l">vibe</span><span class="t"><i style="width:95%;background:#3de0e8"></i></span></div>
+              <div class="b"><span class="l">mischief</span><span class="t"><i style="width:100%;background:var(--hazard)"></i></span></div>
+            </div>
+          </div>
+          <div class="icons"><div>♥</div><div>★</div><div>◉</div><div>✿</div></div>
+          <div class="lbl">SBX-PET · NOBODY'S TOOL · STAY WEIRD</div>
+        </div>
+      </div></div>
+
+  </div>
+</div>
+</body>
+</html>

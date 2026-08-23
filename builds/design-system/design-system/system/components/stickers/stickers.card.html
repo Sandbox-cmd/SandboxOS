@@ -1,0 +1,51 @@
+<!-- @dsCard group="Components" viewport="700x320" name="Sticker System" subtitle="Die-cut slaps usable as UI — tag, pill, seal, burst, hazard, barcode" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; background:var(--bg); color:var(--text); padding:26px 28px; font-family:var(--font-mono); }
+  .lbl { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint); margin:0 0 14px; }
+  .row { display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin-bottom:24px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Sticker, Barcode } = window.SandboxOSDesignSystem_4526c4;
+  function Demo(){
+    return (
+      <div>
+        <div className="lbl">shapes</div>
+        <div className="row">
+          <Sticker shape="tag" tone="hazard" rotate={-4}>new build</Sticker>
+          <Sticker shape="pill" tone="rebel" rotate={3}>just vibes</Sticker>
+          <Sticker shape="seal" tone="rebel" rotate={-6}>no<br/>bad<br/>vibes</Sticker>
+          <Sticker shape="burst" tone="alert" rotate={4}>limited</Sticker>
+          <Sticker tone="striped" rotate={-3}>hand-made</Sticker>
+        </div>
+        <div className="lbl">tones — the loud earned-color layer</div>
+        <div className="row">
+          <Sticker tone="alert" rotate={2}>unlicensed</Sticker>
+          <Sticker tone="go" rotate={-3}>shipped</Sticker>
+          <Sticker tone="cyan" rotate={3}>share</Sticker>
+          <Sticker tone="ink" rotate={-2}>© nobody</Sticker>
+          <Sticker tone="paper" rotate={4}>run it yourself</Sticker>
+        </div>
+        <div className="lbl">barcode — procedural provenance</div>
+        <div className="row">
+          <Barcode seed="982V7" />
+          <Barcode seed="DX76" height={32} color="var(--amber)" />
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

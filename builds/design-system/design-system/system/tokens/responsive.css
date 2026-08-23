@@ -1,0 +1,62 @@
+/* ============================================================
+   SandboxOS — RESPONSIVE
+   Fluid type, touch targets, breakpoints, viewport + safe-area.
+   Mobile-first: tokens scale UP at wider viewports, not down.
+   ============================================================ */
+
+:root {
+  /* ---- BREAKPOINTS (for reference in @media; CSS vars can't gate queries) ----
+     --bp-sm: 480px   phone landscape / large phone
+     --bp-md: 768px   tablet
+     --bp-lg: 1024px  laptop
+     --bp-xl: 1280px  desktop                                   */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+
+  /* ---- TOUCH ---------------------------------------------- */
+  --touch-min: 44px;          /* min hit target (Apple HIG / WCAG) */
+  --touch-gap: 8px;           /* min space between touch targets   */
+
+  /* ---- VIEWPORT UNITS + SAFE AREA ------------------------- */
+  --vh: 100dvh; /* @kind other */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+
+  /* ---- FLUID GUTTERS ------------------------------------- */
+  --gutter: clamp(16px, 5vw, 48px); /* @kind spacing */
+  --stack:  clamp(24px, 6vw, 64px); /* @kind spacing */
+
+  /* ---- FLUID TYPE (clamp: min @ 360px → max @ 1280px) -----
+     These OVERRIDE the fixed --t-* scale so every surface is responsive.
+     Mono/data sizes stay near-fixed (legibility); display scales hard. */
+  --t-3xs:  clamp(9px, 0.6vw + 7px, 10px);   /* @kind other */
+  --t-2xs:  clamp(10px, 0.6vw + 8px, 11px);  /* @kind other */
+  --t-xs:   clamp(11px, 0.6vw + 9px, 12px);  /* @kind other */
+  --t-sm:   clamp(12px, 0.7vw + 10px, 13px); /* @kind other */
+  --t-base: clamp(14px, 0.9vw + 11px, 15px); /* @kind other */
+  --t-md:   clamp(15px, 1.1vw + 12px, 17px); /* @kind other */
+  --t-lg:   clamp(18px, 1.6vw + 13px, 21px); /* @kind other */
+  --t-xl:   clamp(22px, 2.6vw + 14px, 27px); /* @kind other */
+  --t-2xl:  clamp(26px, 3.6vw + 15px, 34px); /* @kind other */
+  --t-3xl:  clamp(31px, 5vw + 15px, 44px);   /* @kind other */
+  --t-4xl:  clamp(38px, 7vw + 14px, 58px);   /* @kind other */
+  --t-5xl:  clamp(44px, 9.5vw + 11px, 78px); /* @kind other */
+  --t-6xl:  clamp(54px, 13vw + 8px, 108px);  /* @kind other */
+}
+
+/* On coarse pointers (touch), enforce min hit targets on interactive bits */
+@media (pointer: coarse) {
+  button, [role="button"], a.sbx-tap, .sbx-tap {
+    min-height: var(--touch-min);
+  }
+}
+
+/* Respect users who shrink motion — handled per-component, but kill page-level
+   marquees/loops here as a backstop. */
+@media (prefers-reduced-motion: reduce) {
+  .sbx-marquee, [class*="ticker"] .run { animation: none !important; }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Character: Over-the-Shoulder</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{ margin:0; background:#0A0A08; color:#E9E3D4; font-family:var(--font-mono); }
+  .wrap{ max-width:1080px; margin:0 auto; padding:40px 28px 90px; }
+  .kick{ font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--magenta); }
+  h1{ font-family:var(--font-display); font-weight:900; font-size:30px; letter-spacing:-.02em; text-transform:uppercase; margin:8px 0 6px; }
+  .sub{ color:var(--ash-400); font-size:13px; max-width:64ch; line-height:1.6; }
+  .row{ display:grid; grid-template-columns:1.1fr 1fr; gap:26px; margin-top:32px; align-items:start; }
+  .frame{ border:2px solid #E9E3D4; position:relative; background:#08080a; overflow:hidden; }
+  .frame canvas{ display:block; width:100%; image-rendering:auto; }
+  .frame .scan{ position:absolute; inset:0; background:var(--fx-scanlines); opacity:.28; pointer-events:none; }
+  .frame .ser{ position:absolute; right:8px; top:7px; font-size:8px; color:var(--ash-500); z-index:2; letter-spacing:.1em; }
+  .frame .tag{ position:absolute; left:8px; bottom:7px; font-size:9px; color:var(--cyan); z-index:2; letter-spacing:.1em; text-transform:uppercase; }
+  .crops{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .crops .frame canvas{ image-rendering:pixelated; }
+  .cap{ font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:13px; margin-top:8px; }
+  .cmsg{ font-size:10px; color:var(--ash-400); }
+  .note{ font-size:11.5px; color:var(--ash-400); line-height:1.65; margin-top:14px; } .note b{ color:#E9E3D4; } .note .gl{ color:var(--magenta); }
+  .ctrl{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .ctrl button{ font-family:var(--font-display); font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:.04em; background:transparent; color:#E9E3D4; border:2px solid #E9E3D4; padding:6px 12px; cursor:pointer; box-shadow:3px 3px 0 #2A2820; }
+  .ctrl button.on{ background:var(--magenta); border-color:var(--magenta); color:#0A0A08; box-shadow:3px 3px 0 var(--magenta-deep); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">SANDBOXOS · CHARACTER PROTOTYPE · POSE 01</div>
+  <h1>Over-the-Shoulder Glance</h1>
+  <p class="sub">Generated in code — vector form → luminance → <b>error-diffusion dither</b>. The back &amp; hair carry the seduction; the single <span style="color:var(--magenta)">returning eye</span> is the hook. Mono except her iris. This is the fidelity test before we commit the pose set.</p>
+
+  <div class="ctrl">
+    <button id="bSilk" class="on">SILK · cell 1</button>
+    <button id="bFine">FINE · cell 2</button>
+    <button id="bChunk">CHUNKY · cell 4</button>
+    <span style="flex:1"></span>
+    <button id="bAcc" class="on">MAGENTA IRIS</button>
+  </div>
+
+  <div class="row">
+    <div>
+      <div class="frame"><canvas id="hero" width="340" height="460"></canvas><div class="scan"></div><span class="ser">982-V7 · DX-76</span><span class="tag">POSE · OVER-SHOULDER · “miss me?”</span></div>
+      <div class="note"><b>The read:</b> she's turned away — building, in her world — and looks back to pull you in. Bare back &amp; slipped strap for the risqué register; rim-light traces the contour; half-lidded gaze meets yours. <span class="gl">Seduction → toward making.</span> Caption layer would read <i>“miss me? ship something.”</i></div>
+    </div>
+    <div>
+      <div class="crops">
+        <div class="frame"><canvas id="cEye" width="200" height="200"></canvas><div class="scan"></div><span class="tag">CROP · THE GLANCE</span></div>
+        <div class="frame"><canvas id="cBack" width="200" height="200"></canvas><div class="scan"></div><span class="tag">CROP · CONTOUR</span></div>
+      </div>
+      <div class="cap">same render, re-cropped</div>
+      <div class="cmsg">// one figure → many UI moments (toast avatar, idle, slap, boot)</div>
+      <div class="note"><b>Honest status:</b> this is hand-authored stylized-anime at a first fidelity pass — proportions tuned to the construction rules (eye below midline, heavy upper lid, catchlight, understated mouth). I can push detail further; tell me if the read &amp; the risqué level land before I author the rest of the pose set.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  OVER-THE-SHOULDER — procedural grayscale → dither
+// ============================================================
+function draw(g, W, H){
+  g.clearRect(0,0,W,H);
+  // vignette bg
+  let bg=g.createRadialGradient(W*0.5,H*0.42,W*0.1, W*0.5,H*0.5,H*0.8);
+  bg.addColorStop(0,'#15131a'); bg.addColorStop(1,'#050507'); g.fillStyle=bg; g.fillRect(0,0,W,H);
+  const cx=W*0.52;
+
+  // ---- HAIR back mass (flows down right & behind) ----
+  let hairG=g.createLinearGradient(cx-W*0.3,0, cx+W*0.4,H);
+  hairG.addColorStop(0,'#3b3640'); hairG.addColorStop(0.5,'#211f27'); hairG.addColorStop(1,'#0e0d12');
+  g.fillStyle=hairG;
+  g.beginPath();
+  g.moveTo(cx-W*0.30, H*0.30);
+  g.bezierCurveTo(cx-W*0.34,H*0.10, cx+W*0.06,H*0.00, cx+W*0.22,H*0.10);   // crown
+  g.bezierCurveTo(cx+W*0.46,H*0.24, cx+W*0.46,H*0.55, cx+W*0.34,H*0.82);   // right fall
+  g.bezierCurveTo(cx+W*0.26,H*0.98, cx+W*0.05,H*0.99, cx-W*0.04,H*0.92);
+  g.bezierCurveTo(cx-W*0.10,H*0.70, cx-W*0.16,H*0.50, cx-W*0.30,H*0.30);
+  g.closePath(); g.fill();
+  // hair strand highlights
+  g.strokeStyle='rgba(150,140,160,0.45)'; g.lineWidth=Math.max(1,W*0.004);
+  for(let k=0;k<7;k++){ g.beginPath(); const sx=cx-W*0.18+k*W*0.085; g.moveTo(sx,H*0.12); g.bezierCurveTo(sx+W*0.12,H*0.4, sx+W*0.16,H*0.7, sx+W*0.06,H*0.9); g.stroke(); }
+
+  // ---- BACK / BODY (the hero contour, rim-lit on right) ----
+  let skin=g.createLinearGradient(cx-W*0.22,0, cx+W*0.30,0);
+  skin.addColorStop(0,'#3a2f2a'); skin.addColorStop(0.45,'#9c8470'); skin.addColorStop(0.82,'#e8d4bd'); skin.addColorStop(1,'#fff3e2');
+  g.fillStyle=skin;
+  g.beginPath();
+  g.moveTo(cx-W*0.10, H*0.40);                                            // nape/left of back
+  g.bezierCurveTo(cx-W*0.16,H*0.55, cx-W*0.20,H*0.78, cx-W*0.14,H*1.0);   // left back to waist
+  g.lineTo(cx+W*0.30, H*1.0);
+  g.bezierCurveTo(cx+W*0.30,H*0.78, cx+W*0.26,H*0.58, cx+W*0.22,H*0.46);  // right back (rim)
+  g.bezierCurveTo(cx+W*0.20,H*0.40, cx+W*0.16,H*0.36, cx+W*0.10,H*0.35);  // right shoulder top
+  g.bezierCurveTo(cx+W*0.02,H*0.34, cx-W*0.04,H*0.36, cx-W*0.10,H*0.40);  // shoulder line to nape
+  g.closePath(); g.fill();
+  // spine groove shadow
+  g.strokeStyle='rgba(40,28,22,0.45)'; g.lineWidth=Math.max(2,W*0.014);
+  g.beginPath(); g.moveTo(cx+W*0.04,H*0.46); g.bezierCurveTo(cx+W*0.06,H*0.62, cx+W*0.07,H*0.8, cx+W*0.09,H*0.96); g.stroke();
+  // shoulder-blade soft shadow
+  g.fillStyle='rgba(40,28,22,0.22)'; g.beginPath(); g.ellipse(cx-W*0.02,H*0.52,W*0.07,H*0.06,-0.3,0,7); g.fill();
+  // rim light highlight on right contour
+  g.strokeStyle='rgba(255,245,230,0.85)'; g.lineWidth=Math.max(1.5,W*0.01);
+  g.beginPath(); g.moveTo(cx+W*0.22,H*0.46); g.bezierCurveTo(cx+W*0.26,H*0.6, cx+W*0.30,H*0.8, cx+W*0.30,H*0.99); g.stroke();
+
+  // ---- GARMENT (slipped low — risqué) ----
+  g.fillStyle='#141019';
+  g.beginPath();
+  g.moveTo(cx-W*0.14,H*0.82); g.bezierCurveTo(cx,H*0.78, cx+W*0.2,H*0.82, cx+W*0.31,H*0.86);
+  g.lineTo(cx+W*0.32,H*1.0); g.lineTo(cx-W*0.15,H*1.0); g.closePath(); g.fill();
+  // strap slipping off the near shoulder
+  g.strokeStyle='#141019'; g.lineWidth=Math.max(3,W*0.02);
+  g.beginPath(); g.moveTo(cx-W*0.08,H*0.40); g.lineTo(cx-W*0.05,H*0.56); g.stroke();
+
+  // ---- NECK / NAPE ----
+  g.fillStyle='#c9ab92';
+  g.beginPath(); g.moveTo(cx-W*0.10,H*0.40); g.bezierCurveTo(cx-W*0.06,H*0.33, cx+W*0.02,H*0.32, cx+W*0.05,H*0.37);
+  g.lineTo(cx+W*0.02,H*0.42); g.closePath(); g.fill();
+
+  // ---- HEAD turned over shoulder (face on the LEFT, ¾ back view) ----
+  const hx=cx-W*0.02, hy=H*0.22, fw=W*0.16, fh=H*0.15;
+  // skull/face base
+  let fg=g.createLinearGradient(hx-fw,0,hx+fw,0); fg.addColorStop(0,'#f0ddc6'); fg.addColorStop(0.7,'#d8bda1'); fg.addColorStop(1,'#a98a72');
+  g.fillStyle=fg;
+  g.beginPath();
+  g.moveTo(hx-fw*0.9, hy-fh*0.2);
+  g.bezierCurveTo(hx-fw*1.0,hy-fh*1.0, hx-fw*0.2,hy-fh*1.25, hx+fw*0.5,hy-fh*1.0); // crown
+  g.bezierCurveTo(hx+fw*1.0,hy-fh*0.6, hx+fw*0.9,hy+fh*0.2, hx+fw*0.5,hy+fh*0.7);  // right cheek to jaw
+  g.bezierCurveTo(hx+fw*0.2,hy+fh*1.1, hx-fw*0.3,hy+fh*1.05, hx-fw*0.6,hy+fh*0.5); // chin/jaw left
+  g.bezierCurveTo(hx-fw*0.9,hy+fh*0.1, hx-fw*0.95,hy-fh*0.05, hx-fw*0.9,hy-fh*0.2);
+  g.closePath(); g.fill();
+  // cheek blush-shadow (form)
+  g.fillStyle='rgba(150,90,80,0.18)'; g.beginPath(); g.ellipse(hx-fw*0.35,hy+fh*0.35,fw*0.3,fh*0.28,0,0,7); g.fill();
+
+  // ---- HAIR front sweep over head/forehead ----
+  g.fillStyle=hairG;
+  g.beginPath();
+  g.moveTo(hx-fw*0.95,hy-fh*0.15);
+  g.bezierCurveTo(hx-fw*1.0,hy-fh*1.2, hx+fw*0.4,hy-fh*1.5, hx+fw*1.0,hy-fh*0.7);
+  g.bezierCurveTo(hx+fw*0.7,hy-fh*0.55, hx+fw*0.2,hy-fh*0.5, hx-fw*0.1,hy-fh*0.55); // fringe edge
+  g.bezierCurveTo(hx-fw*0.35,hy-fh*0.5, hx-fw*0.7,hy-fh*0.35, hx-fw*0.95,hy-fh*0.15);
+  g.closePath(); g.fill();
+  // a loose strand across cheek
+  g.strokeStyle='rgba(20,18,24,0.9)'; g.lineWidth=Math.max(1.5,W*0.008);
+  g.beginPath(); g.moveTo(hx+fw*0.5,hy-fh*0.6); g.bezierCurveTo(hx+fw*0.3,hy+fh*0.1, hx+fw*0.2,hy+fh*0.5, hx+fw*0.35,hy+fh*0.9); g.stroke();
+
+  // ---- THE EYE (the glance) — focal point ----
+  const ex=hx-fw*0.32, ey=hy+fh*0.02, ew=fw*0.6, eh=fh*0.34;
+  // eye white (small, almond, half-lidded)
+  g.fillStyle='#f7efe4';
+  g.beginPath(); g.moveTo(ex-ew*0.5,ey);
+  g.quadraticCurveTo(ex-ew*0.1,ey-eh*0.6, ex+ew*0.5,ey-eh*0.15);
+  g.quadraticCurveTo(ex+ew*0.1,ey+eh*0.5, ex-ew*0.5,ey); g.closePath(); g.fill();
+  // iris (will become magenta accent via key color #ff2e88)
+  g.fillStyle='#ff2e88';
+  g.beginPath(); g.ellipse(ex+ew*0.02,ey-eh*0.08,ew*0.26,eh*0.5,0,0,7); g.fill();
+  // pupil
+  g.fillStyle='#0c0a10'; g.beginPath(); g.ellipse(ex+ew*0.02,ey-eh*0.08,ew*0.12,eh*0.26,0,0,7); g.fill();
+  // catchlights (the life)
+  g.fillStyle='#ffffff'; g.beginPath(); g.arc(ex-ew*0.06,ey-eh*0.22,ew*0.07,0,7); g.fill();
+  g.globalAlpha=0.7; g.beginPath(); g.arc(ex+ew*0.14,ey+eh*0.06,ew*0.04,0,7); g.fill(); g.globalAlpha=1;
+  // heavy upper lid + lash flick
+  g.strokeStyle='#100c14'; g.lineWidth=Math.max(2,W*0.011); g.lineCap='round';
+  g.beginPath(); g.moveTo(ex-ew*0.55,ey+eh*0.05); g.quadraticCurveTo(ex-ew*0.05,ey-eh*0.7, ex+ew*0.56,ey-eh*0.2); g.stroke();
+  g.lineWidth=Math.max(1.5,W*0.008);
+  g.beginPath(); g.moveTo(ex+ew*0.56,ey-eh*0.2); g.lineTo(ex+ew*0.78,ey-eh*0.5); g.stroke(); // outer lash flick
+  // brow (arched, sultry)
+  g.lineWidth=Math.max(2,W*0.01);
+  g.beginPath(); g.moveTo(ex-ew*0.5,ey-eh*0.95); g.quadraticCurveTo(ex+ew*0.05,ey-eh*1.35, ex+ew*0.6,ey-eh*0.8); g.stroke();
+
+  // ---- NOSE (tiny) ----
+  g.strokeStyle='rgba(120,80,65,0.5)'; g.lineWidth=Math.max(1,W*0.006);
+  g.beginPath(); g.moveTo(hx-fw*0.55,hy+fh*0.3); g.lineTo(hx-fw*0.62,hy+fh*0.5); g.stroke();
+
+  // ---- LIPS (understated, parted) ----
+  g.strokeStyle='rgba(150,70,70,0.7)'; g.lineWidth=Math.max(1.5,W*0.008); g.lineCap='round';
+  g.beginPath(); g.moveTo(hx-fw*0.55,hy+fh*0.72); g.quadraticCurveTo(hx-fw*0.35,hy+fh*0.8, hx-fw*0.18,hy+fh*0.7); g.stroke();
+  g.strokeStyle='rgba(255,210,200,0.5)'; g.lineWidth=Math.max(1,W*0.005);
+  g.beginPath(); g.moveTo(hx-fw*0.5,hy+fh*0.64); g.quadraticCurveTo(hx-fw*0.36,hy+fh*0.66, hx-fw*0.22,hy+fh*0.62); g.stroke();
+
+  // ---- earring glint ----
+  g.fillStyle='#fff'; g.beginPath(); g.arc(hx-fw*0.5,hy+fh*0.95,Math.max(1.5,W*0.008),0,7); g.fill();
+}
+
+// ---- dither pipeline ----
+function lumAcc(g,w,h){ const d=g.getImageData(0,0,w,h).data; const lum=new Float32Array(w*h); const acc=new Uint8Array(w*h);
+  for(let i=0;i<w*h;i++){ const r=d[i*4],gr=d[i*4+1],b=d[i*4+2],a=d[i*4+3]/255;
+    // accent key: strongly magenta pixels (iris)
+    if(a>0.5 && r>180 && gr<90 && b>90 && b<180) acc[i]=1;
+    lum[i]=a*((0.299*r+0.587*gr+0.114*b)/255);
+  } return {lum,acc};
+}
+function floyd(buf,w,h){ const out=new Uint8Array(w*h);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){ const i=y*w+x; const old=buf[i]; const nv=old>0.5?1:0; out[i]=nv; const e=old-nv;
+    if(x+1<w)buf[i+1]+=e*7/16; if(y+1<h){ if(x>0)buf[i-1+w]+=e*3/16; buf[i+w]+=e*5/16; if(x+1<w)buf[i+1+w]+=e*1/16; } }
+  return out; }
+function bayerThresh(buf,w,h,cell){ // ordered, for chunky/fine non-photographic look
+  const out=new Uint8Array(w*h);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){ const bx=((x/1)|0)&3, by=((y/1)|0)&3; const m=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5][by*4+bx]; out[y*w+x]=buf[y*w+x]>(m+0.5)/16?1:0; }
+  return out; }
+
+let STATE={cell:1, accent:true};
+function render(canvas, cropFrom){
+  const dispW=canvas.width, dispH=canvas.height;
+  const cell=STATE.cell;
+  // render scene at full display res (cell drives the dither sampling)
+  const W= cropFrom? 340 : dispW, H= cropFrom? 460 : dispH;
+  const off=document.createElement('canvas'); off.width=W; off.height=H; const g=off.getContext('2d');
+  draw(g,W,H);
+  // downsample to dither grid
+  const gw=Math.max(2,Math.round((cropFrom?dispW:W)/cell)), gh=Math.max(2,Math.round((cropFrom?dispH:H)/cell));
+  const small=document.createElement('canvas'); small.width=gw; small.height=gh; const sg=small.getContext('2d'); sg.imageSmoothingEnabled=true;
+  if(cropFrom){ sg.drawImage(off, cropFrom.x*W, cropFrom.y*H, cropFrom.w*W, cropFrom.h*H, 0,0,gw,gh); }
+  else { sg.drawImage(off,0,0,gw,gh); }
+  const {lum,acc}=lumAcc(sg,gw,gh);
+  const bits = cell<=2 ? floyd(lum.slice(),gw,gh) : bayerThresh(lum.slice(),gw,gh,cell);
+  // paint
+  const ctx=canvas.getContext('2d'); ctx.imageSmoothingEnabled=false; ctx.clearRect(0,0,dispW,dispH);
+  const img=ctx.createImageData(gw,gh), o=img.data;
+  for(let i=0;i<gw*gh;i++){ if(STATE.accent && acc[i]){ o[i*4]=255;o[i*4+1]=46;o[i*4+2]=136;o[i*4+3]=255; }
+    else if(bits[i]){ o[i*4]=233;o[i*4+1]=227;o[i*4+2]=212;o[i*4+3]=255; } }
+  // blit small imageData scaled up
+  const tmp=document.createElement('canvas'); tmp.width=gw; tmp.height=gh; tmp.getContext('2d').putImageData(img,0,0);
+  ctx.drawImage(tmp,0,0,dispW,dispH);
+}
+function renderAll(){
+  render(document.getElementById('hero'));
+  render(document.getElementById('cEye'), {x:0.30,y:0.12,w:0.42,h:0.42});
+  render(document.getElementById('cBack'), {x:0.30,y:0.45,w:0.5,h:0.5});
+}
+renderAll();
+const setCell=(c,btn)=>{ STATE.cell=c; ['bSilk','bFine','bChunk'].forEach(id=>document.getElementById(id).classList.remove('on')); btn.classList.add('on'); renderAll(); };
+document.getElementById('bSilk').onclick=e=>setCell(1,e.target);
+document.getElementById('bFine').onclick=e=>setCell(2,e.target);
+document.getElementById('bChunk').onclick=e=>setCell(4,e.target);
+document.getElementById('bAcc').onclick=e=>{ STATE.accent=!STATE.accent; e.target.classList.toggle('on',STATE.accent); renderAll(); };
+</script>
+</body>
+</html>

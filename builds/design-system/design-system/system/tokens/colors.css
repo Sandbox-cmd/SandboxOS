@@ -1,0 +1,114 @@
+/* ============================================================
+   SandboxOS — COLOR SYSTEM
+   "phosphor on black, ink on paper, slaps in full color"
+   ------------------------------------------------------------
+   Four color registers coexist:
+     CRT       deep black canvas + phosphor accents (amber/green/cyan)
+     PAPER     catalog cream + ink black (manuals, cartridge cards)
+     BROADCAST teletext blocks + bell-blue (links, data)
+     SLAP      die-cut sticker loud (hazard yellow, alert red, hot pink)
+   ============================================================ */
+
+:root {
+  /* ---- CRT NEUTRALS (the canvas) ------------------------- */
+  --crt-black:  #0B0B09;   /* deepest phosphor black            */
+  --crt-950:    #0F0F0D;
+  --crt-900:    #15140F;
+  --crt-850:    #1C1B15;
+  --crt-800:    #24221B;
+  --crt-700:    #322F25;
+  --crt-600:    #45402F;
+  --ash-500:    #6C6552;   /* mid gray-olive                    */
+  --ash-400:    #8E8773;
+  --ash-300:    #B3AC97;
+
+  /* ---- PAPER NEUTRALS (manuals, cartridge labels) -------- */
+  --paper:      #ECE5D2;   /* catalog cream                     */
+  --paper-200:  #DCD2B8;
+  --paper-300:  #C8BC9C;
+  --signal:     #F6F2E7;   /* near-white phosphor highlight     */
+  --ink:        #0B0B09;   /* sticker / print ink (= crt-black) */
+
+  /* ---- PHOSPHOR ACCENTS (broadcast register) ------------- */
+  --amber:      #FFB000;   /* CRT amber — SandboxOS signature   */
+  --amber-deep: #C77E00;
+  --amber-glow: #FFD060;
+  --green:      #3DF07A;   /* phosphor go-green                 */
+  --green-deep: #1E9E4A;
+  --cyan:       #34E6E0;   /* monitor cyan                      */
+  --blue:       #0A5BD3;   /* bell-atlantic broadcast blue      */
+  --blue-bright:#2C7BFF;
+  --orange:     #FF7A00;   /* supercolor orange stop            */
+  --magenta:    #FF2E88;   /* hot rebel pink                    */
+  --magenta-deep:#C70F60;
+  --purple:     #A24BFF;   /* astral violet                     */
+
+  /* ---- PRINT REGISTER (ink-on-paper faces: light mode) ---- */
+  --amber-print:  #7E5000;   /* amber as ink on cream             */
+  --brass-print:  #A98F4E;   /* dim amber as ink                  */
+  --green-print:  #0F5E2E;   /* go-green as ink                   */
+  --paper-250:    #DDD5BE;   /* shell cream between 200 and 300   */
+
+  /* ---- SLAP (die-cut sticker loud) ----------------------- */
+  --hazard:     #FFD400;   /* price tag / hazard yellow         */
+  --alert:      #E8112D;   /* alert red                         */
+  --slap-blue:  #1659E6;   /* burst blue                        */
+
+  /* ---- SUPERCOLOR (cassette rainbow spine) --------------- */
+  --supercolor: linear-gradient(90deg,
+                  #E8112D 0%, #FF7A00 16%, #FFD400 33%,
+                  #3DF07A 50%, #34E6E0 66%, #0A5BD3 83%, #A24BFF 100%); /* @kind color */
+  --supercolor-v: linear-gradient(180deg,
+                  #E8112D 0%, #FF7A00 16%, #FFD400 33%,
+                  #3DF07A 50%, #34E6E0 66%, #0A5BD3 83%, #A24BFF 100%); /* @kind color */
+
+  /* ============================================================
+     SEMANTIC ALIASES — reach for these in product UI
+     ============================================================ */
+
+  /* surfaces (dark / OS register is the default) */
+  --bg:            var(--crt-950);   /* app background          */
+  --bg-sunken:     var(--crt-black); /* wells, terminal void    */
+  --bg-raised:     var(--crt-850);   /* windows, panels         */
+  --surface:       var(--crt-900);   /* cards                   */
+  --surface-2:     var(--crt-800);   /* nested / hover          */
+  --surface-paper: var(--paper);     /* manual / catalog mode   */
+
+  /* text */
+  --text:          var(--signal);    /* primary on dark         */
+  --text-dim:      var(--ash-300);   /* secondary               */
+  --text-faint:    var(--ash-500);   /* tertiary / metadata     */
+  --text-inverse:  var(--ink);       /* on paper / on slaps     */
+  --text-brand:    var(--amber);     /* phosphor headings       */
+
+  /* borders (hard, hand-cut) */
+  --border:        var(--crt-700);
+  --border-strong: var(--ash-500);
+  --border-ink:    var(--ink);       /* die-cut sticker outline */
+  --hairline:      color-mix(in srgb, var(--amber) 30%, transparent);
+
+  /* roles */
+  --accent:        var(--amber);     /* primary action / brand  */
+  --accent-2:      var(--magenta);   /* rebel secondary         */
+  --ok:            var(--green);
+  --warn:          var(--hazard);
+  --danger:        var(--alert);
+  --link:          var(--cyan);
+  --astral:        var(--purple);
+
+  /* phosphor glows (for text-shadow / box-shadow) */
+  --glow-amber:    color-mix(in srgb, var(--amber) 60%, transparent);
+  --glow-green:    color-mix(in srgb, var(--green) 55%, transparent);
+  --glow-cyan:     color-mix(in srgb, var(--cyan) 55%, transparent);
+  --glow-magenta:  color-mix(in srgb, var(--magenta) 60%, transparent);
+
+  /* ---- HARDWARE (physical-object housing) ----------------
+     The material palette for the 3D/tactile objects — cartridge
+     shells, the boot-coin, knobs. DOM components reference these;
+     pure-canvas components (GhostEye) resolve them via getComputedStyle. */
+  --hw-shell:      #16150e;   /* housing face                      */
+  --hw-shell-lit:  #2a2718;   /* lit edge / top bevel              */
+  --hw-shell-deep: #100f0a;   /* shadow face / back                */
+  --hw-ridge:      #0d0b07;   /* grip ridge / deepest groove       */
+  --hw-label-dim:  #5a5444;   /* printed catalog-label mid-ink     */
+}

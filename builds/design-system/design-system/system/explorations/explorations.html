@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Direction Explorations</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { margin: 0; background: #2A2722; color: var(--text);
+         font-family: var(--font-sans);
+         background-image: radial-gradient(#35322b 1px, transparent 1px);
+         background-size: 22px 22px; }
+  .page { max-width: 1380px; margin: 0 auto; padding: 56px 40px 100px; }
+  .head { margin-bottom: 48px; }
+  .head .kick { font-family: var(--font-mono); font-size: 12px; letter-spacing: .22em;
+                text-transform: uppercase; color: var(--amber); }
+  .head h1 { font-family: var(--font-display); font-weight: 900; font-size: 46px;
+             letter-spacing: -.02em; color: var(--signal); margin: 10px 0 8px; }
+  .head p { max-width: 70ch; color: var(--ash-300); font-size: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px 44px; }
+  .cell { }
+  .cap { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .cap .no { font-family: var(--font-poster); font-size: 22px; color: var(--signal); letter-spacing: .04em; }
+  .cap .nm { font-family: var(--font-display); font-weight: 800; font-size: 18px; text-transform: uppercase; letter-spacing: .04em; color: var(--signal); }
+  .cap .dsc { font-family: var(--font-mono); font-size: 11px; color: var(--ash-400); margin-left: auto; text-transform: uppercase; letter-spacing: .1em; }
+
+  /* ---- poster frame ---- */
+  .poster { position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+            border: 2px solid var(--ink); box-shadow: 8px 8px 0 rgba(0,0,0,.5); }
+  .scan::after { content:""; position:absolute; inset:0; pointer-events:none;
+                 background: var(--fx-scanlines); opacity:.5; mix-blend-mode: multiply; }
+
+  /* tiny shared bits */
+  .barcode { display:flex; gap:2px; height:26px; align-items:stretch; }
+  .barcode i { display:block; background: currentColor; }
+
+  /* ===================================================================
+     01 — PHOSPHOR TERMINAL
+     =================================================================== */
+  .d1 { background:
+        radial-gradient(120% 80% at 50% 0%, #161410 0%, var(--crt-black) 70%);
+        color: var(--amber); padding: 30px; display:flex; flex-direction:column; }
+  .d1 .topbar { display:flex; justify-content:space-between; font-family:var(--font-mono);
+                font-size:11px; letter-spacing:.12em; color: var(--amber-deep);
+                border-bottom:1px solid color-mix(in srgb, var(--amber) 30%, transparent); padding-bottom:8px; }
+  .d1 .wm { font-family: var(--font-crt); font-size: 30px; letter-spacing:.06em;
+            color: var(--amber); text-shadow: var(--glow-md); margin-top: 26px; }
+  .d1 .hero { font-family: var(--font-crt); font-size: 86px; line-height:.9; color: var(--signal);
+              text-shadow: 0 0 16px var(--glow-amber); margin: 14px 0; }
+  .d1 .read { font-family: var(--font-mono); font-size: 13px; line-height:1.7; color: var(--amber-glow);
+              max-width: 36ch; }
+  .d1 .read .cur { animation: sbx-blink 1s steps(1) infinite; }
+  .d1 .foot { margin-top:auto; font-family: var(--font-crt); font-size: 20px; letter-spacing:.2em;
+              color: var(--amber-deep); display:flex; justify-content:space-between; align-items:flex-end; }
+  .d1 .bar { width: 130px; height: 12px; border:1px solid var(--amber-deep);
+             background: repeating-linear-gradient(90deg, var(--amber) 0 8px, transparent 8px 12px); }
+
+  /* ===================================================================
+     02 — STICKERBOMB SLAP
+     =================================================================== */
+  .d2 { background: var(--crt-900); }
+  .d2 .slap { position:absolute; font-family:var(--font-display); font-weight:900;
+              text-transform:uppercase; box-shadow: 0 0 0 3px var(--signal), 4px 5px 0 rgba(0,0,0,.5);
+              border:2px solid var(--ink); }
+  .d2 .s1 { top:24px; left:20px; background:var(--hazard); color:var(--ink); padding:8px 14px;
+            font-size:30px; transform: rotate(-7deg); letter-spacing:-.01em; }
+  .d2 .s2 { top:30px; right:22px; background:var(--alert); color:var(--signal); padding:7px 12px;
+            font-size:15px; transform: rotate(6deg); letter-spacing:.04em; }
+  .d2 .s3 { top:150px; left:50%; transform:translateX(-52%) rotate(-3deg);
+            background:var(--ink); color:var(--green); padding:14px 22px; font-size:54px;
+            text-shadow:none; border-color: var(--green); box-shadow: 0 0 0 3px var(--ink), 5px 6px 0 rgba(0,0,0,.6); }
+  .d2 .seal { position:absolute; bottom:120px; left:30px; width:118px; height:118px; border-radius:50%;
+              background: var(--magenta); color:var(--signal); border:3px solid var(--ink);
+              box-shadow: 0 0 0 3px var(--signal), 4px 5px 0 rgba(0,0,0,.5);
+              display:flex; align-items:center; justify-content:center; text-align:center;
+              font-family:var(--font-display); font-weight:900; font-size:18px; line-height:1;
+              text-transform:uppercase; transform: rotate(8deg); }
+  .d2 .haz { position:absolute; bottom:46px; right:26px; width:150px; padding:5px 0; text-align:center;
+             background: var(--fx-hazard); color:var(--ink); font-family:var(--font-display);
+             font-weight:900; font-size:14px; letter-spacing:.1em; text-transform:uppercase;
+             border:2px solid var(--ink); transform: rotate(-4deg); }
+  .d2 .haz span { background: var(--signal); padding: 2px 6px; }
+  .d2 .price { position:absolute; bottom:150px; right:34px; font-family:var(--font-poster);
+               color:var(--cyan); font-size:40px; transform: rotate(-8deg); text-shadow: 3px 3px 0 var(--ink); }
+  .d2 .barwrap { position:absolute; bottom:24px; left:30px; color: var(--signal); }
+
+  /* ===================================================================
+     03 — CASSETTE CATALOG
+     =================================================================== */
+  .d3 { background: var(--paper); color: var(--ink); padding: 0; display:flex; flex-direction:column; }
+  .d3 .spine { height: 46px; background: var(--supercolor); }
+  .d3 .body { padding: 24px 26px; display:flex; flex-direction:column; flex:1; }
+  .d3 .brandrow { display:flex; justify-content:space-between; align-items:flex-start; }
+  .d3 .wm { font-family: var(--font-display); font-weight:900; font-size: 30px; letter-spacing:-.02em; }
+  .d3 .wm small { font-weight:600; font-size:12px; display:block; letter-spacing:.18em; color: var(--ash-500); text-transform:uppercase; }
+  .d3 .no { font-family: var(--font-poster); font-size: 50px; line-height:.9; color: var(--alert); }
+  .d3 .title { font-family: var(--font-display); font-weight:900; font-size: 44px; line-height:.95;
+               text-transform:uppercase; margin: 22px 0 6px; }
+  .d3 .sub { font-family: var(--font-mono); font-size: 12px; letter-spacing:.06em; color: var(--ash-500); text-transform:uppercase; }
+  .d3 .specs { margin-top: 18px; border-top: 2px solid var(--ink); }
+  .d3 .specs .r { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:12px;
+                  padding:6px 0; border-bottom:1px solid var(--paper-300); }
+  .d3 .specs .r b { font-weight:700; }
+  .d3 .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; padding-top:18px; }
+  .d3 .chip { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+              border:1.5px solid var(--ink); padding:4px 8px; }
+  .d3 .jp { font-family: var(--font-mono); font-size: 13px; color: var(--ash-500); }
+
+  /* ===================================================================
+     04 — ASTRAL REBEL
+     =================================================================== */
+  .d4 { background:
+        radial-gradient(90% 70% at 50% 110%, #2a0f3d 0%, transparent 60%),
+        linear-gradient(180deg, var(--crt-black), #0d0a14 60%, #160a22);
+        padding: 28px; display:flex; flex-direction:column; }
+  .d4 .grid3d { position:absolute; left:-10%; right:-10%; bottom:-4%; height: 56%;
+                background:
+                  repeating-linear-gradient(90deg, transparent 0 36px, color-mix(in srgb, var(--magenta) 55%, transparent) 36px 37px),
+                  repeating-linear-gradient(0deg, transparent 0 30px, color-mix(in srgb, var(--purple) 50%, transparent) 30px 31px);
+                transform: perspective(420px) rotateX(64deg); transform-origin: bottom;
+                mask-image: linear-gradient(transparent, #000 40%); opacity:.85; }
+  .d4 .topbar { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px;
+                letter-spacing:.14em; color: var(--cyan); position:relative; }
+  .d4 .wm { position:relative; font-family: var(--font-display); font-weight:900; font-size:24px;
+            letter-spacing:.02em; color: var(--signal); margin-top: 30px; }
+  .d4 .hero { position:relative; font-family: var(--font-poster); font-size:66px; line-height:.92;
+              text-transform:uppercase; margin: 8px 0 14px;
+              background: linear-gradient(180deg, var(--magenta), var(--purple));
+              -webkit-background-clip:text; background-clip:text; color:transparent;
+              text-shadow: 0 0 40px color-mix(in srgb, var(--magenta) 50%, transparent); }
+  .d4 .ar { position:relative; font-size: 22px; color: var(--cyan); font-family: var(--font-mono); }
+  .d4 .read { position:relative; font-family: var(--font-mono); font-size: 12.5px; line-height:1.7;
+              color: var(--ash-300); max-width: 34ch; }
+  .d4 .glyphs { position:relative; margin-top: 16px; display:flex; gap:14px; color: var(--cyan); opacity:.9; }
+  .d4 .foot { margin-top:auto; position:relative; font-family:var(--font-mono); font-size:11px;
+              letter-spacing:.16em; color: var(--purple); text-transform:uppercase; }
+
+  @media (max-width: 880px){ .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="head">
+      <div class="kick">SANDBOXOS · DIRECTION STUDY · 001</div>
+      <h1>Four ways to wear the same brief.</h1>
+      <p>One foundation (the tokens are already built), four ways to lead. Every direction is still the bootleg, unlicensed, rebel OS — they just put a different register out front. Pick the dominant voice, or tell me to blend two, and I'll build the full system around it.</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- 01 PHOSPHOR TERMINAL -->
+      <div class="cell">
+        <div class="cap"><span class="no">01</span><span class="nm">Phosphor Terminal</span><span class="dsc">restrained · amber CRT · OS-core</span></div>
+        <div class="poster d1 scan">
+          <div class="topbar"><span>SBX://boot.seq</span><span>RATE 0.0001 · LOCAL</span></div>
+          <div class="wm">▚ SANDBOX_OS</div>
+          <div class="hero">NOT<br>AN AI</div>
+          <div class="read">&gt; bootleg. local. yours.<br>&gt; it remembers what matters.<br>&gt; it heckles bad ideas first.<br>&gt; run it yourself<span class="cur">_</span></div>
+          <div class="foot"><span>THANK YOU<br>FOR USING</span><div class="bar"></div></div>
+        </div>
+      </div>
+
+      <!-- 02 STICKERBOMB SLAP -->
+      <div class="cell">
+        <div class="cap"><span class="no">02</span><span class="nm">Stickerbomb Slap</span><span class="dsc">maximal · die-cut · full color</span></div>
+        <div class="poster d2">
+          <div class="slap s1">NEW!</div>
+          <div class="slap s2">LIMITED ED.</div>
+          <div class="slap s3">JUST VIBES</div>
+          <div class="seal">NO<br>BAD<br>VIBES</div>
+          <div class="price">$4.20</div>
+          <div class="haz"><span>HANDMADE</span></div>
+          <div class="barwrap">
+            <div class="barcode" style="height:24px">
+              <i style="width:3px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:5px"></i><i style="width:2px"></i><i style="width:3px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:5px"></i><i style="width:3px"></i><i style="width:2px"></i>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;margin-top:4px">SBX 0001 1997</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 CASSETTE CATALOG -->
+      <div class="cell">
+        <div class="cap"><span class="no">03</span><span class="nm">Cassette Catalog</span><span class="dsc">systematic · paper · supercolor</span></div>
+        <div class="poster d3">
+          <div class="spine"></div>
+          <div class="body">
+            <div class="brandrow">
+              <div class="wm">SANDBOX<small>bootleg system · since 2026</small></div>
+              <div class="no">90</div>
+            </div>
+            <div class="title">Super-<br>cartridge</div>
+            <div class="sub">SBX-T70 · shareable build · high-noise</div>
+            <div class="specs">
+              <div class="r"><span>TYPE</span><b>IV · METAL / REBEL</b></div>
+              <div class="r"><span>RUNTIME</span><b>90 MIN · RUNS LOCAL</b></div>
+              <div class="r"><span>CONTENTS</span><b>memory · trophies · plug-ins</b></div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px"><span class="chip">SIDE A</span><span class="chip">DOLBY-X</span></div>
+              <div class="jp">日本製 · 1984</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 ASTRAL REBEL -->
+      <div class="cell">
+        <div class="cap"><span class="no">04</span><span class="nm">Astral Rebel</span><span class="dsc">nocturnal · wireframe · character soul</span></div>
+        <div class="poster d4">
+          <div class="grid3d"></div>
+          <div class="topbar"><span>◐ REALITY IS FAKE</span><span>SUBJECT_DX76</span></div>
+          <div class="wm">SANDBOX<span style="color:var(--magenta)">OS</span></div>
+          <div class="hero">Stay<br>Weird</div>
+          <div class="ar" dir="rtl">حرّ · سيادة</div>
+          <div class="read">before becoming carbon-based organisms, perhaps we were fragments from the same dying star. the machine dreams after midnight. so do you.</div>
+          <div class="glyphs" style="font-size:22px">✦ ◉ ✶ ❍ ✷ ☉ ✺</div>
+          <div class="foot">NOBODY'S TOOL · ONLY YOURS · 982-V7</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!-- @dsCard group="Components" viewport="900x520" name="Navigation" subtitle="Nav rail · context Menu · Pagination — die-cut wayfinding, one earned accent" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; background:var(--bg); color:var(--text); padding:22px 24px; font-family:var(--font-mono); }
+  .lbl { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint); margin:0 0 10px; }
+  .grid { display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:start; }
+  .stack { display:flex; flex-direction:column; gap:22px; }
+  .panel { border:2px solid var(--ink); background:var(--bg-sunken); box-shadow:var(--shadow-slap); padding:16px 18px; }
+  .crumb { display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:.08em; color:var(--text-dim); margin-bottom:14px; }
+  .crumb b { color:var(--text); font-weight:var(--w-bold); }
+  .crumb .sep { color:var(--text-faint); font-family:var(--font-crt); }
+  .menubar { position:relative; display:flex; align-items:center; gap:0; }
+  .pageinfo { font-size:11px; letter-spacing:.06em; color:var(--text-faint); margin-top:10px; }
+  .pageinfo b { color:var(--text-dim); font-weight:var(--w-bold); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Nav, Menu, Pagination, SlapButton } = window.SandboxOSDesignSystem_4526c4;
+
+  const SECTIONS = [
+    { label: 'workbench', items: [
+      { id: 'desk',    label: 'desk',        mark: '▣' },
+      { id: 'drafts',  label: 'drafts',      mark: '◧', count: 7 },
+      { id: 'shipped', label: 'shipped',     mark: '◆', count: 41 },
+    ]},
+    { label: 'inbox', items: [
+      { id: 'replies', label: 'replies',     mark: '◈', count: 3 },
+      { id: 'flagged', label: 'flagged',     mark: '✦', count: 12 },
+    ]},
+    { label: 'shelf', items: [
+      { id: 'parts',   label: 'spare parts', mark: '⬡' },
+      { id: 'archive', label: 'cold storage',mark: '▤' },
+    ]},
+  ];
+
+  const MENU_ITEMS = [
+    { id: 'open',    label: 'open in workbench', mark: '▸', shortcut: '⏎' },
+    { id: 'dupe',    label: 'duplicate',          mark: '⧉', shortcut: '⌘D' },
+    { id: 'rename',  label: 'rename',             mark: '✎', shortcut: 'F2' },
+    { separator: true, id: 's1' },
+    { id: 'pin',     label: 'pin to the shelf',   mark: '◉' },
+    { id: 'export',  label: 'export a copy',      mark: '⇪', shortcut: '⌘E' },
+    { id: 'locked',  label: 'lock (read-only)',   mark: '⊟', disabled: true },
+    { separator: true, id: 's2' },
+    { id: 'trash',   label: 'send to trash',      mark: '⨯', shortcut: '⌫', danger: true },
+  ];
+
+  function Demo(){
+    const [active, setActive] = React.useState('drafts');
+    const [menuOpen, setMenuOpen] = React.useState(false);
+    const [picked, setPicked] = React.useState(null);
+    const [page, setPage] = React.useState(3);
+
+    const PER = 12;
+    const TOTAL = 247;
+    const pageCount = Math.ceil(TOTAL / PER);
+    const lo = (page - 1) * PER + 1;
+    const hi = Math.min(page * PER, TOTAL);
+
+    const activeLabel = SECTIONS.flatMap(s => s.items).find(i => i.id === active);
+
+    return (
+      <div className="grid">
+        {/* LEFT — the navigation rail */}
+        <Nav
+          sections={SECTIONS}
+          activeId={active}
+          onSelect={setActive}
+          ariaLabel="Workbench rail"
+        />
+
+        {/* RIGHT — content surface driven by the rail */}
+        <div className="stack">
+          <div>
+            <div className="crumb">
+              <span>workbench</span>
+              <span className="sep">/</span>
+              <span>{activeLabel ? activeLabel.label : 'desk'}</span>
+              <span className="sep">/</span>
+              <b>{picked ? picked : 'all items'}</b>
+            </div>
+            <div className="panel">
+              <div className="lbl">row actions — right-click is a slap that popped up</div>
+              <div className="menubar">
+                <SlapButton
+                  size="sm"
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen(o => !o)}
+                >
+                  {menuOpen ? 'close actions ▴' : 'open actions ▾'}
+                </SlapButton>
+                <Menu
+                  open={menuOpen}
+                  anchor="bottom-left"
+                  label="Row actions"
+                  onClose={() => setMenuOpen(false)}
+                  onSelect={(id) => { setPicked(id); setMenuOpen(false); }}
+                  items={MENU_ITEMS}
+                  style={{ marginTop: 8 }}
+                />
+              </div>
+              <div className="pageinfo">
+                last action <b>{picked ? picked : '—'}</b> · keyboard: arrows rove, enter fires, esc backs out
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="lbl">browse — 247 items, 12 to a page</div>
+            <div className="panel">
+              <Pagination
+                page={page}
+                pageCount={pageCount}
+                siblingCount={1}
+                onChange={setPage}
+              />
+              <div className="pageinfo">
+                showing <b>{lo}</b>–<b>{hi}</b> of <b>{TOTAL}</b> · page <b>{page}</b> of <b>{pageCount}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

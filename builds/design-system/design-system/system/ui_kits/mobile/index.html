@@ -1,0 +1,170 @@
+<!-- @dsCard group="Mobile" viewport="1200x900" name="SandboxOS Mobile" subtitle="Touch-native phone kit: boot, workbench, cartridge shelf, the wall — substrate + FX + real components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Mobile</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;background:#15140f;color:var(--text);font-family:var(--font-mono);
+    background-image:radial-gradient(#1f1d16 1px,transparent 1px);background-size:22px 22px;}
+  .wrap{max-width:1200px;margin:0 auto;padding:30px 24px 90px;}
+  .head .kick{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);}
+  .head h1{font-family:var(--font-display);font-weight:900;font-size:34px;letter-spacing:-.02em;text-transform:uppercase;margin:8px 0 4px;}
+  .head p{color:var(--ash-400);font-size:13px;max-width:64ch;line-height:1.6;}
+  .rail{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-top:34px;}
+  .phone-cap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .phone-cap .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash-400);}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../lib/substrate.js"></script>
+<script src="../../lib/sound.js"></script>
+<script src="../../lib/fx.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="kick">SANDBOXOS · MOBILE · TOUCH-NATIVE</div>
+    <h1>The machine, in your hand</h1>
+    <p>the same hand-made OS, reflowed for the phone: a 1-bit substrate behind a single-column workbench, tap-to-spin cartridges, a thumb-reachable dock, and the GhostEye watching your build. mono base, one earned accent, no emoji — touch targets ≥ 44px.</p>
+  </div>
+  <div class="rail" id="rail"></div>
+</div>
+
+<script type="text/babel">
+const { GhostEye, VHSHeadline, Cartridge, SlapButton, Sticker, Field, Toast, Loader, CharacterSlap, Tabs } = window.SandboxOSDesignSystem_4526c4;
+const { useState, useEffect, useRef } = React;
+
+// ---- a self-contained phone shell (bezel + notch + home bar + its own substrate) ----
+function Phone({ children, mood = 'jailbroken', label }) {
+  const cv = useRef(null);
+  useEffect(() => {
+    const sub = window.SandboxSubstrate.mount(cv.current, { cell: 3, mood });
+    return () => sub.destroy();
+  }, []);
+  return (
+    <div className="phone-cap">
+      <div style={{ width: 300, height: 640, background: '#000', borderRadius: 44, padding: 11, boxShadow: '0 0 0 2px var(--crt-700), 10px 14px 0 rgba(0,0,0,.5)', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 11, borderRadius: 34, overflow: 'hidden', background: 'var(--crt-950)' }}>
+          <canvas ref={cv} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--fx-scanlines)', opacity: .3, mixBlendMode: 'overlay', pointerEvents: 'none' }} />
+          {/* notch */}
+          <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 120, height: 26, background: '#000', borderRadius: '0 0 16px 16px', zIndex: 20 }} />
+          {/* status */}
+          <div style={{ position: 'absolute', top: 6, left: 0, right: 0, display: 'flex', justifyContent: 'space-between', padding: '0 22px', fontSize: 10, color: 'var(--signal)', fontFamily: 'var(--font-mono)', zIndex: 21 }}>
+            <span>21:03</span><span>▚ SBX ▰▰▰</span>
+          </div>
+          {/* screen content */}
+          <div style={{ position: 'absolute', inset: 0, paddingTop: 30, zIndex: 10, display: 'flex', flexDirection: 'column' }}>{children}</div>
+          {/* home bar */}
+          <div style={{ position: 'absolute', bottom: 7, left: '50%', transform: 'translateX(-50%)', width: 110, height: 4, borderRadius: 3, background: 'var(--signal)', opacity: .5, zIndex: 22 }} />
+        </div>
+      </div>
+      {label && <div className="lbl">{label}</div>}
+    </div>
+  );
+}
+
+const Dock = ({ active }) => (
+  <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '10px 8px 22px', borderTop: '2px solid var(--signal)', background: 'rgba(10,10,8,.7)' }}>
+    {[['▚', 'build'], ['◳', 'shelf'], ['▥', 'wall'], ['◉', 'you']].map(([g, n], i) => (
+      <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, minWidth: 44, minHeight: 44, justifyContent: 'center', color: i === active ? 'var(--amber)' : 'var(--ash-500)' }}>
+        <span style={{ fontFamily: 'var(--font-crt)', fontSize: 19 }}>{g}</span>
+        <span style={{ fontSize: 8, textTransform: 'uppercase', letterSpacing: '.06em' }}>{n}</span>
+      </div>
+    ))}
+  </div>
+);
+
+// ---- SCREEN 1 · boot ----
+function BootScreen() {
+  const [step, setStep] = useState(0);
+  useEffect(() => { const ids = [500, 1100, 1700].map((ms, i) => setTimeout(() => setStep(i + 1), ms)); return () => ids.forEach(clearTimeout); }, []);
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 20, textAlign: 'center' }}>
+      <GhostEye size={120} watch={false} />
+      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 22, textTransform: 'uppercase' }}>Sandbox<span style={{ color: 'var(--magenta)' }}>OS</span></div>
+      <div style={{ fontFamily: 'var(--font-crt)', fontSize: 14, color: 'var(--green)', minHeight: 60, lineHeight: 1.5 }}>
+        {step >= 1 && <div>&gt; warming up…</div>}
+        {step >= 2 && <div>&gt; the bugs you beat, kept</div>}
+        {step >= 3 && <div style={{ color: 'var(--amber)' }}>&gt; ready. nobody's tool.</div>}
+      </div>
+    </div>
+  );
+}
+
+// ---- SCREEN 2 · workbench ----
+function Workbench() {
+  const [cmd, setCmd] = useState('');
+  return (
+    <>
+      <div style={{ flex: 1, overflow: 'hidden', padding: '8px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 17, textTransform: 'uppercase' }}>workbench</div>
+          <GhostEye size={40} watch />
+        </div>
+        <div style={{ border: '2px solid var(--signal)', background: 'rgba(10,10,8,.6)' }}>
+          <div style={{ background: 'var(--signal)', color: 'var(--ink)', fontSize: 10, fontWeight: 700, padding: '2px 8px', textTransform: 'uppercase' }}>what are we building?</div>
+          <div style={{ padding: 10, fontSize: 11, color: 'var(--ash-300)', lineHeight: 1.5 }}>nothing's locked. everything's yours.</div>
+        </div>
+        <Field prefix="$" placeholder="build a thing…" value={cmd} onChange={e => setCmd(e.target.value)} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <SlapButton tone="go" size="sm">build it</SlapButton>
+          <SlapButton tone="ghost" size="sm">fork</SlapButton>
+        </div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
+          <Sticker shape="tag" tone="hazard" rotate={-4}>new build</Sticker>
+          <CharacterSlap face="⌐■_■" label="nobody's tool" tone="cool" rotate={4} />
+        </div>
+        <Loader value={66} label="BUILDING" width={220} />
+      </div>
+      <Dock active={0} />
+    </>
+  );
+}
+
+// ---- SCREEN 3 · the wall (cartridge shelf, scrollable) ----
+function Wall() {
+  const carts = [['Career\nOps', 'build', '001/500'], ['Mind\nLoop', 'skill', '042/500'], ['Night\nShift', 'persona', '007/500'], ['Pitch\nDeck', 'build', '150/500']];
+  return (
+    <>
+      <div style={{ flex: 1, overflow: 'auto', padding: '8px 16px' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 17, textTransform: 'uppercase', marginBottom: 6 }}>the wall</div>
+        <div style={{ fontSize: 10, color: 'var(--ash-400)', marginBottom: 12 }}>peers' builds · tap a cartridge to spin</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {carts.map((c, i) => (
+            <div key={i} style={{ border: '2px solid var(--crt-700)', background: 'rgba(10,10,8,.7)', padding: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+              <Cartridge title={c[0]} subtitle={c[1]} kind={c[1]} serial={c[2]} width={90} />
+              <div style={{ width: '100%' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 11, textTransform: 'uppercase' }}>{c[0].replace('\n', ' ')}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                  <span style={{ color: 'var(--amber)', fontSize: 9 }}>★★★★★</span>
+                  <SlapButton tone="go" size="sm">↓</SlapButton>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <Dock active={2} />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <div className="rail">
+      <Phone mood="afterhours" label="01 · boot"><BootScreen /></Phone>
+      <Phone mood="jailbroken" label="02 · workbench"><Workbench /></Phone>
+      <Phone mood="jailbroken" label="03 · the wall"><Wall /></Phone>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('rail')).render(<App />);
+</script>
+</body>
+</html>

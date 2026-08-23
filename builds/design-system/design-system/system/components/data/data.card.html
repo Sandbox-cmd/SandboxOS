@@ -1,0 +1,140 @@
+<!-- @dsCard group="Components" viewport="900x520" name="Data and competence" subtitle="Table · List · Stat · KeyValue · CodeBlock — the dense maker-data surfaces, die-cut & mono" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; background:var(--bg); color:var(--text); padding:22px 24px; font-family:var(--font-mono); }
+  .lbl { font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-faint); margin:0 0 10px; }
+  .grid { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:22px 26px; align-items:start; }
+  .col { min-width:0; display:flex; flex-direction:column; gap:18px; }
+  .statrow { display:flex; gap:14px; flex-wrap:wrap; }
+  .block { min-width:0; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Table, List, Stat, KeyValue, CodeBlock } = window.SandboxOSDesignSystem_4526c4;
+
+  function Demo(){
+    // Table — a build queue. Numeric columns right-align; the SIZE header sorts.
+    const columns = [
+      { key:'job',   label:'job' },
+      { key:'owner', label:'owner' },
+      { key:'size',  label:'size kb', align:'right', sortable:true },
+      { key:'state', label:'state' },
+    ];
+    const rows = [
+      { id:1, job:'press-kit.zip',  owner:'maya',  size:418, state:'shipped' },
+      { id:2, job:'cover-art.png',  owner:'maya',  size:992, state:'rendering' },
+      { id:3, job:'liner-notes.md', owner:'theo',  size:12,  state:'shipped' },
+      { id:4, job:'master.wav',     owner:'jun',   size:5240,state:'queued' },
+      { id:5, job:'sticker-sheet',  owner:'theo',  size:206, state:'shipped' },
+    ];
+
+    // List — a selectable run feed. Status is a single-ink dot, never a fill.
+    const [pick, setPick] = React.useState('r-204');
+    const feed = [
+      { id:'r-204', label:'cut the 12-inch master', meta:'4 stems · 03:51', status:'active', trailing:'now' },
+      { id:'r-203', label:'bounce radio edit',      meta:'mono safe',       status:'ok',     trailing:'2m' },
+      { id:'r-202', label:'proof the jacket',       meta:'CMYK locked',     status:'ok',     trailing:'9m' },
+      { id:'r-201', label:'reorder vinyl labels',   meta:'short by 50',     status:'warn',   trailing:'31m' },
+      { id:'r-200', label:'ship preorders',         meta:'42 parcels',      status:'rebel',  trailing:'1h' },
+    ];
+
+    // KeyValue — a tight spec sheet, real <dl>.
+    const spec = [
+      { k:'format',  v:'12-inch / 45rpm' },
+      { k:'pressing',v:'180g black' },
+      { k:'run',     v:'500 copies' },
+      { k:'ships',   v:'jun 28' },
+    ];
+
+    // CodeBlock — a live build log, single-ink tones; and a copyable snippet.
+    const log = [
+      { text:'> bounce master.wav  →  cut/',                tone:'dim' },
+      { text:'[ok]    de-essed, normalized to -14 LUFS',    tone:'ok' },
+      { text:'[ok]    side A 18:02  ·  side B 17:40',        tone:'ok' },
+      { text:'[warn]  label stock short by 50 — reorder',   tone:'warn' },
+      { text:'[info]  proof queued for theo',               tone:'info' },
+      { text:'> done in 41s',                                tone:'rebel' },
+    ];
+    const snippet = `ship({
+  release: "midnight-press-02",
+  format: "12in/45",
+  copies: 500,
+});`;
+
+    return (
+      <div className="grid">
+        <div className="col">
+          <div className="block">
+            <div className="lbl">build queue · sortable, dense, zebra</div>
+            <Table
+              columns={columns}
+              rows={rows}
+              defaultSortKey="size"
+              defaultSortDir="desc"
+              serial
+              dense
+              zebra
+              caption="press run — 24 jun"
+            />
+          </div>
+
+          <div className="block">
+            <div className="lbl">build log · single-ink tones</div>
+            <CodeBlock
+              variant="log"
+              title="cut/run-204.log"
+              lines={log}
+              showLineNumbers
+              maxHeight={150}
+            />
+          </div>
+        </div>
+
+        <div className="col">
+          <div className="block">
+            <div className="lbl">today, by the numbers</div>
+            <div className="statrow">
+              <Stat label="shipped"  value="42" unit="pcs" delta={+9}  tone="ok" />
+              <Stat label="in press" value="3"  delta={-1}  tone="active" />
+            </div>
+          </div>
+
+          <div className="block">
+            <div className="lbl">run feed · pick a row</div>
+            <List items={feed} value={pick} onSelect={setPick} dense />
+          </div>
+
+          <div className="block">
+            <div className="lbl">spec sheet</div>
+            <KeyValue pairs={spec} dense />
+          </div>
+
+          <div className="block">
+            <div className="lbl">ship it · copyable</div>
+            <CodeBlock
+              code={snippet}
+              lang="js"
+              title="ship.js"
+              copyable
+              showLineNumbers
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

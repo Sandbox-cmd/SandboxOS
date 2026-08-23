@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="SandboxOS Landing" description="Bootleg-OS marketing hero on the dither fabric, using the SandboxOS component kit" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  body{ margin:0; background:#0F0F0D; color:#E9E3D4; font-family:'JetBrains Mono',monospace; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 28px; }
+  .nav{ display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:2px solid #E9E3D4; }
+  .wm{ font-family:'Archivo',sans-serif; font-weight:900; font-size:20px; text-transform:uppercase; letter-spacing:-.01em; }
+  .wm b{ color:#FF2E88; }
+  .lk{ font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#B3AC97; }
+  .hero{ padding:70px 0; }
+  .hero h1{ font-family:'Archivo',sans-serif; font-weight:900; font-size:clamp(42px,7vw,84px); line-height:.92; letter-spacing:-.03em; text-transform:uppercase; margin:0; }
+  .hero h1 .am{ color:#FFB000; }
+  .hero p{ font-size:15px; color:#B3AC97; max-width:48ch; line-height:1.6; margin:20px 0 0; }
+  .ctas{ display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; }
+  .tick{ overflow:hidden; border-top:2px solid #E9E3D4; border-bottom:2px solid #E9E3D4; white-space:nowrap; }
+  .tick b{ display:inline-block; padding:7px 0; font-family:'Archivo',sans-serif; font-weight:900; font-size:13px; letter-spacing:.1em; text-transform:uppercase; }
+  .tick span{ margin:0 12px; color:#6C6552; }
+</style>
+</helmet>
+<div class="wrap">
+  <div class="nav">
+    <div class="wm">▚ SANDBOX<b>OS</b></div>
+    <div class="lk">cartridges · docs · the rebel</div>
+  </div>
+  <div class="hero">
+    <h1>You don't use it.<br>You <span class="am">build</span> on it.</h1>
+    <p>a hand-assembled operating system for makers. it remembers what you're building, it side-eyes your worst ideas before you ship them, and it runs on your own machine — that's half the fun. not an ai. nobody's tool.</p>
+    <div class="ctas">
+      <x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.SlapButton" tone="go" size="lg" hint-size="160px,48px">↓ download</x-import>
+      <x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.SlapButton" tone="ghost" size="lg" hint-size="180px,48px">run it yourself</x-import>
+    </div>
+  </div>
+</div>
+<div class="tick"><b>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>RUN IT YOURSELF<span>·</span>STAY WEIRD<span>·</span>UNLICENSED<span>·</span>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>RUN IT YOURSELF<span>·</span>STAY WEIRD<span>·</span>UNLICENSED<span>·</span></b></div>
+</x-dc>
+</body>
+</html>

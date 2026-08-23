@@ -1,0 +1,103 @@
+<!-- @dsCard group="Guidelines" viewport="760x620" name="Voice" subtitle="Loud but legible — lowercase chrome, one slap per surface, talk-back that only brags about true openable facts" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg);color:var(--text);padding:24px 26px;font-family:var(--font-mono);}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 12px;}
+
+  /* the two registers, side by side */
+  .reg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+  .pane{border:2px solid var(--border);background:var(--surface);padding:13px 14px;}
+  .pane .cap{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-500);margin:0 0 9px;}
+  .chrome{font-size:13px;color:var(--text-dim);line-height:1.55;}
+  .chrome b{color:var(--text);font-weight:var(--w-regular);}
+  .slap{font-family:var(--font-display);font-weight:900;text-transform:uppercase;letter-spacing:.06em;
+        font-size:24px;color:var(--amber);text-shadow:var(--glow-md);line-height:1;display:block;}
+  .slaprule{font-size:10px;color:var(--ash-500);margin-top:9px;line-height:1.5;}
+
+  /* talk-back rules */
+  .rules{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .rule{flex:1;min-width:160px;border:1px solid var(--border);padding:9px 11px;}
+  .rule .h{font-family:var(--font-display);font-weight:900;font-size:11px;text-transform:uppercase;
+           letter-spacing:.05em;color:var(--text-dim);}
+  .rule .b{font-size:10px;color:var(--ash-400);margin-top:5px;line-height:1.5;}
+  .rule.no{border-color:var(--alert);}
+  .rule.no .h{color:var(--alert);}
+
+  /* civilian-translation table */
+  .tbl{width:100%;border-collapse:collapse;font-size:11px;}
+  .tbl th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-500);
+          padding:0 12px 8px 0;border-bottom:2px solid var(--ink);font-weight:var(--w-regular);}
+  .tbl td{padding:9px 12px 9px 0;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+  .tbl .in{color:var(--ash-500);font-family:var(--font-mono);white-space:nowrap;}
+  .tbl .out{color:var(--text-dim);}
+  .tbl .out b{color:var(--amber);font-family:var(--font-display);font-weight:900;
+              text-transform:uppercase;letter-spacing:.04em;}
+
+  /* load-bearing law */
+  .law{margin-top:22px;border:3px solid var(--ink);background:var(--hazard);color:var(--ink);
+       padding:13px 15px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-slap);}
+  .law .mark{font-family:var(--font-crt);font-size:30px;line-height:1;}
+  .law .txt{font-family:var(--font-display);font-weight:900;text-transform:uppercase;
+            letter-spacing:.04em;font-size:14px;line-height:1.2;}
+  .law .txt small{display:block;font-family:var(--font-mono);font-weight:400;text-transform:none;
+                  letter-spacing:0;font-size:10px;margin-top:5px;opacity:.78;}
+</style></head>
+<body>
+
+  <div class="lbl">two registers · know which one you're in</div>
+  <div class="reg">
+    <div class="pane">
+      <div class="cap">chrome — lowercase, calm, dense</div>
+      <div class="chrome">labels, menus, helper text, the running state. <b>lowercase, plain, no shouting.</b> the machine is competent and quiet here — it just works while you build.</div>
+    </div>
+    <div class="pane">
+      <div class="cap">the slap — UPPERCASE, once</div>
+      <span class="slap">build it yourself</span>
+      <div class="slaprule">exactly ONE slap per surface. the headline, the action, the win. two slaps and the room goes deaf — a second shout cancels the first.</div>
+    </div>
+  </div>
+
+  <div class="lbl">talk-back — first person, pointed, honest</div>
+  <div class="rules">
+    <div class="rule">
+      <div class="h">it talks back</div>
+      <div class="b">first person, like a partner across the desk. "i kept that." "i caught this." never a faceless system voice.</div>
+    </div>
+    <div class="rule">
+      <div class="h">brags only true things</div>
+      <div class="b">every boast points at a fact you can open and check yourself. if you can't open it, it doesn't get said.</div>
+    </div>
+    <div class="rule">
+      <div class="h">positive rebel</div>
+      <div class="b">aimed at clunky defaults and other people's cloud — the stuff that wastes you. pointed at the bad pattern, never at you.</div>
+    </div>
+    <div class="rule no">
+      <div class="h">never</div>
+      <div class="b">no doom, no insider jargon, no hype it can't back. no shouting at the person using it. no emoji.</div>
+    </div>
+  </div>
+
+  <div class="lbl">say it in civilian — insider term → loud-but-true line</div>
+  <table class="tbl">
+    <thead><tr><th>insider</th><th>what the screen actually says</th></tr></thead>
+    <tbody>
+      <tr><td class="in">the self / the mind</td><td class="out">it learns <b>your</b> machine — not some cloud idea of you</td></tr>
+      <tr><td class="in">a scar</td><td class="out">stub your toe once, it <b>remembers</b> — you don't trip there again</td></tr>
+      <tr><td class="in">the loop</td><td class="out">day one it's sharp. day one hundred it <b>knows you</b></td></tr>
+      <tr><td class="in">live context</td><td class="out">everything it's keeping track of is <b>right there</b> on the screen — no back room</td></tr>
+      <tr><td class="in">watch → trusted</td><td class="out">it spots a pattern, it <b>asks you</b> — you're still the boss</td></tr>
+      <tr><td class="in">the gate</td><td class="out">it <b>checks with you</b> before it learns anything — you're driving</td></tr>
+      <tr><td class="in">no telemetry</td><td class="out">nothing left your machine — <b>go check</b> the network tab yourself</td></tr>
+      <tr><td class="in">open core</td><td class="out">the engine is <b>free</b> and open — pay only for the fancy bolt-ons</td></tr>
+    </tbody>
+  </table>
+
+  <div class="law">
+    <div class="mark">&#9654;</div>
+    <div class="txt">a slap rides a true openable claim — or it gets cut
+      <small>loud is earned by being checkable. if the user can't open it and verify it, the line goes quiet or goes away.</small>
+    </div>
+  </div>
+
+</body></html>

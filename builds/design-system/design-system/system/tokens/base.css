@@ -1,0 +1,45 @@
+/* ============================================================
+   SandboxOS — BASE RESET + GLOBAL CANVAS
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,h2,h3,h4,h5,h6 { margin: 0; font-weight: var(--w-black); line-height: var(--lh-snug); }
+p { margin: 0; text-wrap: pretty; }
+a { color: var(--link); text-underline-offset: 2px; }
+::selection { background: var(--amber); color: var(--ink); }
+
+:focus-visible {
+  outline: var(--bw-1) solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* thin brutalist scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--crt-900); }
+::-webkit-scrollbar-thumb { background: var(--crt-700); border: 2px solid var(--crt-900); }
+::-webkit-scrollbar-thumb:hover { background: var(--ash-500); }
+
+/* ---- REUSABLE BACKGROUND UTILITIES --------------------- */
+.sbx-canvas         { background: var(--bg); color: var(--text); }
+.sbx-scanlines      { position: relative; }
+.sbx-scanlines::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--fx-scanlines); mix-blend-mode: multiply; opacity: 0.5;
+}
+.sbx-grid-dot       { background-image: var(--fx-grid-dot); background-size: var(--fx-grid-dot-size); }
+.sbx-hazard         { background: var(--fx-hazard); }
+.sbx-paper          { background: var(--surface-paper); color: var(--text-inverse); }

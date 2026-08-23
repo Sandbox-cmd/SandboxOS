@@ -1,0 +1,61 @@
+<!-- @dsCard group="Desktop" viewport="1280x720" name="Gate — Key Access" subtitle="The key gate: your keys, your machine. GhostEye keeping you company, terminal unlock." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Gate</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);overflow:hidden;}
+  #fabric{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.32;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  #app{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;}
+  .gate{width:420px;}
+  .gate .eye{display:flex;justify-content:center;margin-bottom:18px;}
+  .wm{font-family:var(--font-display);font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;text-align:center;}
+  .wm b{color:var(--magenta);}
+  .tag{text-align:center;font-size:11px;color:var(--ash-400);letter-spacing:.14em;text-transform:uppercase;margin:4px 0 20px;}
+  .foot{position:fixed;bottom:16px;left:0;right:0;text-align:center;font-size:10px;color:var(--ash-500);letter-spacing:.12em;text-transform:uppercase;z-index:2;}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../lib/substrate.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="vhs"></div>
+<div id="app"></div>
+<div class="foot">your keys · your call · your machine — © NOBODY</div>
+<script>window.SandboxSubstrate.mount(document.getElementById('fabric'),{cell:4,mood:'jailbroken'});</script>
+<script type="text/babel">
+  const { Window, Field, SlapButton, GhostEye, Sticker } = window.SandboxOSDesignSystem_4526c4;
+  function Gate(){
+    const [state,setState]=React.useState('locked');
+    return (
+      <div className="gate">
+        <div className="eye"><GhostEye size={116} watch/></div>
+        <div className="wm">SANDBOX<b>OS</b></div>
+        <div className="tag">your keys · your machine · local only</div>
+        <Window title="GATE.KEY">
+          <div style={{display:'flex',flexDirection:'column',gap:12}}>
+            <Field label="passphrase" prefix="◆" type="password" defaultValue="sovereign" />
+            <div style={{display:'flex',gap:8,alignItems:'center'}}>
+              <SlapButton tone={state==='in'?'ok':'go'} onClick={()=>setState('in')}>{state==='in'?'✓ unlocked':'↳ unlock'}</SlapButton>
+              <SlapButton tone="ghost">make a key</SlapButton>
+              {state==='in' && <span style={{fontFamily:'var(--font-crt)',color:'var(--green)',fontSize:18,textShadow:'0 0 8px var(--glow-green)'}}>welcome back, maker</span>}
+            </div>
+          </div>
+        </Window>
+        <div style={{display:'flex',gap:10,justifyContent:'center',marginTop:18}}>
+          <Sticker shape="stamp" tone="rebel" rotate={-10}>nobody's tool</Sticker>
+          <Sticker shape="tag" tone="hazard" rotate={4}>not an ai</Sticker>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('app')).render(<Gate/>);
+</script>
+</body>
+</html>

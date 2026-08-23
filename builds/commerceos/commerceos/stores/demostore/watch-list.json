@@ -1,0 +1,12 @@
+{
+  "_doc": "the demo store's watch-list \u2014 empty on purpose: the engine evaluates nothing and says so honestly until real rows are earned. add metrics here once you have facts worth watching.",
+  "store": "demostore",
+  "age_out_days": {
+    "_doc": "aging limits per direction: a stale opening is gone; a stale risk still bites.",
+    "risk": 30,
+    "opportunity": 14,
+    "insight": 14
+  },
+  "curves": {},
+  "metrics": []
+}

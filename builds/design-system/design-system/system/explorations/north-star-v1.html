@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — System North Star</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ============================================================
+     NORTH STAR — the resolved system.
+     BASE = mono (ink + signal + dither). COLOR = earned layer.
+     CHARACTER = woven into the UI, never a hero.
+     ============================================================ */
+  :root{
+    --ns-ink:#0B0B09; --ns-paper:#E9E3D4; --ns-line:#2A2820;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--ns-ink); color:var(--ns-paper);
+        font-family:var(--font-mono); cursor:none;
+        background-image:radial-gradient(rgba(233,227,212,.05) 1px, transparent 1px); background-size:5px 5px; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px 120px; }
+
+  /* custom rebel cursor (character-as-UI) */
+  #cur{ position:fixed; z-index:9999; pointer-events:none; font-family:var(--font-crt); font-size:22px; color:var(--magenta);
+        text-shadow:0 0 8px var(--glow-magenta); transform:translate(-2px,-4px); transition:color .1s; }
+  a,button,.hot{ cursor:none; }
+
+  /* ---- masthead ---- */
+  .mast{ border-bottom:2px solid var(--ns-paper); padding:18px 0 14px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:22px; }
+  .mast .lock{ display:flex; align-items:center; gap:12px; }
+  .glyph{ font-family:var(--font-crt); font-size:34px; color:var(--ns-paper); line-height:1; }
+  .mast h1{ font-family:var(--font-display); font-weight:900; font-size:30px; letter-spacing:-.02em; text-transform:uppercase; }
+  .mast h1 b{ color:var(--magenta); }
+  .mast .meta{ text-align:right; font-size:10px; letter-spacing:.12em; color:var(--ash-400); text-transform:uppercase; line-height:1.7; }
+  .qr{ display:inline-grid; grid-template-columns:repeat(5,4px); grid-auto-rows:4px; gap:1px; vertical-align:middle; margin-left:8px; }
+  .qr i{ background:var(--ns-paper); } .qr i.o{ background:transparent; }
+
+  /* ---- ticker ---- */
+  .ticker{ overflow:hidden; border-bottom:1px solid var(--ns-line); white-space:nowrap; }
+  .ticker .run{ display:inline-block; padding:8px 0; font-family:var(--font-display); font-weight:900; font-size:13px; letter-spacing:.1em; text-transform:uppercase; animation:sbx-marquee 28s linear infinite; }
+  .ticker .run span{ color:var(--ash-500); margin:0 14px; }
+  .ticker .run b{ color:var(--ns-paper); }
+
+  /* ---- section scaffold ---- */
+  .plate{ margin-top:64px; }
+  .plate > .lbl{ display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--ns-line); padding-bottom:8px; margin-bottom:24px; }
+  .plate > .lbl .n{ font-family:var(--font-poster); font-size:24px; color:var(--magenta); }
+  .plate > .lbl .t{ font-family:var(--font-display); font-weight:900; font-size:19px; text-transform:uppercase; letter-spacing:.03em; }
+  .plate > .lbl .d{ margin-left:auto; font-size:11px; color:var(--ash-400); letter-spacing:.1em; text-transform:uppercase; max-width:46ch; text-align:right; }
+  .row{ display:grid; gap:22px; } .row.c2{ grid-template-columns:1fr 1fr; } .row.c3{ grid-template-columns:repeat(3,1fr); }
+
+  .note{ font-size:11px; color:var(--ash-400); letter-spacing:.06em; margin-top:10px; line-height:1.6; }
+  .note b{ color:var(--ns-paper); }
+
+  /* ====== MONO PRIMITIVES (the base) ====== */
+  .win{ border:2px solid var(--ns-paper); background:var(--ns-ink); }
+  .win .tb{ background:var(--ns-paper); color:var(--ns-ink); font-weight:700; font-size:11px; padding:3px 8px; display:flex; justify-content:space-between; align-items:center; letter-spacing:.04em; }
+  .win .tb .x{ border:1.5px solid var(--ns-ink); width:13px; height:13px; display:flex; align-items:center; justify-content:center; font-size:10px; }
+  .win .bd{ padding:14px; font-size:12px; line-height:1.6; }
+  .dither{ position:relative; }
+  .dither::after{ content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+     background:radial-gradient(var(--ns-paper) 30%,transparent 31%) 0 0/4px 4px; mask:linear-gradient(135deg,#000,transparent 70%); }
+
+  .slapbtn{ font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:12px; letter-spacing:.04em;
+     background:var(--ns-paper); color:var(--ns-ink); border:2px solid var(--ns-paper); padding:7px 14px; box-shadow:3px 3px 0 var(--ns-paper);
+     transition:transform var(--dur-1) var(--ease-snap), box-shadow var(--dur-1); display:inline-flex; align-items:center; gap:7px; }
+  .slapbtn:hover{ transform:translate(1px,1px); box-shadow:2px 2px 0 var(--ns-paper); }
+  .slapbtn:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ns-paper); }
+  .slapbtn.ghost{ background:transparent; color:var(--ns-paper); box-shadow:3px 3px 0 var(--ns-line); }
+  .slapbtn.ghost:hover{ box-shadow:2px 2px 0 var(--ns-line); }
+
+  table.data{ width:100%; border-collapse:collapse; font-size:11px; }
+  table.data td{ border:1px solid var(--ns-line); padding:6px 8px; }
+  table.data td .k{ color:var(--ash-400); font-size:9px; letter-spacing:.08em; text-transform:uppercase; display:block; }
+  table.data td .v{ color:var(--ns-paper); }
+
+  /* ====== EARNED COLOR ====== */
+  .chip{ display:inline-block; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.08em; border:1.5px solid currentColor; padding:2px 8px; }
+  .c-amber{ color:var(--amber); } .c-green{ color:var(--green); } .c-cyan{ color:var(--cyan); } .c-mag{ color:var(--magenta); } .c-red{ color:var(--alert); }
+  .spine{ height:14px; background:var(--supercolor); }
+  .swatch-row{ display:flex; gap:0; height:30px; border:2px solid var(--ns-paper); }
+  .swatch-row i{ flex:1; }
+
+  /* sticker primitives */
+  .stk{ font-family:var(--font-display); font-weight:900; text-transform:uppercase; border:2px solid var(--ns-ink);
+        box-shadow:0 0 0 3px var(--ns-paper), 3px 4px 0 rgba(0,0,0,.5); display:inline-flex; align-items:center; justify-content:center; line-height:.95; }
+  .stk.haz{ background:var(--fx-hazard); color:var(--ns-ink); padding:4px 0; } .stk.haz span{ background:var(--ns-paper); padding:1px 6px; }
+  .stk.seal{ width:74px; height:74px; border-radius:50%; text-align:center; font-size:12px; }
+  .stk.tag{ padding:5px 11px; font-size:14px; }
+
+  /* ====== CHARACTER AS UI ====== */
+  .charcard{ border:2px solid var(--ns-line); padding:16px; position:relative; min-height:128px; display:flex; flex-direction:column; gap:8px; }
+  .charcard .h{ font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ash-400); }
+  .charcard .demo{ flex:1; display:flex; align-items:center; justify-content:center; }
+  .charcard .cap{ font-size:10px; color:var(--ash-500); line-height:1.5; }
+  .kao{ font-family:var(--font-crt); color:var(--magenta); text-shadow:0 0 8px var(--glow-magenta); }
+
+  /* face toggle */
+  .toggle{ width:74px; height:34px; border:2px solid var(--ns-paper); display:flex; align-items:center; padding:2px; cursor:none; background:var(--ns-ink); }
+  .toggle .knob{ width:26px; height:26px; background:var(--ns-paper); color:var(--ns-ink); display:flex; align-items:center; justify-content:center; font-family:var(--font-crt); font-size:15px; transition:transform var(--dur-2) var(--ease-snap); }
+  .toggle.on{ background:var(--magenta); border-color:var(--magenta); }
+  .toggle.on .knob{ transform:translateX(40px); }
+
+  /* mascot pet chip */
+  .pet{ border:2px solid var(--ns-paper); padding:8px 12px; display:flex; align-items:center; gap:10px; background:var(--ns-ink); }
+  .pet .face{ font-family:var(--font-crt); font-size:26px; color:var(--cyan); text-shadow:0 0 8px var(--glow-cyan); }
+  .pet .meta{ font-size:9px; line-height:1.4; color:var(--ash-400); text-transform:uppercase; letter-spacing:.06em; }
+  .pet .bar{ width:74px; height:6px; border:1px solid var(--ns-line); margin-top:2px; } .pet .bar i{ display:block; height:100%; background:var(--green); }
+
+  /* talk-back toast */
+  .toast{ border:2px solid var(--ns-paper); background:var(--ns-ink); display:flex; gap:0; align-items:stretch; max-width:300px; }
+  .toast .ic{ width:34px; background:var(--alert); color:var(--ns-ink); display:flex; align-items:center; justify-content:center; font-family:var(--font-crt); font-size:18px; }
+  .toast .tx{ padding:7px 10px; font-size:11px; line-height:1.4; }
+  .toast .tx b{ font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:11px; display:block; }
+
+  /* character slaps (mini sprites as badges) */
+  .cslap{ display:inline-flex; flex-direction:column; align-items:center; gap:3px; border:2px solid var(--ns-ink); box-shadow:0 0 0 3px var(--ns-paper), 3px 3px 0 rgba(0,0,0,.5);
+          padding:8px 6px 5px; width:84px; background:var(--ns-ink); }
+  .cslap .spr{ font-family:var(--font-crt); font-size:22px; line-height:1; }
+  .cslap .lb{ font-family:var(--font-display); font-weight:900; font-size:8.5px; text-transform:uppercase; letter-spacing:.02em; text-align:center; }
+  .cslap.a{ } .cslap.a .spr{ color:var(--magenta);} .cslap.a .lb{ color:var(--ns-paper);}
+  .cslap.b .spr{ color:var(--cyan);} .cslap.b{ background:var(--ns-paper);} .cslap.b .lb{ color:var(--ns-ink);} .cslap.b .spr{ color:var(--blue);}
+  .cslap.c .spr{ color:var(--ns-ink);} .cslap.c{ background:var(--hazard);} .cslap.c .lb{ color:var(--ns-ink);}
+
+  /* fusion desktop */
+  .desk{ border:2px solid var(--ns-paper); background:var(--ns-ink); position:relative; height:440px; overflow:hidden; }
+  .desk .topbar{ background:var(--ns-paper); color:var(--ns-ink); font-size:10px; font-weight:700; padding:3px 10px; display:flex; justify-content:space-between; letter-spacing:.06em; }
+  .desk .dwin{ position:absolute; }
+  .desk .scan{ position:absolute; inset:0; pointer-events:none; background:var(--fx-scanlines); opacity:.35; }
+
+  @media (max-width:820px){ .row.c2,.row.c3{ grid-template-columns:1fr; } body{cursor:auto;} #cur{display:none;} a,button,.hot,.toggle{cursor:pointer;} }
+</style>
+</head>
+<body>
+<div id="cur">▸</div>
+<div class="wrap">
+
+  <!-- MASTHEAD -->
+  <div class="mast">
+    <div class="lock">
+      <span class="glyph">▚</span>
+      <h1>Sandbox<b>OS</b></h1>
+    </div>
+    <div class="meta">
+      SYSTEM NORTH STAR · v1<br>
+      a bootleg operating system · nobody's tool<br>
+      SER. 982-V7
+      <span class="qr"><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i class="o"></i><i></i><i class="o"></i><i></i><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i class="o"></i><i></i></span>
+    </div>
+  </div>
+
+  <div class="ticker"><div class="run">
+    <b>NOT AN AI</b><span>·</span><b>JUST VIBES</b><span>·</span><b>STAY WEIRD</b><span>·</span><b>NOBODY'S TOOL</b><span>·</span><b>RUN IT YOURSELF</b><span>·</span><b>NO BAD VIBES</b><span>·</span><b>THANK YOU FOR USING</b><span>·</span>
+    <b>NOT AN AI</b><span>·</span><b>JUST VIBES</b><span>·</span><b>STAY WEIRD</b><span>·</span><b>NOBODY'S TOOL</b><span>·</span><b>RUN IT YOURSELF</b><span>·</span><b>NO BAD VIBES</b><span>·</span><b>THANK YOU FOR USING</b><span>·</span>
+  </div></div>
+
+  <!-- THESIS -->
+  <div class="plate" style="margin-top:40px">
+    <p style="font-family:var(--font-display); font-weight:900; font-size:clamp(26px,4vw,46px); line-height:1.05; letter-spacing:-.02em; text-transform:uppercase; max-width:20ch;">
+      The base is <span style="color:var(--ns-paper)">mono</span>.<br>
+      Color is <span style="color:var(--magenta)">earned</span>.<br>
+      The rebel <span style="color:var(--cyan)">runs the UI</span>.
+    </p>
+    <p class="note" style="max-width:62ch; font-size:13px; margin-top:18px;">
+      A bootleg, local, hand-assembled machine. The system speaks in <b>black ink on signal-white</b>, dithered and dense — that's the competence, the credibility, the calm. Then <b>stickers, the character, and motion earn their color</b> on top: a slap of hazard yellow, a flash of supercolor, a magenta wink from the thing you built. Nothing here came from a site generator. A rebel made it, and she left fingerprints everywhere.
+    </p>
+  </div>
+
+  <!-- PLATE 01 — MONO BASE -->
+  <div class="plate">
+    <div class="lbl"><span class="n">01</span><span class="t">The Base Is Mono</span><span class="d">ink + signal + dither · 0px corners · hard 2px borders · talk-back dialogs · dense tables</span></div>
+    <div class="row c3">
+      <div class="win dither"><div class="tb"><span>SANDBOX_OS.EXE</span><span class="x">✕</span></div>
+        <div class="bd">this machine is yours.<br>it remembers. it heckles.<br>it keeps the trophies.<br>
+          <div style="margin-top:12px; display:flex; gap:8px;"><span class="slapbtn">RUN IT</span><span class="slapbtn ghost">LATER</span></div>
+        </div>
+      </div>
+      <div class="win"><div class="tb"><span>⚠ NOTICE</span><span class="x">✕</span></div>
+        <div class="bd">no smile detected.<br>that's allowed here.<br>
+          <div style="margin-top:12px; display:flex; gap:8px;"><span class="slapbtn">FINE</span><span class="slapbtn ghost">STAY WEIRD</span></div>
+        </div>
+      </div>
+      <div class="win"><div class="tb"><span>DIAGNOSTIC // 001</span><span class="x">✕</span></div>
+        <div class="bd" style="padding:8px">
+          <table class="data">
+            <tr><td><span class="k">mode</span><span class="v">local</span></td><td><span class="k">owner</span><span class="v">nobody</span></td></tr>
+            <tr><td><span class="k">memory</span><span class="v">lessons kept</span></td><td><span class="k">net</span><span class="v">optional</span></td></tr>
+            <tr><td><span class="k">build</span><span class="v">982-V7</span></td><td><span class="k">rate</span><span class="v">0.0001</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="note">Mono primitives: <b>Window</b>, <b>Dialog</b>, <b>SlapButton</b>, <b>DataTable</b>, dither + scanline texture. Everything structural is 1-bit — legible, dense, yours. <b>No color is required to use the product.</b></p>
+  </div>
+
+  <!-- PLATE 02 — EARNED COLOR -->
+  <div class="plate">
+    <div class="lbl"><span class="n">02</span><span class="t">Color Is Earned</span><span class="d">stickers · status semantics · the supercolor cartridge spine · one accent per context</span></div>
+    <div class="row c2">
+      <div>
+        <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+          <span class="stk tag" style="background:var(--hazard); color:var(--ink); transform:rotate(-4deg)">NEW BUILD</span>
+          <span class="stk tag" style="background:var(--alert); color:var(--signal); transform:rotate(3deg)">LIMITED</span>
+          <span class="stk seal" style="background:var(--magenta); color:var(--signal); transform:rotate(-6deg)">NO<br>BAD<br>VIBES</span>
+          <span class="stk haz" style="width:130px; transform:rotate(2deg)"><span>HANDMADE</span></span>
+        </div>
+        <p class="note">Stickers are a color system unto themselves — loud, die-cut, <b>usable as UI</b> (callouts, awards, buttons). They earn color because they're <b>events</b>, not chrome.</p>
+      </div>
+      <div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+          <span class="chip c-amber">▸ active</span><span class="chip c-green">● ok</span><span class="chip c-red">▲ alert</span><span class="chip c-cyan">↗ link</span><span class="chip c-mag">✦ rebel</span>
+        </div>
+        <div style="border:2px solid var(--ns-paper);">
+          <div class="spine"></div>
+          <div style="padding:10px 12px; font-size:11px;">
+            <div style="font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:15px;">Cartridge A1</div>
+            <div style="color:var(--ash-400); font-size:10px; letter-spacing:.08em;">SHAREABLE BUILD · SIDE A · RUNS LOCAL</div>
+          </div>
+        </div>
+        <p class="note">Status hues are single-ink accents, never fills. The <b>supercolor spine</b> is reserved — it only appears on a <b>cartridge</b> (a shareable build). Color = meaning.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATE 03 — CHARACTER AS UI -->
+  <div class="plate">
+    <div class="lbl"><span class="n">03</span><span class="t">The Rebel Runs The UI</span><span class="d">she is woven in — toggles, cursors, mascots, toasts, slaps, easter eggs. never a hero visual.</span></div>
+    <div class="row c3">
+
+      <div class="charcard">
+        <div class="h">switch · her face is the knob</div>
+        <div class="demo"><div class="toggle hot" id="tog"><div class="knob" id="knob">-_-</div></div></div>
+        <div class="cap">off she sleeps <span class="kao">(-_-)</span>, on she's awake <span class="kao">(•̀ᴗ•́)</span>. click it.</div>
+      </div>
+
+      <div class="charcard">
+        <div class="h">cursor · you steer the rebel</div>
+        <div class="demo"><span class="kao" style="font-size:30px;">▸</span></div>
+        <div class="cap">your pointer is her tag. it winks <span class="kao">✶</span> on click. (move your mouse)</div>
+      </div>
+
+      <div class="charcard">
+        <div class="h">mascot · SBX-CHAN status pet</div>
+        <div class="demo"><div class="pet"><span class="face" id="petface">(•‿•)</span><div class="meta">SBX-CHAN<br>vibe<div class="bar"><i style="width:92%"></i></div></div></div></div>
+        <div class="cap">a tamagotchi-warm companion in the corner. positive rebel.</div>
+      </div>
+
+      <div class="charcard">
+        <div class="h">toast · she talks back</div>
+        <div class="demo"><div class="toast"><div class="ic">!</div><div class="tx"><b>not a virus</b>trust me — i'm a dolphin.</div></div></div>
+        <div class="cap">errors are asides in her voice, not system-speak.</div>
+      </div>
+
+      <div class="charcard">
+        <div class="h">character slaps · mini sprites</div>
+        <div class="demo" style="gap:8px;">
+          <span class="cslap a"><span class="spr">(¬‿¬)</span><span class="lb">approved</span></span>
+          <span class="cslap b"><span class="spr">(•̀ᴗ•́)</span><span class="lb">nobody's tool</span></span>
+          <span class="cslap c"><span class="spr">(>‿<)</span><span class="lb">just vibes</span></span>
+        </div>
+        <div class="cap">a die-cut set — posed mini-sprites as badges & awards.</div>
+      </div>
+
+      <div class="charcard" id="eegg">
+        <div class="h">easter egg · type “weird”</div>
+        <div class="demo"><span class="kao" id="etxt" style="font-size:15px; text-align:center;">she's around. stay a while.</span></div>
+        <div class="cap">idle &amp; konami secrets. she rewards the curious.</div>
+      </div>
+
+    </div>
+    <p class="note">The character is <b>personality, not decoration</b> — confident by attitude, color only on her. She never blocks the work; she <b>lives inside it</b>: a winking cursor, a sleeping switch, a talk-back toast, a slap that says <b>nobody's tool</b>.</p>
+  </div>
+
+  <!-- PLATE 04 — REGISTERS (honors 09 / 07 / 08 / 05 / 02) -->
+  <div class="plate">
+    <div class="lbl"><span class="n">04</span><span class="t">The Registers</span><span class="d">the mono machine puts on a full skin — each earns its color for a job · 09 · 07 · 08 · 05/02</span></div>
+    <div class="row c2">
+
+      <!-- TELETEXT (09) -->
+      <div>
+        <div style="border:2px solid var(--ns-paper); background:#0b1ed1; font-family:var(--font-crt); overflow:hidden;">
+          <div style="background:#000;color:#fff;font-size:13px;padding:2px 8px;display:flex;justify-content:space-between;letter-spacing:.04em;"><span>P<span style="color:var(--hazard)">100</span> SANDBOX</span><span>MON 15 JUN 21:03</span></div>
+          <div style="padding:9px 10px;color:#fff;font-size:17px;line-height:1.35;"><span style="color:var(--hazard)">401</span> runs local ······· on<br><span style="color:var(--hazard)">402</span> run it yourself ·· go<br><span style="color:var(--hazard)">403</span> cartridges ······· 07</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0 8px 8px;"><div style="height:12px;background:var(--alert)"></div><div style="height:12px;background:var(--green)"></div><div style="height:12px;background:var(--hazard)"></div><div style="height:12px;background:var(--cyan)"></div></div>
+        </div>
+        <p class="note"><b>Teletext (09)</b> — color earns its place as <b>wayfinding</b>: indexes, status pages, the broadcast channel. Blocks = navigation, fastext = shortcuts.</p>
+      </div>
+
+      <!-- ERROR SCREEN (07) -->
+      <div>
+        <div style="border:2px solid var(--ns-paper); background:var(--blue); position:relative; min-height:152px; padding:16px; font-family:var(--font-mono); color:#fff; overflow:hidden;">
+          <div style="position:absolute;inset:0;background:var(--fx-scanlines);opacity:.25;"></div>
+          <div style="font-family:var(--font-display);font-weight:900;font-size:27px;text-transform:uppercase;line-height:.9;position:relative;">VIRUS<br>DETECTED</div>
+          <div style="font-size:11px;margin-top:8px;position:relative;">it's not a virus.<br>it's just yours.</div>
+          <div style="margin-top:10px;display:flex;gap:6px;position:relative;"><span style="background:#fff;color:var(--ink);font-family:var(--font-display);font-weight:900;font-size:10px;padding:3px 9px;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink)">CLICK FIX</span><span style="background:#fff;color:var(--ink);font-family:var(--font-display);font-weight:900;font-size:10px;padding:3px 9px;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink)">STAY WEIRD</span></div>
+          <div style="position:absolute;top:12px;right:14px;font-family:var(--font-crt);font-size:46px;">☠</div>
+        </div>
+        <p class="note"><b>Error-screen (07)</b> — the <b>one full-color takeover</b>. When the machine truly blocks you, it does it loud, blue, and talking back.</p>
+      </div>
+
+      <!-- RISO (08) -->
+      <div>
+        <div style="border:2px solid var(--ns-paper); background:#E9E3D4; color:var(--ink); position:relative; min-height:152px; padding:16px; overflow:hidden;">
+          <div style="position:absolute;inset:0;opacity:.4;background:radial-gradient(var(--ink) 28%,transparent 29%) 0 0/4px 4px;mix-blend-mode:multiply;"></div>
+          <div style="font-family:var(--font-display);font-weight:900;font-size:34px;line-height:.84;text-transform:uppercase;position:relative;">RUN IT<br>YOUR<br>SELF<span style="position:absolute;inset:0;color:var(--alert);transform:translate(2px,2px);mix-blend-mode:multiply;z-index:-1;">RUN IT<br>YOUR<br>SELF</span></div>
+          <div style="position:absolute;bottom:38px;left:-4px;right:-4px;height:18px;background:var(--fx-hazard);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-2deg);"></div>
+          <div style="position:absolute;top:12px;right:12px;width:62px;height:62px;border-radius:50%;border:2px double var(--alert);color:var(--alert);font-family:var(--font-display);font-weight:900;font-size:8.5px;display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;transform:rotate(-12deg);line-height:1;">APPROVED BY NOBODY</div>
+          <div style="position:absolute;bottom:12px;left:16px;font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;">photocopied · not licensed</div>
+        </div>
+        <p class="note"><b>Riso / photocopy (08)</b> — for <b>posters &amp; physical artifacts</b>: 2-ink misregister, hazard tape, stamps. Hand-made, owned, a little dangerous.</p>
+      </div>
+
+      <!-- STICKER WALL (05/02) -->
+      <div>
+        <div style="border:2px solid var(--ns-paper); background:var(--ns-ink); position:relative; min-height:152px; overflow:hidden;">
+          <span class="stk tag" style="position:absolute;top:12px;left:12px;background:var(--hazard);color:var(--ink);transform:rotate(-8deg);font-size:13px;">NEW!</span>
+          <span class="stk tag" style="position:absolute;top:14px;right:14px;background:var(--alert);color:var(--signal);transform:rotate(7deg);font-size:11px;">LIMITED</span>
+          <span class="stk" style="position:absolute;top:54px;left:50%;transform:translateX(-50%) rotate(-3deg);background:var(--ink);color:var(--green);border-color:var(--green);box-shadow:0 0 0 3px var(--ink),3px 4px 0 rgba(0,0,0,.6);padding:8px 14px;font-size:24px;">JUST VIBES</span>
+          <span class="stk seal" style="position:absolute;bottom:14px;left:18px;background:var(--magenta);color:var(--signal);transform:rotate(8deg);font-size:11px;">NO<br>BAD<br>VIBES</span>
+          <span class="cslap a" style="position:absolute;bottom:16px;right:18px;transform:rotate(-6deg);"><span class="spr">(•̀ᴗ•́)</span><span class="lb">nobody's tool</span></span>
+          <span class="stk haz" style="position:absolute;bottom:64px;right:60px;width:96px;transform:rotate(4deg);"><span>HANDMADE</span></span>
+        </div>
+        <p class="note"><b>Sticker-wall (05 / 02)</b> — for <b>empty &amp; idle states and celebration</b>: density as personality. The wall is where the machine lets loose.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PLATE 05 — FUSION -->
+  <div class="plate">
+    <div class="lbl"><span class="n">05</span><span class="t">The Fusion</span><span class="d">mono base + 17 bootleg-84 + 19 dialog · 24 cartridge · 09 fastext · 08 stamp · 25 character — one screen</span></div>
+    <div class="desk dither">
+      <div class="topbar"><span>▚ SANDBOX_OS · MON 15 JUN 21:03</span><span>THANK YOU FOR USING</span></div>
+      <div class="scan"></div>
+      <!-- bootleg-84 brand center -->
+      <div class="dwin" style="top:54px; left:50%; transform:translateX(-50%); text-align:center;">
+        <div style="font-family:var(--font-display); font-weight:900; font-size:40px; letter-spacing:-.03em; color:var(--ns-paper);">SANDBOX·OS</div>
+        <div style="height:14px; width:70%; margin:4px auto 0; background:repeating-linear-gradient(0deg,var(--ns-paper) 0 2px,transparent 2px 6px); mask:linear-gradient(180deg,#000,transparent);"></div>
+        <div style="font-size:10px; color:var(--ash-400); letter-spacing:.1em; margin-top:4px;">SELECT BUILD ▸ [LOCAL].BOOTLEG.OWNED · RATE 0.0001</div>
+      </div>
+      <!-- dialog -->
+      <div class="dwin win" style="top:150px; left:34px; width:210px; transform:rotate(-2deg);">
+        <div class="tb"><span>WONDER.TXT</span><span class="x">✕</span></div>
+        <div class="bd" style="font-size:11px;">cloud apps love <i>their</i> servers.<br>yours runs right here.<br><span class="slapbtn" style="margin-top:8px; font-size:10px; padding:4px 9px;">RUN LOCAL</span></div>
+      </div>
+      <!-- cartridge -->
+      <div class="dwin" style="bottom:54px; right:30px; width:188px; border:2px solid var(--ns-paper); transform:rotate(2deg);">
+        <div class="spine"></div>
+        <div style="padding:8px 10px; font-size:10px;"><div style="font-family:var(--font-display); font-weight:900; font-size:14px; text-transform:uppercase;">Cartridge A1</div><div style="color:var(--ash-400)">001/500 · run.it.yourself</div></div>
+      </div>
+      <!-- character slap -->
+      <span class="cslap a" style="position:absolute; bottom:40px; left:46px; transform:rotate(-7deg);"><span class="spr">(•̀ᴗ•́)</span><span class="lb">nobody's tool</span></span>
+      <span class="stk haz" style="position:absolute; top:200px; right:54px; width:120px; transform:rotate(5deg);"><span>HANDMADE</span></span>
+      <!-- talk back toast -->
+      <div class="toast" style="position:absolute; bottom:150px; left:50%; transform:translateX(-50%) rotate(-1deg); max-width:240px;"><div class="ic">!</div><div class="tx"><b>just vibes</b>graphics stuttering. on purpose.</div></div>
+      <!-- 08 riso stamp + 09 teletext fastext, threaded in -->
+      <div style="position:absolute; top:150px; left:50%; transform:translateX(-50%) rotate(-9deg); width:66px;height:66px;border-radius:50%;border:2px double var(--magenta);color:var(--magenta);font-family:var(--font-display);font-weight:900;font-size:8px;display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;line-height:1;opacity:.85;">APPROVED BY NOBODY</div>
+      <div style="position:absolute; left:0; right:0; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); height:7px;"><div style="background:var(--alert)"></div><div style="background:var(--green)"></div><div style="background:var(--hazard)"></div><div style="background:var(--cyan)"></div></div>
+    </div>
+    <p class="note">One coherent machine: <b>mono and dense</b>, plastered in <b>earned-color slaps</b>, the rebel <b>winking from the corner</b>. Calm competence, loud soul. <b>This is the system we build.</b></p>
+  </div>
+
+  <!-- forward plan -->
+  <div class="plate">
+    <div class="lbl"><span class="n">06</span><span class="t">How We Build It</span><span class="d">tokens are done · here's the order of operations</span></div>
+    <div class="row c2" style="font-size:12px; line-height:1.7;">
+      <div>
+        <div style="color:var(--amber); font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:13px; letter-spacing:.04em; margin-bottom:6px;">FOUNDATIONS → COMPONENTS</div>
+        <div class="note" style="font-size:12px;">
+          ① refine tokens for <b>mono-first</b> (neutrals lead; color tagged as "earned").<br>
+          ② <b>Sticker system</b> — Slap, Seal, Hazard, Tag, Burst, Barcode, Ribbon, Stamp — as real components + a stickerbomb generator.<br>
+          ③ <b>Core mono primitives</b> — Window, Dialog, SlapButton, Field, DataTable, Toast, Tabs, FaceToggle, ProgressBar (THANK-YOU-FOR-USING loader).<br>
+          ④ <b>Character system</b> — kaomoji sprite set, cursor, mascot pet, character-slaps, easter-egg hooks.
+        </div>
+      </div>
+      <div>
+        <div style="color:var(--cyan); font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:13px; letter-spacing:.04em; margin-bottom:6px;">CARDS → UI KIT</div>
+        <div class="note" style="font-size:12px;">
+          ⑤ <b>Foundation cards</b> for the Design System tab (type, mono palette, earned-color, stickers, motion).<br>
+          ⑥ <b>UI kit — the SandboxOS desktop</b>: boot screen → desktop with draggable dialogs → cartridge library → terminal/composer.<br>
+          ⑦ <b>readme + SKILL.md</b> so it's portable into Claude Code.<br>
+          <b style="color:var(--ns-paper)">Your call:</b> bless this north star (or tweak the fusion / character voice) and I start at ①.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:60px; border-top:2px solid var(--ns-paper); padding-top:12px; display:flex; justify-content:space-between; font-size:10px; color:var(--ash-400); letter-spacing:.12em; text-transform:uppercase;">
+    <span>SANDBOXOS · NORTH STAR · v1</span><span>RUN IT YOURSELF</span><span>© NOBODY · 2026</span>
+  </div>
+</div>
+
+<script>
+  // rebel cursor (character-as-UI)
+  const cur = document.getElementById('cur');
+  let cx=0, cy=0;
+  addEventListener('mousemove', e=>{ cx=e.clientX; cy=e.clientY; cur.style.left=cx+'px'; cur.style.top=cy+'px'; });
+  addEventListener('mousedown', ()=>{ cur.textContent='✶'; cur.style.color='var(--cyan)'; });
+  addEventListener('mouseup', ()=>{ cur.textContent='▸'; cur.style.color='var(--magenta)'; });
+
+  // face toggle
+  const tog=document.getElementById('tog'), knob=document.getElementById('knob');
+  tog?.addEventListener('click', ()=>{ tog.classList.toggle('on'); knob.textContent = tog.classList.contains('on')?'•́':'-_-'; });
+
+  // mascot blink
+  const pf=document.getElementById('petface');
+  setInterval(()=>{ if(!pf) return; pf.textContent='(-‿-)'; setTimeout(()=>pf.textContent='(•‿•)',140); }, 3200);
+
+  // easter egg — type "weird"
+  let buf='';
+  const etxt=document.getElementById('etxt');
+  const lines=['(•̀ᴗ•́)  JUST VIBES','(¬‿¬)  nobody\'s tool','(>‿<)  stay weird','ᕕ( ᐛ )ᕗ  run it yourself'];
+  addEventListener('keydown', e=>{
+    buf=(buf+e.key).slice(-5).toLowerCase();
+    if(buf==='weird' && etxt){ etxt.textContent = lines[Math.floor(Math.random()*lines.length)]; etxt.style.animation='sbx-glitch .4s steps(2) 2'; setTimeout(()=>etxt.style.animation='',900); }
+  });
+</script>
+</body>
+</html>

@@ -70,6 +70,46 @@ payload    michael/ (21 files)
 sha256     9ffcc88a146745ff2de1ea04f56159aa05dfae69d76566d4fea17cae97a10251
 ```
 
+### [commerceos](builds/commerceos/)
+
+commerceos, the shareable copy: the whole operator brain for commerce (mechanism, spec/, packs/, 551 checks, the .claude/ agents and skills) with no store in it. the author's stores and their data are excluded and every business name redacted.
+
+```
+kept       2026-08-23
+payload    commerceos/ (208 files)
+sha256     7d456f61fa1065f6c4381e817ab364b8165ac1f549a639bd99f377a7e987cb88
+```
+
+### [design-system](builds/design-system/)
+
+the SandboxOS design system as it stood on 2026-07-19: the Bootleg OS soul pressed to tokens, the terminal design language under `system/`, and the taste record. frozen then, before the project took its 9.0 shape. `sandbox use design-system`.
+
+```
+kept       2026-07-19
+payload    design-system/ (209 files)
+sha256     c532e16aaacbe63b807efb666a0092a55f361c13aadd42c0b06fdcf78380137f
+```
+
+### [starter](builds/starter/)
+
+the starting kit for a real project: AGENTS.md, the `.claude/` skeleton, the two-body rule. speaks v8 (`project new`, `use starter`).
+
+```
+kept       2026-07-30
+payload    starter/ (6 files)
+sha256     7fa5f7e47dfeb9145d7c43c4f937f8a3efe73cc5e3680738fb37789d33c7fc40
+```
+
+### [voice-lint](builds/voice-lint/)
+
+voice_lint.py, the first voice linter (2026-07-18): the forbidden-phrase and negation reading that grew into the engine's `voicelint.py` in 9.0. kept as provenance; the live lint is the engine's.
+
+```
+kept       2026-07-18
+payload    voice-lint/ (2 files)
+sha256     d0a9ad5ae93018624889e62145553d5b5325e7e9bcea60cc39dc74ccd8534d79
+```
+
 ## apps
 
 an app declares in its manifest exactly what it places, and places nothing

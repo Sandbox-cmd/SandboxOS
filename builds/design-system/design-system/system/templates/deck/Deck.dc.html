@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="SandboxOS Deck" description="Bootleg-OS pitch deck — title, big-quote, cartridge-showcase slides on the dither register" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  body{ margin:0; background:#0F0F0D; color:#F6F2E7; font-family:'JetBrains Mono',monospace; }
+  .deck{ display:flex; flex-direction:column; align-items:center; gap:24px; padding:32px 16px; }
+  .slide{ width:960px; max-width:100%; aspect-ratio:16/9; border:2px solid #F6F2E7; position:relative; overflow:hidden; box-shadow:6px 6px 0 rgba(0,0,0,.55); }
+  .slide .scan{ position:absolute; inset:0; background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.28) 2px 3px); opacity:.3; pointer-events:none; }
+  .bar{ position:absolute; top:0; left:0; right:0; background:#F6F2E7; color:#0B0B09; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:3px 12px; display:flex; justify-content:space-between; }
+  .num{ position:absolute; bottom:14px; right:16px; font-family:'Anton',sans-serif; font-size:30px; color:#322F25; }
+  /* title slide */
+  .t1{ display:flex; flex-direction:column; justify-content:center; padding:60px; }
+  .t1 .kick{ font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#FFB000; }
+  .t1 h1{ font-family:'Archivo',sans-serif; font-weight:900; font-size:72px; line-height:.9; letter-spacing:-.03em; text-transform:uppercase; margin:12px 0; }
+  .t1 h1 b{ color:#FF2E88; }
+  .t1 p{ color:#B3AC97; font-size:15px; max-width:48ch; }
+  /* quote slide */
+  .t2{ display:flex; align-items:center; justify-content:center; padding:60px; text-align:center; background:#0A0613; }
+  .t2 .q{ font-family:'Archivo',sans-serif; font-weight:900; font-size:54px; line-height:1; text-transform:uppercase; letter-spacing:-.02em; }
+  .t2 .q b{ color:#A24BFF; }
+  .t2 .by{ position:absolute; bottom:40px; left:0; right:0; text-align:center; color:#8E8773; font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
+  /* showcase slide */
+  .t3{ display:flex; align-items:center; gap:40px; padding:50px 60px; }
+  .t3 .copy{ flex:1; }
+  .t3 h2{ font-family:'Archivo',sans-serif; font-weight:900; font-size:40px; line-height:.95; text-transform:uppercase; margin:0 0 14px; }
+  .t3 ul{ list-style:none; margin:0; padding:0; font-size:15px; line-height:1.5; color:#B3AC97; }
+  .t3 li{ padding:7px 0; border-bottom:1px dashed #322F25; }
+  .t3 li::before{ content:"◆ "; color:#FFB000; }
+</style>
+</helmet>
+<div class="deck">
+
+  <section class="slide t1">
+    <div class="bar"><span>▚ SANDBOX·OS</span><span>PITCH · 001</span></div>
+    <div class="scan"></div>
+    <div class="kick">a hand-assembled operating system for builders</div>
+    <h1>You don't<br>use it.<br>You <b>build</b><br>on it.</h1>
+    <p>no cloud. no landlord. your keys, your cartridges, your machine — humming on your own metal. that's half the fun.</p>
+    <div class="num">01</div>
+  </section>
+
+  <section class="slide t2">
+    <div class="bar"><span>▚ SANDBOX·OS</span><span>PITCH · 002</span></div>
+    <div class="scan"></div>
+    <div class="q">they rent you<br>an assistant.<br>we hand you<br><b>the workshop.</b></div>
+    <div class="by">— nobody's tool · run it yourself</div>
+    <div class="num">02</div>
+  </section>
+
+  <section class="slide t3">
+    <div class="bar"><span>▚ SANDBOX·OS</span><span>PITCH · 003</span></div>
+    <div class="scan"></div>
+    <div class="copy">
+      <h2>Everything is<br>a cartridge.</h2>
+      <ul>
+        <li>download a build, plug it in, run it</li>
+        <li>fork it — serial, edition, © you</li>
+        <li>trade on the wall, no store, no landlord</li>
+        <li>it remembers · it heckles · it keeps what it learns</li>
+      </ul>
+    </div>
+    <x-import component-from-global-scope="SandboxOSDesignSystem_4526c4.Cartridge" title="Career
+Ops" subtitle="SBX-CART · build" kind="build" width="180" hint-size="220px,300px"></x-import>
+    <div class="num">03</div>
+  </section>
+
+</div>
+</x-dc>
+</body>
+</html>

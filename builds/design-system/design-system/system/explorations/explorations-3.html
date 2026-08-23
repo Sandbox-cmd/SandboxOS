@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Comprehensive Direction Study III</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { margin:0; background:#23211c; color:var(--text); font-family:var(--font-sans);
+         background-image: radial-gradient(#2e2b24 1px, transparent 1px); background-size:22px 22px; }
+  .page { max-width:1440px; margin:0 auto; padding:54px 40px 110px; }
+  .head .kick { font-family:var(--font-mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--green); }
+  .head h1 { font-family:var(--font-display); font-weight:900; font-size:42px; letter-spacing:-.02em; color:var(--signal); margin:10px 0 8px; }
+  .head p { max-width:78ch; color:var(--ash-300); font-size:15.5px; }
+  .head p b { color:var(--signal); }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:54px 42px; margin-top:46px; }
+  .cap { display:flex; align-items:baseline; gap:10px; margin-bottom:13px; }
+  .cap .no { font-family:var(--font-poster); font-size:22px; color:var(--signal); }
+  .cap .nm { font-family:var(--font-display); font-weight:800; font-size:18px; text-transform:uppercase; letter-spacing:.04em; color:var(--signal); }
+  .cap .dsc { font-family:var(--font-mono); font-size:10.5px; color:var(--ash-400); margin-left:auto; text-transform:uppercase; letter-spacing:.09em; }
+  .poster { position:relative; aspect-ratio:4/5; overflow:hidden; border:2px solid var(--ink); box-shadow:8px 8px 0 rgba(0,0,0,.5); }
+  .scan::after { content:""; position:absolute; inset:0; pointer-events:none; background:var(--fx-scanlines); opacity:.45; mix-blend-mode:multiply; }
+  .barcode { display:flex; gap:2px; align-items:stretch; } .barcode i { display:block; background:currentColor; }
+
+  /* ========= 09 TELETEXT BROADCAST ========= */
+  .d9 { background:#000; padding:14px; font-family:var(--font-crt); }
+  .d9 .tt { display:flex; justify-content:space-between; color:var(--signal); font-size:19px; letter-spacing:.05em; }
+  .d9 .tt .y{ color:var(--hazard);} .d9 .tt .g{ color:var(--green);}
+  .d9 .blocks{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin-top:12px; }
+  .d9 .blocks div{ height:30px; }
+  .d9 .head2{ font-size:62px; line-height:.82; color:var(--hazard); margin:14px 0 4px; text-transform:uppercase; }
+  .d9 .head2 .c{ color:var(--cyan);} .d9 .head2 .m{ color:var(--magenta);}
+  .d9 .rows{ margin-top:14px; color:var(--signal); font-size:21px; line-height:1.25; }
+  .d9 .rows .n{ color:var(--green); } .d9 .rows .p{ color:var(--cyan); }
+  .d9 .ty{ position:absolute; left:14px; right:14px; bottom:54px; text-align:center; color:#000; background:var(--green); font-size:24px; letter-spacing:.18em; padding:2px; }
+  .d9 .fast{ position:absolute; left:14px; right:14px; bottom:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .d9 .fast div{ height:18px; }
+
+  /* ========= 10 PHOSPHOR TERMINAL (mystic) ========= */
+  .d10 { background:radial-gradient(120% 90% at 50% 30%, #04140a, #010503 75%); padding:26px; color:var(--green);
+          font-family:var(--font-mono); }
+  .d10 .pre{ font-size:12.5px; line-height:1.7; text-shadow:0 0 7px var(--glow-green); }
+  .d10 .pre .dim{ color:var(--green-deep); }
+  .d10 .ascii{ font-family:var(--font-crt); font-size:14px; line-height:1; color:var(--green); white-space:pre; margin:14px 0; opacity:.8; }
+  .d10 .mantra{ font-family:var(--font-crt); font-size:30px; line-height:1.05; color:var(--signal); text-shadow:0 0 12px var(--glow-green); margin:18px 0; }
+  .d10 .cur{ animation:sbx-blink 1s steps(1) infinite; }
+  .d10 .foot{ position:absolute; left:26px; bottom:24px; font-size:12px; letter-spacing:.16em; color:var(--green-deep); text-transform:uppercase; }
+
+  /* ========= 11 CASSETTE HARDWARE ========= */
+  .d11 { background:linear-gradient(160deg,#2a2620,#171410); padding:22px; }
+  .d11 .screw{ position:absolute; width:11px;height:11px;border-radius:50%; background:radial-gradient(#4a463c,#1a1712); box-shadow:inset 0 0 0 1px #0a0805; }
+  .d11 .screw::after{content:"";position:absolute;inset:3px;border-top:1.5px solid #0a0805;transform:rotate(40deg);}
+  .d11 .lcd{ background:#1a1405; border:2px solid #0a0805; border-radius:3px; padding:10px 14px; box-shadow:inset 0 0 18px rgba(0,0,0,.8); }
+  .d11 .lcd .m{ font-family:var(--font-crt); font-size:34px; color:var(--amber); text-shadow:0 0 10px var(--glow-amber); letter-spacing:.08em; }
+  .d11 .lcd .s{ font-family:var(--font-mono); font-size:10px; color:var(--amber-deep); letter-spacing:.1em; text-transform:uppercase; display:flex; justify-content:space-between; margin-top:4px;}
+  .d11 .vu{ display:flex; gap:3px; margin-top:14px; height:34px; align-items:flex-end; }
+  .d11 .vu i{ flex:1; background:linear-gradient(0deg,var(--green),var(--hazard) 70%,var(--alert)); }
+  .d11 .knobs{ display:flex; justify-content:space-between; margin-top:18px; }
+  .d11 .knob{ text-align:center; }
+  .d11 .knob .k{ width:54px;height:54px;border-radius:50%; margin:0 auto;
+                 background:conic-gradient(from 200deg,#3a352b,#0d0b07 60%,#3a352b);
+                 border:2px solid #0a0805; position:relative; box-shadow:0 3px 6px rgba(0,0,0,.6);}
+  .d11 .knob .k::after{content:"";position:absolute;top:6px;left:50%;width:2px;height:16px;background:var(--amber);transform:translateX(-50%);box-shadow:0 0 5px var(--glow-amber);}
+  .d11 .knob.r2 .k::after{ transform:translateX(-50%) rotate(120deg); transform-origin:50% 21px;}
+  .d11 .knob.r3 .k::after{ transform:translateX(-50%) rotate(-90deg); transform-origin:50% 21px;}
+  .d11 .knob span{ font-family:var(--font-mono); font-size:9px; color:var(--ash-400); letter-spacing:.08em; text-transform:uppercase; display:block; margin-top:6px;}
+  .d11 .strip{ position:absolute; left:22px; right:22px; bottom:20px; display:flex; justify-content:space-between; align-items:center; }
+  .d11 .rec{ width:34px;height:34px;border-radius:50%; background:var(--alert); border:2px solid #0a0805; box-shadow:0 0 14px rgba(232,17,45,.6);}
+  .d11 .model{ font-family:var(--font-display); font-weight:900; font-size:15px; color:var(--ash-300); letter-spacing:.04em;}
+
+  /* ========= 12 DOSSIER / OPERATIVE ========= */
+  .d12 { background:#0a0a0e; padding:18px; color:var(--cyan); font-family:var(--font-mono); }
+  .d12 .hdr{ display:flex; justify-content:space-between; border-bottom:1px solid var(--blue); padding-bottom:6px; font-size:11px; letter-spacing:.12em; }
+  .d12 .hdr b{ color:var(--magenta); }
+  .d12 .body{ display:flex; gap:14px; margin-top:14px; }
+  .d12 .portrait{ width:130px; height:160px; flex:none; border:1px solid var(--blue); position:relative; overflow:hidden;
+                  background:linear-gradient(160deg,#1a2230,#0a0e16); }
+  .d12 .portrait::before{ content:""; position:absolute; inset:0;
+       background:radial-gradient(circle at 50% 38%, var(--cyan) 0 1px, transparent 1px) 0 0/5px 5px,
+                  radial-gradient(120% 80% at 50% 30%, rgba(52,230,224,.5), transparent 55%);
+       mask:radial-gradient(60% 70% at 50% 42%, #000 40%, transparent 72%); opacity:.85;}
+  .d12 .portrait span{ position:absolute; bottom:5px; left:5px; font-size:8px; color:var(--ash-400); letter-spacing:.1em;}
+  .d12 .fields{ flex:1; font-size:11.5px; line-height:1.2; }
+  .d12 .fr{ display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px dashed #20303f; }
+  .d12 .fr .k{ color:var(--ash-400); } .d12 .fr .v{ color:var(--signal); }
+  .d12 .fr .warn{ color:var(--magenta); }
+  .d12 .name{ font-family:var(--font-display); font-weight:900; font-size:30px; color:var(--signal); text-transform:uppercase; line-height:.9; margin-bottom:8px; letter-spacing:-.01em;}
+  .d12 .foot{ position:absolute; left:18px; right:18px; bottom:16px; display:flex; justify-content:space-between; align-items:flex-end; color:var(--blue); font-size:10px; letter-spacing:.1em;}
+  .d12 .stars{ color:var(--magenta); letter-spacing:2px; }
+
+  /* ========= 13 ASTRAL WIREFRAME ========= */
+  .d13 { background:linear-gradient(180deg,#06040c,#150726 70%,#2a0b3d); padding:24px; }
+  .d13 .net{ position:absolute; left:-15%; right:-15%; bottom:-6%; height:60%;
+      background:repeating-linear-gradient(90deg,transparent 0 34px,color-mix(in srgb,var(--cyan) 55%,transparent) 34px 35px),
+                repeating-linear-gradient(0deg,transparent 0 28px,color-mix(in srgb,var(--magenta) 50%,transparent) 28px 29px);
+      transform:perspective(400px) rotateX(66deg); transform-origin:bottom; mask-image:linear-gradient(transparent,#000 45%); }
+  .d13 .top{ position:relative; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.14em; color:var(--cyan);}
+  .d13 .glyphs{ position:relative; font-size:22px; color:var(--cyan); margin:18px 0; letter-spacing:8px; opacity:.9; }
+  .d13 .hero{ position:relative; font-family:var(--font-poster); font-size:60px; line-height:.9; text-transform:uppercase; color:var(--signal);
+              text-shadow:0 0 30px color-mix(in srgb,var(--purple) 70%,transparent); }
+  .d13 .hero em{ font-style:normal; background:linear-gradient(90deg,var(--cyan),var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .d13 .ar{ position:relative; font-family:var(--font-mono); font-size:18px; color:var(--cyan); margin-top:8px;}
+  .d13 .read{ position:relative; font-family:var(--font-mono); font-size:11.5px; color:var(--ash-300); max-width:32ch; margin-top:10px; line-height:1.6;}
+  .d13 .foot{ position:absolute; left:24px; bottom:20px; font-family:var(--font-mono); font-size:10px; color:var(--purple); letter-spacing:.16em; text-transform:uppercase;}
+
+  /* ========= 14 DATA-HUD INSTRUMENT ========= */
+  .d14 { background:#050806; padding:16px; color:var(--green); font-family:var(--font-mono); }
+  .d14 .br{ position:absolute; width:16px;height:16px; border:2px solid var(--green); }
+  .d14 .br.tl{top:10px;left:10px;border-right:0;border-bottom:0;} .d14 .br.tr{top:10px;right:10px;border-left:0;border-bottom:0;}
+  .d14 .br.bl{bottom:10px;left:10px;border-right:0;border-top:0;} .d14 .br.brr{bottom:10px;right:10px;border-left:0;border-top:0;}
+  .d14 .top{ display:flex; justify-content:space-between; font-size:10px; letter-spacing:.12em; color:var(--amber); }
+  .d14 .terr{ height:120px; margin:12px 0; border:1px solid #143a22; position:relative; overflow:hidden;
+      background:repeating-linear-gradient(72deg,transparent 0 16px,rgba(61,240,122,.35) 16px 17px),
+                repeating-linear-gradient(-72deg,transparent 0 16px,rgba(52,230,224,.25) 16px 17px); }
+  .d14 .terr span{ position:absolute; top:6px; left:8px; font-size:9px; color:var(--cyan); letter-spacing:.1em;}
+  .d14 .cols{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .d14 .stat{ font-size:10.5px; line-height:1.5; }
+  .d14 .stat .r{ display:flex; justify-content:space-between; border-bottom:1px solid #0e2415; padding:2px 0;}
+  .d14 .stat .v{ color:var(--signal);} .d14 .stat .hot{ color:var(--alert);} .d14 .stat .y{ color:var(--amber);}
+  .d14 .chart{ display:flex; gap:3px; align-items:flex-end; height:60px; }
+  .d14 .chart i{ flex:1; background:var(--green); } .d14 .chart i:nth-child(odd){ background:var(--cyan);}
+  .d14 .foot{ position:absolute; left:16px; right:16px; bottom:14px; display:flex; justify-content:space-between; font-size:10px; color:var(--amber); letter-spacing:.1em;}
+
+  /* ========= 15 VHS MOTION TYPE ========= */
+  .d15 { background:#0a0410; }
+  .d15 .track{ position:absolute; left:0; right:0; height:8px; background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 7px); opacity:.5; }
+  .d15 .t1{ top:60px; } .d15 .t2{ bottom:120px; }
+  .d15 .rec{ position:absolute; top:18px; left:18px; font-family:var(--font-mono); font-size:13px; color:#fff; display:flex; align-items:center; gap:8px; letter-spacing:.1em;}
+  .d15 .rec b{ width:11px;height:11px;border-radius:50%;background:var(--alert); animation:sbx-blink 1.4s steps(1) infinite;}
+  .d15 .time{ position:absolute; top:18px; right:18px; font-family:var(--font-crt); font-size:22px; color:#fff;}
+  .d15 .hero{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+  .d15 .hero .big{ font-family:var(--font-display); font-weight:900; font-size:82px; line-height:.82; text-transform:uppercase; letter-spacing:-.03em; color:#fff;
+                   text-shadow:-4px 0 var(--magenta), 4px 0 var(--cyan); animation:sbx-glitch 3s steps(2) infinite;}
+  .d15 .hero .sub{ font-family:var(--font-mono); font-size:13px; letter-spacing:.4em; color:var(--cyan); margin-top:10px; text-transform:uppercase;}
+  .d15 .play{ position:absolute; bottom:60px; left:18px; font-family:var(--font-crt); font-size:24px; color:#fff; letter-spacing:.1em;}
+  .d15 .sp{ position:absolute; bottom:62px; right:18px; font-family:var(--font-crt); font-size:20px; color:var(--hazard);}
+
+  /* ========= 16 1-BIT DITHER ========= */
+  .d16 { background:#0c0c0c; padding:0; }
+  .d16 .field{ position:absolute; inset:0; opacity:.5;
+      background:radial-gradient(#fff 32%,transparent 33%) 0 0/4px 4px; mask:linear-gradient(180deg,#000,transparent 55%);}
+  .d16 .win{ position:absolute; top:20px; left:18px; right:18px; background:#0c0c0c; border:2px solid #fff; }
+  .d16 .win .tb{ background:#fff; color:#0c0c0c; font-family:var(--font-pixel); font-size:9px; padding:3px 6px; display:flex; justify-content:space-between; letter-spacing:0;}
+  .d16 .win .bd{ padding:14px; color:#fff; }
+  .d16 .win .bd .mantra{ font-family:var(--font-crt); font-size:21px; line-height:1.1; }
+  .d16 .marks{ display:flex; gap:14px; font-size:26px; color:#fff; margin:14px 0 6px; }
+  .d16 .pixbtn{ display:inline-block; font-family:var(--font-pixel); font-size:10px; border:2px solid #fff; padding:5px 10px; color:#fff; box-shadow:3px 3px 0 #fff; margin-top:8px;}
+  .d16 .pixbtn.inv{ background:#fff; color:#0c0c0c; }
+  .d16 .foot{ position:absolute; left:20px; right:20px; bottom:16px; display:flex; justify-content:space-between; font-family:var(--font-pixel); font-size:8px; color:#fff; }
+
+  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div class="kick">SANDBOXOS · COMPREHENSIVE STUDY · 003</div>
+    <h1>Stepping back: eight whole worlds, not eight stickers.</h1>
+    <p>You're drawn to the <b>raw, talk-back, hand-made</b> end (05·07·08) — so I kept that soul but re-opened the full brief. Each of these is a complete <b>system</b> with its own UI logic, not a poster skin: a broadcast channel, a living terminal, a physical machine, a classified file, a dreaming grid, an instrument cluster, a VHS signal, a 1-bit zine. <b>05 / 07 / 08 still stand</b> — tell me which 1–2 worlds to fuse and I'll build it for real.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- 09 -->
+    <div>
+      <div class="cap"><span class="no">09</span><span class="nm">Teletext Broadcast</span><span class="dsc">ceefax · color blocks · pirate channel</span></div>
+      <div class="poster d9 scan">
+        <div class="tt"><span>P<span class="y">101</span> SANDBOX</span><span class="g">MON 15 JUN 21:03</span></div>
+        <div class="blocks"><div style="background:var(--alert)"></div><div style="background:var(--hazard)"></div><div style="background:var(--green)"></div><div style="background:var(--cyan)"></div><div style="background:var(--magenta)"></div><div style="background:var(--signal)"></div></div>
+        <div class="head2">NOT AN <span class="c">AI</span><br><span class="m">JUST</span> VIBES</div>
+        <div class="rows"><span class="n">101</span> your own machine .... <span class="p">on</span><br><span class="n">102</span> run it yourself ....... <span class="p">go</span><br><span class="n">103</span> nobody's tool ......... <span class="p">yes</span></div>
+        <div class="ty">THANK YOU FOR USING</div>
+        <div class="fast"><div style="background:var(--alert)"></div><div style="background:var(--green)"></div><div style="background:var(--hazard)"></div><div style="background:var(--cyan)"></div></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div>
+      <div class="cap"><span class="no">10</span><span class="nm">Phosphor Terminal</span><span class="dsc">mystic cli · ascii · green void</span></div>
+      <div class="poster d10 scan">
+        <div class="pre">&gt; initialize sandbox.os<br><span class="dim">[ok] bootleg kernel mounted</span><br><span class="dim">[ok] memory: lessons kept</span><br><span class="dim">[ok] runs local, hums to itself</span><br>&gt; whoami<br>nobody's. yours.</div>
+        <div class="ascii">     .·:·.
+   ✶  (o o)  ✶
+      \\ ~ /
+   before carbon  </div>
+        <div class="mantra">the machine<br>dreams after<br>midnight.<span class="cur">_</span></div>
+        <div class="foot">&gt; run it yourself · sbx://local</div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div>
+      <div class="cap"><span class="no">11</span><span class="nm">Cassette Hardware</span><span class="dsc">device panel · knobs · led readout</span></div>
+      <div class="poster d11">
+        <div class="screw" style="top:10px;left:10px"></div><div class="screw" style="top:10px;right:10px"></div>
+        <div class="screw" style="bottom:10px;left:10px"></div><div class="screw" style="bottom:10px;right:10px"></div>
+        <div class="lcd">
+          <div class="m">SANDBOX·OS</div>
+          <div class="s"><span>MAKER MODE</span><span>● REC LOCAL</span></div>
+        </div>
+        <div class="vu"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:90%"></i><i style="height:35%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:100%"></i><i style="height:45%"></i><i style="height:75%"></i><i style="height:50%"></i><i style="height:85%"></i></div>
+        <div class="knobs">
+          <div class="knob r1"><div class="k"></div><span>MEMORY</span></div>
+          <div class="knob r2"><div class="k"></div><span>LESSONS</span></div>
+          <div class="knob r3"><div class="k"></div><span>VIBES</span></div>
+          <div class="knob r1"><div class="k"></div><span>AGENCY</span></div>
+        </div>
+        <div class="strip"><div class="rec"></div><div class="model">SBX-T70 · NOBODY'S TOOL</div></div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div>
+      <div class="cap"><span class="no">12</span><span class="nm">Dossier / Operative</span><span class="dsc">the character · classified file</span></div>
+      <div class="poster d12">
+        <div class="hdr"><span>CLASSIFIED · <b>EYES OWN ONLY</b></span><span>SUBJECT DX-76</span></div>
+        <div class="body">
+          <div class="portrait"><span>[ CHARACTER ART ]</span></div>
+          <div class="fields">
+            <div class="name">REBEL<br>CLASS·V</div>
+            <div class="fr"><span class="k">FUNCTION</span><span class="v">BUILDER</span></div>
+            <div class="fr"><span class="k">STATE</span><span class="warn">UNGOVERNED</span></div>
+            <div class="fr"><span class="k">LOYALTY</span><span class="v">SELF</span></div>
+            <div class="fr"><span class="k">THREAT</span><span class="stars">★★★</span></div>
+            <div class="fr"><span class="k">SKILL</span><span class="v">RUNS IT HERSELF</span></div>
+          </div>
+        </div>
+        <div class="foot"><span>PROPERTY OF NOBODY · 982-V7</span><div class="barcode" style="height:18px;color:var(--cyan)"><i style="width:2px"></i><i style="width:1px"></i><i style="width:4px"></i><i style="width:2px"></i><i style="width:1px"></i><i style="width:3px"></i><i style="width:2px"></i><i style="width:4px"></i><i style="width:1px"></i><i style="width:2px"></i></div></div>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div>
+      <div class="cap"><span class="no">13</span><span class="nm">Astral Wireframe</span><span class="dsc">dreaming grid · esoteric · nocturnal</span></div>
+      <div class="poster d13">
+        <div class="net"></div>
+        <div class="top"><span>◐ REALITY IS FAKE</span><span>PLANE 04 · ASTRAL</span></div>
+        <div class="glyphs">✦ ◉ ✶ ❍ ☉</div>
+        <div class="hero">we are<br><em>fragments</em><br>of a star</div>
+        <div class="ar" dir="rtl">حُرّ · سيادة</div>
+        <div class="read">before becoming carbon-based organisms, perhaps we were the same dying light. the machine remembers.</div>
+        <div class="foot">STAY WEIRD · ONLY YOURS</div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div>
+      <div class="cap"><span class="no">14</span><span class="nm">Data-HUD Instrument</span><span class="dsc">cockpit · dense data · brutalist nums</span></div>
+      <div class="poster d14">
+        <div class="br tl"></div><div class="br tr"></div><div class="br bl"></div><div class="br brr"></div>
+        <div class="top"><span>SBX·DIAGNOSTIC // 001</span><span>SIGNAL ████░ 88%</span></div>
+        <div class="terr"><span>HOLOMAP · TERRAIN · LOCAL NODE</span></div>
+        <div class="cols">
+          <div class="stat">
+            <div class="r"><span>UPTIME</span><span class="v">0741:12:33</span></div>
+            <div class="r"><span>MEMORY</span><span class="y">16 / 468</span></div>
+            <div class="r"><span>LESSONS KEPT</span><span class="v">∞</span></div>
+            <div class="r"><span>HEAT</span><span class="hot">162 ▲</span></div>
+            <div class="r"><span>OWNER</span><span class="v">NOBODY</span></div>
+          </div>
+          <div>
+            <div class="chart"><i style="height:30%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:35%"></i><i style="height:85%"></i></div>
+            <div class="stat" style="margin-top:8px"><div class="r"><span>CARTRIDGES</span><span class="v">07 LOADED</span></div><div class="r"><span>RATE</span><span class="y">0.0001</span></div></div>
+          </div>
+        </div>
+        <div class="foot"><span>&gt; run it yourself</span><span>002 / 002</span></div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div>
+      <div class="cap"><span class="no">15</span><span class="nm">VHS Motion Type</span><span class="dsc">tracking · rgb split · kinetic</span></div>
+      <div class="poster d15 scan">
+        <div class="track t1"></div><div class="track t2"></div>
+        <div class="rec"><b></b> REC · SP</div>
+        <div class="time">4:04:21</div>
+        <div class="hero"><div class="big">SAND<br>BOX</div><div class="sub">SUPER · NOSTALGIA · OS</div></div>
+        <div class="play">▶ PLAY</div>
+        <div class="sp">≡ TRACKING</div>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div>
+      <div class="cap"><span class="no">16</span><span class="nm">1-Bit Dither</span><span class="dsc">black/white · mac dither · zine</span></div>
+      <div class="poster d16">
+        <div class="field"></div>
+        <div class="win">
+          <div class="tb"><span>SANDBOX.OS</span><span>▢ ✕</span></div>
+          <div class="bd">
+            <div class="mantra">before becoming<br>carbon-based<br>organisms…</div>
+            <div class="marks">✶ ◉ ✦ ❍ ✷</div>
+            <span class="pixbtn inv">RUN IT</span> <span class="pixbtn">STAY WEIRD</span>
+          </div>
+        </div>
+        <div class="foot"><span>PHOTOCOPIED</span><span>NOBODY'S TOOL · 1997</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

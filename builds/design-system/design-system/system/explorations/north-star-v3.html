@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — North Star v3</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root{ --ns-ink:#0A0A08; --ns-paper:#E9E3D4; --ns-line:#2A2820; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--ns-ink); }
+  body{ color:var(--ns-paper); font-family:var(--font-mono); cursor:none; }
+  #fabric{ position:fixed; inset:0; width:100%; height:100%; z-index:0; image-rendering:pixelated; }
+  .wrap{ position:relative; z-index:2; max-width:1180px; margin:0 auto; padding:0 28px 120px; }
+  #cur{ position:fixed; z-index:9999; pointer-events:none; font-family:var(--font-crt); font-size:22px; color:var(--magenta); text-shadow:0 0 8px var(--glow-magenta); transform:translate(-2px,-5px); }
+  a,button,.hot{ cursor:none; }
+  .panel{ background:rgba(10,10,8,.82); }
+
+  /* masthead */
+  .mast{ border-bottom:2px solid var(--ns-paper); padding:18px 0 12px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:22px; }
+  .mast .lock{ display:flex; align-items:center; gap:12px; }
+  .glyph{ font-family:var(--font-crt); font-size:34px; color:var(--ns-paper); }
+  .mast h1{ font-family:var(--font-display); font-weight:900; font-size:30px; letter-spacing:-.02em; text-transform:uppercase; }
+  .mast h1 b{ color:var(--magenta); }
+  .mast .meta{ text-align:right; font-size:10px; letter-spacing:.1em; color:var(--ash-400); text-transform:uppercase; line-height:1.7; }
+  .mast .meta .red{ color:var(--alert); }
+  .qr{ display:inline-grid; grid-template-columns:repeat(5,4px); grid-auto-rows:4px; gap:1px; vertical-align:middle; margin-left:8px; }
+  .qr i{ background:var(--ns-paper); } .qr i.o{ background:transparent; }
+
+  /* NEW on-brand status strip (replaces hazard marquee) */
+  .statusbar{ border-bottom:1px solid var(--ns-line); display:flex; align-items:stretch; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .statusbar .seg{ padding:6px 14px; border-right:1px solid var(--ns-line); display:flex; align-items:center; gap:7px; color:var(--ash-300); white-space:nowrap; }
+  .statusbar .seg.k{ background:var(--ns-paper); color:var(--ns-ink); font-weight:700; border-right:0; }
+  .statusbar .seg .dot{ width:7px; height:7px; background:var(--green); box-shadow:0 0 6px var(--glow-green); }
+  .statusbar .seg .amb{ color:var(--amber); }
+  .statusbar .flex{ flex:1; overflow:hidden; }
+  .statusbar .flex .run{ display:inline-block; white-space:nowrap; padding:6px 0; animation:sbx-marquee 34s linear infinite; color:var(--ash-400); }
+  .statusbar .flex .run b{ color:var(--ns-paper); } .statusbar .flex .run i{ color:var(--magenta); font-style:normal; margin:0 10px; }
+
+  .plate{ margin-top:60px; }
+  .plate > .lbl{ display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--ns-line); padding-bottom:8px; margin-bottom:22px; }
+  .plate > .lbl .n{ font-family:var(--font-poster); font-size:24px; color:var(--magenta); }
+  .plate > .lbl .t{ font-family:var(--font-display); font-weight:900; font-size:19px; text-transform:uppercase; letter-spacing:.03em; }
+  .plate > .lbl .d{ margin-left:auto; font-size:11px; color:var(--ash-400); letter-spacing:.08em; text-transform:uppercase; max-width:48ch; text-align:right; }
+  .note{ font-size:11px; color:var(--ash-400); letter-spacing:.05em; margin-top:10px; line-height:1.6; } .note b{ color:var(--ns-paper); } .note .gl{ color:var(--magenta); }
+
+  /* THEM // YOU */
+  .vs{ display:grid; grid-template-columns:1fr 1fr; border:2px solid var(--ns-paper); }
+  .vs .col{ padding:20px; }
+  .vs .them{ border-right:2px solid var(--ns-line); }
+  .vs .h{ font-family:var(--font-display); font-weight:900; font-size:26px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:14px; display:flex; align-items:baseline; gap:8px; }
+  .vs .them .h{ color:var(--ash-500); } .vs .you .h{ color:var(--ns-paper); }
+  .vs .h small{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; }
+  .vs ul{ list-style:none; margin:0; padding:0; font-size:13px; line-height:1.5; }
+  .vs li{ padding:7px 0; border-bottom:1px dashed var(--ns-line); }
+  .vs .them li{ color:var(--ash-500); text-decoration:line-through; text-decoration-color:var(--alert); text-decoration-thickness:1px; }
+  .vs .you li{ color:var(--ns-paper); } .vs .you li::before{ content:"▸ "; color:var(--amber); }
+  .vs .stamp{ font-family:var(--font-crt); font-size:13px; color:var(--magenta); margin-top:12px; }
+
+  /* FABRIC demo panel */
+  .fabdemo{ border:2px solid var(--ns-paper); height:300px; position:relative; overflow:hidden; cursor:none; }
+  .fabdemo canvas{ position:absolute; inset:0; width:100%; height:100%; image-rendering:pixelated; }
+  .fabdemo .hud{ position:absolute; left:14px; top:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ash-300); z-index:2; }
+  .fabdemo .hint{ position:absolute; right:14px; bottom:12px; font-family:var(--font-mono); font-size:10px; color:var(--magenta); letter-spacing:.08em; text-transform:uppercase; z-index:2; }
+
+  /* 3D CARTRIDGE */
+  .cartwrap{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .stage{ perspective:1100px; width:230px; height:300px; display:flex; align-items:center; justify-content:center; }
+  .tilt{ transform:rotateX(-8deg); transform-style:preserve-3d; }
+  .cart3d{ width:184px; height:248px; position:relative; transform-style:preserve-3d; animation:spin3d 11s linear infinite; }
+  .cart3d:hover{ animation-duration:3.2s; }
+  @keyframes spin3d{ from{ transform:rotateY(0); } to{ transform:rotateY(360deg); } }
+  .cart3d .face{ position:absolute; top:50%; left:50%; overflow:hidden; }
+  .cart3d .front, .cart3d .back{ width:184px; height:248px; margin-left:-92px; margin-top:-124px; }
+  .cart3d .left, .cart3d .right{ width:34px; height:248px; margin-left:-17px; margin-top:-124px; }
+  .cart3d .top, .cart3d .bot{ width:184px; height:34px; margin-left:-92px; margin-top:-17px; }
+  .cart3d .front{ transform:translateZ(17px); background:#16150e; border:2px solid var(--ns-paper); border-radius:14px 14px 4px 4px; }
+  .cart3d .back{ transform:rotateY(180deg) translateZ(17px); background:#100f0a; border:2px solid var(--ash-500); border-radius:14px 14px 4px 4px; }
+  .cart3d .right{ transform:rotateY(90deg) translateZ(92px); background:linear-gradient(90deg,#222016,#0d0c08); border-top:2px solid var(--ns-paper); border-bottom:2px solid var(--ns-paper); }
+  .cart3d .left{ transform:rotateY(-90deg) translateZ(92px); background:linear-gradient(90deg,#0d0c08,#222016); border-top:2px solid var(--ns-paper); border-bottom:2px solid var(--ns-paper); }
+  .cart3d .top{ transform:rotateX(90deg) translateZ(124px); background:#2a2718; border-radius:6px 6px 0 0; }
+  .cart3d .bot{ transform:rotateX(-90deg) translateZ(124px); background:#16150e; display:flex; gap:3px; padding:8px 30px; align-items:stretch; }
+  .cart3d .bot i{ flex:1; background:linear-gradient(180deg,var(--amber-glow),var(--amber-deep)); }
+  .ridge{ height:100%; background:repeating-linear-gradient(0deg, rgba(0,0,0,.5) 0 3px, transparent 3px 7px); }
+  /* front label */
+  .clabel{ position:absolute; left:11px; right:11px; top:14px; background:var(--ns-paper); color:var(--ns-ink); border:2px solid var(--ns-ink); }
+  .clabel .sp{ height:13px; background:var(--supercolor); border-bottom:2px solid var(--ns-ink); }
+  .clabel .in{ padding:9px 10px; }
+  .clabel .t{ font-family:var(--font-display); font-weight:900; font-size:20px; line-height:.86; text-transform:uppercase; }
+  .clabel .s{ font-family:var(--font-mono); font-size:8.5px; letter-spacing:.05em; text-transform:uppercase; color:#5a5444; margin-top:4px; }
+  .clabel .row{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:14px; }
+  .clabel .ser{ font-family:var(--font-mono); font-size:8px; line-height:1.3; }
+  .clabel .art{ width:34px; height:34px; border:1.5px solid var(--ns-ink); position:relative; overflow:hidden; }
+  .clabel .art::after{ content:""; position:absolute; inset:0; background:radial-gradient(var(--ns-ink) 34%,transparent 35%) 0 0/3px 3px; -webkit-mask:radial-gradient(60% 70% at 50% 42%,#000 30%,transparent 75%); mask:radial-gradient(60% 70% at 50% 42%,#000 30%,transparent 75%); }
+  .cart3d .grip{ position:absolute; left:11px; right:11px; bottom:10px; top:150px; border:1.5px solid var(--ns-line); border-radius:3px; }
+  .cback{ padding:16px; color:var(--ash-300); font-family:var(--font-mono); font-size:9px; line-height:1.6; text-transform:uppercase; letter-spacing:.05em; }
+  .cback .scr{ position:absolute; width:9px; height:9px; border-radius:50%; background:radial-gradient(#3a352b,#0d0b07); }
+
+  /* CHARACTER CROP SYSTEM */
+  .crops{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .crop{ border:2px solid var(--ns-line); background:rgba(10,10,8,.82); overflow:hidden; }
+  .crop .frame{ height:150px; position:relative; overflow:hidden; background:#0c0c0a; border-bottom:2px solid var(--ns-line); }
+  .crop .frame .fig{ position:absolute; left:50%; top:0; width:280px; height:380px; transform:translateX(-50%);
+      background:radial-gradient(rgba(255,46,136,.95) 33%,transparent 34%) 0 0/4px 4px;
+      -webkit-mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'%3E%3Ccircle cx='50' cy='13' r='8' fill='white'/%3E%3Cpath fill='white' d='M50 22c-7 0-11 4-12 10l-8 22 4 2 7-16 1 14-3 30c-1 8-1 18 0 28l2 26h8l1-30 2-22 2 22 1 30h8l2-26c1-10 1-20 0-28l-3-30 1-14 7 16 4-2-8-22c-1-6-5-10-12-10z'/%3E%3C/svg%3E");
+              mask:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'%3E%3Ccircle cx='50' cy='13' r='8' fill='white'/%3E%3Cpath fill='white' d='M50 22c-7 0-11 4-12 10l-8 22 4 2 7-16 1 14-3 30c-1 8-1 18 0 28l2 26h8l1-30 2-22 2 22 1 30h8l2-26c1-10 1-20 0-28l-3-30 1-14 7 16 4-2-8-22c-1-6-5-10-12-10z'/%3E%3C/svg%3E"); }
+  .crop .frame.eyes .fig{ top:-26px; } .crop .frame.lips .fig{ top:-150px; } .crop .frame.neck .fig{ top:-96px; }
+  .crop .frame.legs .fig{ top:-210px; } .crop .frame.back .fig{ top:-40px; } .crop .frame.hand .fig{ top:-70px; left:64%; }
+  .crop .frame::after{ content:""; position:absolute; inset:0; background:var(--fx-scanlines); opacity:.4; pointer-events:none; }
+  .crop .frame .tag{ position:absolute; left:8px; bottom:7px; font-family:var(--font-mono); font-size:8px; letter-spacing:.1em; color:var(--cyan); text-transform:uppercase; z-index:2; }
+  .crop .frame .ser{ position:absolute; right:8px; top:7px; font-family:var(--font-mono); font-size:7px; color:var(--ash-500); z-index:2; }
+  .crop .cap{ padding:9px 11px; }
+  .crop .cap .vibe{ font-family:var(--font-display); font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.02em; color:var(--ns-paper); }
+  .crop .cap .msg{ font-family:var(--font-mono); font-size:9px; color:var(--ash-400); letter-spacing:.04em; margin-top:2px; }
+
+  .idea{ border-left:2px solid var(--magenta); padding:4px 0 4px 12px; margin-bottom:12px; }
+  .idea b{ color:var(--ns-paper); font-family:var(--font-display); font-weight:900; text-transform:uppercase; font-size:12px; letter-spacing:.03em; }
+  .idea span{ display:block; font-size:11px; color:var(--ash-400); line-height:1.5; margin-top:2px; }
+
+  @media (max-width:820px){ .vs,.crops{ grid-template-columns:1fr; } body{cursor:auto;} #cur{display:none;} a,button,.hot{cursor:pointer;} }
+</style>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="cur">▸</div>
+<div class="wrap">
+
+  <div class="mast">
+    <div class="lock"><span class="glyph">▚</span><h1>Sandbox<b>OS</b></h1></div>
+    <div class="meta">SYSTEM NORTH STAR · v3<br><span class="red">UNLICENSED</span> · BUILD IT YOURSELF · NOBODY'S TOOL<br>SER. 982-V7 · © NOBODY — COPY IT
+      <span class="qr"><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i class="o"></i><i></i><i class="o"></i><i></i><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i class="o"></i><i></i></span>
+    </div>
+  </div>
+
+  <!-- NEW status strip — bootleg OS, not generic hazard -->
+  <div class="statusbar panel">
+    <div class="seg k">SBX://LOCAL</div>
+    <div class="seg"><span class="dot"></span> ALL YOURS</div>
+    <div class="seg"><span class="amb">●</span> BUILD 982-V7</div>
+    <div class="seg flex"><div class="run"><b>NOT AN AI</b> <i>/</i> BUILD IT <i>/</i> OWN IT <i>/</i> SHIP IT <i>/</i> RUN IT YOURSELF <i>/</i> NOBODY'S TOOL <i>/</i> STAY WEIRD <i>/</i> THANK YOU FOR USING <i>/</i> <b>NOT AN AI</b> <i>/</i> BUILD IT <i>/</i> OWN IT <i>/</i> SHIP IT <i>/</i> RUN IT YOURSELF <i>/</i> NOBODY'S TOOL <i>/</i> STAY WEIRD <i>/</i> THANK YOU FOR USING <i>/</i></div></div>
+    <div class="seg">21:03</div>
+  </div>
+
+  <div class="plate" style="margin-top:36px">
+    <p style="font-family:var(--font-display); font-weight:900; font-size:clamp(26px,4vw,46px); line-height:1.04; letter-spacing:-.02em; text-transform:uppercase; max-width:22ch; position:relative;">
+      You don't use it.<br>You <span style="color:var(--amber)">build on it</span>.<br>It's <span style="color:var(--ns-paper)">mono</span>, it's <span style="color:var(--alert)">unlicensed</span>,<br>and she <span style="color:var(--magenta)">lives in the wires</span>.</p>
+    <p class="note" style="max-width:64ch; font-size:13px;">Three fixes you asked for — a <b>visible dither substrate</b>, a <b>3D cartridge</b>, a <b>character crop system</b> — plus a rethought status bar and the <b>builder-vs-the-norm</b> stance. Move your cursor anywhere; the fabric lifts. Type <span class="gl">build</span> / <span class="gl">weird</span> / <span class="gl">rebel</span> and watch it surface.</p>
+  </div>
+
+  <!-- 01 BUILDER vs NORM -->
+  <div class="plate">
+    <div class="lbl"><span class="n">01</span><span class="t">Who Builds Here</span><span class="d">the maker who errors from the norm — vs everything else they could've rented</span></div>
+    <div class="vs panel">
+      <div class="col them">
+        <div class="h">THEM <small>// the assistant</small></div>
+        <ul>
+          <li>rent an assistant by the token</li>
+          <li>ask it for permission</li>
+          <li>it lives on someone's cloud</li>
+          <li>it forgets you by morning</li>
+          <li>it's polished, safe, the same as everyone's</li>
+        </ul>
+        <div class="stamp" style="color:var(--ash-500);">— the norm —</div>
+      </div>
+      <div class="col you">
+        <div class="h">YOU <small>// the maker</small></div>
+        <ul>
+          <li>build the machine yourself</li>
+          <li>no permission needed, nobody's tool</li>
+          <li>it runs local — that's half the fun</li>
+          <li>it keeps the bugs you beat, on purpose</li>
+          <li>it's hand-made, weird, unmistakably yours</li>
+        </ul>
+        <div class="stamp">↯ error from the norm</div>
+      </div>
+    </div>
+    <p class="note">SandboxOS isn't for people who want an assistant. It's for the <b>builder who'd rather own the workshop</b> than rent the tool — and wear the weirdness as a badge.</p>
+  </div>
+
+  <!-- 02 THE FABRIC -->
+  <div class="plate">
+    <div class="lbl"><span class="n">02</span><span class="t">The Dither Is The Material</span><span class="d">a living substrate everything emerges from — move your cursor, surface a word</span></div>
+    <div class="fabdemo" id="fabdemo">
+      <canvas id="fabdemo-cv"></canvas>
+      <div class="hud">FABRIC // BAYER 4×4 · LIVE · LOCAL RENDER</div>
+      <div class="hint">↳ move cursor · type “build”</div>
+    </div>
+    <p class="note">Not a background — the OS's <b>primary material</b>. Two drifting plasma layers give it depth and motion; your pointer <b>lifts the weave</b> and things <b>pop out from under it</b>. Boot, loaders, the character, and headlines all <b>develop out of this fabric</b> like a photo. <b>This</b> is the signature nobody else has.</p>
+  </div>
+
+  <!-- 03 THE CARTRIDGE -->
+  <div class="plate">
+    <div class="lbl"><span class="n">03</span><span class="t">The Cartridge — Now A Real Object</span><span class="d">3D, rotating, plug-n-play · the one place we break flatness · hover to spin faster</span></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center;">
+      <div class="cartwrap">
+        <div class="stage"><div class="tilt"><div class="cart3d hot">
+          <div class="face front">
+            <div class="clabel"><div class="sp"></div><div class="in">
+              <div class="t">Career<br>Ops</div><div class="s">SBX-CART · build · v2.1</div>
+              <div class="row"><span class="ser">001 / 500<br>© NOBODY</span><span class="art"></span></div>
+            </div></div>
+            <div class="grip"><div class="ridge"></div></div>
+          </div>
+          <div class="face back"><div class="cback">SANDBOX·OS<br>CARTRIDGE MODULE<br>—<br>insert · install · run<br>fork · own · ship<br><br>made by hand<br>not licensed
+            <span class="scr" style="top:10px;right:10px"></span><span class="scr" style="bottom:10px;left:10px"></span></div></div>
+          <div class="face right"><div class="ridge"></div></div>
+          <div class="face left"><div class="ridge"></div></div>
+          <div class="face top"></div>
+          <div class="face bot"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div></div></div>
+      </div>
+      <div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:12px;background:var(--amber);color:var(--ink);border:2px solid var(--amber);padding:7px 14px;box-shadow:3px 3px 0 var(--amber-deep);">↓ INSTALL</span>
+          <span style="font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:12px;background:transparent;color:var(--ns-paper);border:2px solid var(--ns-paper);padding:7px 14px;box-shadow:3px 3px 0 var(--ns-line);">↗ SHARE</span>
+          <span style="font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:12px;background:transparent;color:var(--ns-paper);border:2px solid var(--ns-paper);padding:7px 14px;box-shadow:3px 3px 0 var(--ns-line);">⑂ FORK</span>
+        </div>
+        <p class="note" style="font-size:12px;">A cartridge is a <b>build you can hold</b> — gold-pin contacts, ridged grip, die-cut label, serial &amp; provenance (<b>001/500 · © NOBODY</b>). Proper module proportions, real depth. <b>This is the only thing that spins</b> — everything else stays flat, so the cartridge always reads as <b>special / physical / yours</b>. Plug it into any sandbox and run it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 CHARACTER CROP SYSTEM -->
+  <div class="plate">
+    <div class="lbl"><span class="n">04</span><span class="t">The Rebel — Cropped By Vibe</span><span class="d">option A, zoomed in · the body part shown depends on the message · the “for fun” layer</span></div>
+    <div class="crops">
+      <div class="crop"><div class="frame eyes"><div class="fig"></div><div class="ser">982-V7</div><div class="tag">CROP · EYES</div></div><div class="cap"><div class="vibe">i see your build</div><div class="msg">// idle · watching · attention</div></div></div>
+      <div class="crop"><div class="frame lips"><div class="fig"></div><div class="ser">∞</div><div class="tag">CROP · SMIRK</div></div><div class="cap"><div class="vibe">just vibes</div><div class="msg">// success · approval · sly</div></div></div>
+      <div class="crop"><div class="frame neck"><div class="fig"></div><div class="ser">982-V7</div><div class="tag">CROP · COLLAR</div></div><div class="cap"><div class="vibe">nobody's tool</div><div class="msg">// suggestive · defiant · cool</div></div></div>
+      <div class="crop"><div class="frame legs"><div class="fig"></div><div class="ser">RUN</div><div class="tag">CROP · STANCE</div></div><div class="cap"><div class="vibe">run it yourself</div><div class="msg">// action · power · kinetic</div></div></div>
+      <div class="crop"><div class="frame back"><div class="fig"></div><div class="ser">982-V7</div><div class="tag">CROP · OVER-SHOULDER</div></div><div class="cap"><div class="vibe">don't look back</div><div class="msg">// leaving · attitude · mystery</div></div></div>
+      <div class="crop"><div class="frame hand"><div class="fig"></div><div class="ser">BUILD</div><div class="tag">CROP · HAND</div></div><div class="cap"><div class="vibe">build it</div><div class="msg">// making · reaching · invite</div></div></div>
+    </div>
+    <p class="note"><b>Option A, pushed:</b> she's never the full figure — the system <b>crops to a body part by vibe</b> (eyes for idle, smirk for success, collar/stance for the suggestive "for fun" slaps). Tasteful by framing &amp; restraint, hot by attitude. The magenta shapes are <b>placeholders</b> — these frames are built to receive <b>real, accurately-proportioned illustration</b>, one tight crop per mood. <span class="gl">I'll need you to supply (or approve me sourcing) that art</span>, since I can't generate it.</p>
+  </div>
+
+  <!-- 05 DIVERGENT MOVES -->
+  <div class="plate">
+    <div class="lbl"><span class="n">05</span><span class="t">If I Had No Restrictions</span><span class="d">the swings I'd take — baked in above + on deck</span></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 32px;">
+      <div>
+        <div class="idea"><b>Dither as substrate ✓</b><span>everything develops out of / dissolves into the fabric. (live above)</span></div>
+        <div class="idea"><b>3D cartridge model ✓</b><span>builds are objects you hold &amp; slot. the only thing that breaks flat. (live above)</span></div>
+        <div class="idea"><b>Provenance = identity</b><span>every screen/cart/build carries serial + QR + © NOBODY. ownership is traceable &amp; yours.</span></div>
+        <div class="idea"><b>Deface your own OS</b><span>user-applied stickers that persist. slap the UI — it stays. everything is owned.</span></div>
+      </div>
+      <div>
+        <div class="idea"><b>Type that assembles</b><span>headlines solder/dither into place instead of fading. motion = construction.</span></div>
+        <div class="idea"><b>She has moods</b><span>the crop you see changes with context. a presence under the fabric, not a picture.</span></div>
+        <div class="idea"><b>Arabic maker's marks</b><span>rare calligraphic seals as spice — provenance stamps, not theme.</span></div>
+        <div class="idea"><b>Error-as-celebration</b><span>the OS rewards weirdness &amp; breakage instead of apologizing. bugs get badges.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:54px; border-top:2px solid var(--ns-paper); padding-top:12px; display:flex; justify-content:space-between; font-size:10px; color:var(--ash-400); letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap; gap:8px;">
+    <span>SANDBOXOS · NORTH STAR · v3</span><span>BUILD · OWN · SHIP · STAY WEIRD</span><span>© NOBODY — COPY IT · 2026</span>
+  </div>
+</div>
+
+<script>
+  const cur=document.getElementById('cur');
+  addEventListener('mousemove', e=>{ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+  addEventListener('mousedown', ()=>{ cur.textContent='✶'; cur.style.color='var(--cyan)'; });
+  addEventListener('mouseup', ()=>{ cur.textContent='▸'; cur.style.color='var(--magenta)'; });
+
+  const bay=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+  // ---- generic fabric renderer ----
+  function makeFabric(canvas, opts){
+    const ctx=canvas.getContext('2d'); const CELL=opts.cell||4;
+    let W,H, mx=-999,my=-999, t=Math.random()*10, reveal=null;
+    const host = opts.host||canvas;
+    function resize(){ const r=host.getBoundingClientRect(); W=canvas.width=Math.max(2,Math.ceil(r.width/CELL)); H=canvas.height=Math.max(2,Math.ceil(r.height/CELL)); canvas.style.width=r.width+'px'; canvas.style.height=r.height+'px'; }
+    addEventListener('resize', resize); setTimeout(resize,0); resize();
+    host.addEventListener('mousemove', e=>{ const r=host.getBoundingClientRect(); mx=(e.clientX-r.left)/CELL; my=(e.clientY-r.top)/CELL; });
+    host.addEventListener('mouseleave', ()=>{ mx=my=-999; });
+    function surface(word){ const o=document.createElement('canvas'); o.width=W;o.height=H; const c=o.getContext('2d'); c.fillStyle='#fff'; c.textAlign='center'; c.textBaseline='middle'; c.font='900 '+Math.floor(H*0.4)+'px Archivo, Arial, sans-serif'; c.fillText(word, W/2, H*0.5); reveal={ data:c.getImageData(0,0,W,H).data, born:performance.now() }; }
+    canvas._surface=surface;
+    const base=opts.base||0.17, amp=opts.amp||0.16, alpha=opts.alpha||175, lift=opts.lift||0.85, rad=opts.rad||520;
+    let last=0;
+    function frame(now){
+      requestAnimationFrame(frame);
+      if(now-last<33) return; last=now; t+=0.016;
+      const img=ctx.createImageData(W,H), d=img.data;
+      let rv=null, rf=0;
+      if(reveal){ rf=Math.max(0,1-(now-reveal.born)/2600); if(rf<=0)reveal=null; else rv=reveal.data; }
+      for(let y=0;y<H;y++){ for(let x=0;x<W;x++){ const i=y*W+x;
+        let L = base
+          + amp*0.42*Math.sin(x*0.05 + t*0.55)
+          + amp*0.36*Math.sin(y*0.062 - t*0.42)
+          + amp*0.40*Math.sin((x+y)*0.027 + t*0.85)
+          + amp*0.28*Math.sin((x*0.6 - y*0.8)*0.04 - t*0.30);
+        const dx=x-mx, dy=y-my; L += lift*Math.exp(-(dx*dx+dy*dy)/rad);
+        if(rv) L += rf*1.0*(rv[i*4]/255);
+        const thr=(bay[((y&3)<<2)+(x&3)]+0.5)/16;
+        let a=(L-thr)*1.5;
+        if(a>0){ if(a>1)a=1; const o=i*4; d[o]=233; d[o+1]=227; d[o+2]=212; d[o+3]=a*alpha; }
+      }}
+      ctx.putImageData(img,0,0);
+    }
+    requestAnimationFrame(frame);
+    return canvas;
+  }
+
+  // global background fabric (subtle but visible)
+  makeFabric(document.getElementById('fabric'), { host:document.documentElement, cell:5, base:0.13, amp:0.15, alpha:150, lift:0.9, rad:560 });
+  // demo panel fabric (denser / louder)
+  const demoCv=makeFabric(document.getElementById('fabdemo-cv'), { host:document.getElementById('fabdemo'), cell:4, base:0.22, amp:0.2, alpha:210, lift:1.0, rad:420 });
+  setTimeout(()=>demoCv._surface&&demoCv._surface('BUILD'), 800);
+
+  // type-to-surface on both fabrics
+  let buf=''; const words={ build:'BUILD', weird:'WEIRD', vibes:'VIBES', rebel:'REBEL', ship:'SHIP', own:'OWN' };
+  const gfab=document.getElementById('fabric');
+  addEventListener('keydown', e=>{ buf=(buf+e.key).slice(-6).toLowerCase(); for(const k in words){ if(buf.endsWith(k)){ gfab._surface&&gfab._surface(words[k]); demoCv._surface&&demoCv._surface(words[k]); } } });
+</script>
+</body>
+</html>

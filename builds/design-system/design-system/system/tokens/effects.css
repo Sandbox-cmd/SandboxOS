@@ -1,0 +1,112 @@
+/* ============================================================
+   SandboxOS — SPACING, BORDERS, RADII, SHADOWS, MOTION, FX
+   Brutalist grid: hard edges, hard offset shadows, snappy motion.
+   ============================================================ */
+
+:root {
+  /* ---- SPACING (4px base unit) --------------------------- */
+  --sp-0:  0;     /* @kind spacing */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+
+  /* ---- RADII (mostly hard; round only for seals/pills) --- */
+  --r-0:    0;        /* @kind radius */
+  --r-1:    2px;      /* slight soften (catalog cards)     */
+  --r-2:    4px;      /* retro-OS window radius            */
+  --r-3:    8px;
+  --r-pill: 999px;    /* tags, ribbons                     */
+  --r-seal: 50%;      /* round die-cut seals / dots        */
+
+  /* ---- BORDERS (hand-cut) -------------------------------- */
+  --bw-hair: 1px;     /* retro-OS 1px rule                 */
+  --bw-1:    2px;     /* standard hard edge               */
+  --bw-2:    3px;     /* sticker die-cut outline          */
+  --bw-3:    5px;     /* heavy slap outline               */
+  --border-line:  var(--bw-hair) solid var(--border); /* @kind other */
+  --border-hard:  var(--bw-1) solid var(--ink);        /* @kind other */
+  --border-die:   var(--bw-2) solid var(--ink);        /* @kind other */
+
+  /* ---- SHADOWS ------------------------------------------- */
+  /* hard offset (sticker / brutalist drop) */
+  --shadow-slap:   3px 3px 0 var(--ink);
+  --shadow-slap-lg:6px 6px 0 var(--ink);
+  --shadow-win:    5px 5px 0 rgba(0,0,0,0.55);
+  --shadow-float:  0 8px 0 rgba(0,0,0,0.4);
+  /* die-cut white halo (sticker peel) */
+  --halo:          0 0 0 3px var(--signal), 4px 5px 0 rgba(0,0,0,0.45); /* @kind shadow */
+  /* phosphor glow */
+  --glow-sm:       0 0 6px var(--glow-amber);
+  --glow-md:       0 0 14px var(--glow-amber);
+  --glow-text:     0 0 8px currentColor; /* @kind shadow */
+  /* inset CRT vignette */
+  --inset-crt:     inset 0 0 60px rgba(0,0,0,0.6); /* @kind shadow */
+
+  /* ---- MOTION (mechanical, snappy — no soft bounce) ------ */
+  --ease-snap:  cubic-bezier(0.2, 0.9, 0.2, 1);  /* @kind other */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);   /* @kind other */
+  --ease-step:  steps(4, end);                   /* @kind other */
+  --dur-1: 90ms;   /* @kind other */
+  --dur-2: 160ms;  /* @kind other */
+  --dur-3: 260ms;  /* @kind other */
+  --dur-4: 420ms;  /* @kind other */
+
+  /* press feedback (sticker slap-down) */
+  --press-shift: translate(2px, 2px);  /* @kind other */
+
+  /* ---- TEXTURE FX (background layers) -------------------- */
+  /* scanlines */
+  --fx-scanlines: repeating-linear-gradient(
+      to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.28) 2px 3px); /* @kind other */
+  /* hazard stripes (warning tape) */
+  --fx-hazard: repeating-linear-gradient(45deg,
+      var(--hazard) 0 14px, var(--ink) 14px 28px); /* @kind other */
+  /* dotted engineering grid */
+  --fx-grid-dot: radial-gradient(var(--crt-700) 1px, transparent 1px); /* @kind other */
+  --fx-grid-dot-size: 16px 16px; /* @kind spacing */
+  /* teletext halftone */
+  --fx-halftone: radial-gradient(var(--ash-500) 22%, transparent 23%); /* @kind other */
+  --fx-halftone-size: 5px 5px; /* @kind spacing */
+
+  /* ---- LAYOUT ------------------------------------------- */
+  --maxw-prose:  68ch;    /* @kind other */
+  --maxw-app:    1320px;  /* @kind spacing */
+  --grid-unit:   8px;     /* @kind spacing */
+  --z-base: 0; /* @kind other */
+  --z-raised: 10; /* @kind other */
+  --z-sticky: 100; /* @kind other */
+  --z-overlay: 1000; /* @kind other */
+  --z-toast: 2000; /* @kind other */
+}
+
+/* ---- GLOBAL KEYFRAMES ---------------------------------- */
+@keyframes sbx-flicker {
+  0%, 100% { opacity: 1; }
+  92%      { opacity: 1; }
+  93%      { opacity: 0.7; }
+  94%      { opacity: 1; }
+  97%      { opacity: 0.85; }
+}
+@keyframes sbx-blink   { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+@keyframes sbx-scan    { 0%{background-position:0 0} 100%{background-position:0 100vh} }
+@keyframes sbx-marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes sbx-glitch  {
+  0%,100%{ transform:translate(0) } 20%{ transform:translate(-2px,1px) }
+  40%{ transform:translate(2px,-1px) } 60%{ transform:translate(-1px,-1px) }
+  80%{ transform:translate(1px,1px) }
+}
+@keyframes sbx-jitter  { 0%,100%{transform:rotate(-0.6deg)} 50%{transform:rotate(0.6deg)} }
+@keyframes sbx-spin    { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}

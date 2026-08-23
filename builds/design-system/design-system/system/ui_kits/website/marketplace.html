@@ -1,0 +1,94 @@
+<!-- @dsCard group="Website" viewport="1280x900" name="The Wall — Cartridge Marketplace" subtitle="Peers' builds, plug-n-play: filter tabs, 3D cartridge grid, serials, install/fork" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — The Wall</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);}
+  #fabric{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.28;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  .page{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 28px 80px;}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:2px solid var(--signal);}
+  .wm{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:900;font-size:20px;text-transform:uppercase;}
+  .wm b{color:var(--magenta);} .wm .g{font-family:var(--font-crt);font-size:24px;}
+  nav .lk{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-300);}
+  .hd{padding:40px 0 6px;}
+  .hd h1{font-family:var(--font-display);font-weight:900;font-size:clamp(34px,5vw,56px);text-transform:uppercase;letter-spacing:-.02em;margin:0;}
+  .hd p{color:var(--ash-300);font-size:13px;margin-top:8px;max-width:54ch;line-height:1.6;}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:24px 0 18px;flex-wrap:wrap;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .cell{border:2px solid var(--crt-700);background:rgba(10,10,8,.78);padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .cell .meta{width:100%;}
+  .cell .nm{font-family:var(--font-display);font-weight:900;font-size:14px;text-transform:uppercase;}
+  .cell .by{font-size:10px;color:var(--ash-400);}
+  .cell .ser{font-size:9px;color:var(--ash-500);letter-spacing:.08em;margin-top:2px;}
+  .cell .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+  .stars{color:var(--amber);font-size:11px;letter-spacing:1px;}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../lib/substrate.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="vhs"></div>
+<div class="page">
+  <nav><div class="wm"><span class="g">▚</span> SANDBOX<b>OS</b></div><div class="lk">the wall · peers' builds · plug-n-play</div></nav>
+  <div class="hd">
+    <h1>The Wall</h1>
+    <p>cartridges other makers built and signed. download one, plug it into your sandbox, run it. fork it and it's yours — serial, edition, © the maker. <b style="color:var(--signal)">no store. no landlord.</b></p>
+  </div>
+  <div id="bar"></div>
+  <div id="grid" class="grid"></div>
+</div>
+<script>window.SandboxSubstrate.mount(document.getElementById('fabric'),{cell:5,mood:'jailbroken'});</script>
+<script type="text/babel">
+  const { Cartridge, SlapButton, Tabs, Field, Sticker } = window.SandboxOSDesignSystem_4526c4;
+  const CARTS = [
+    {t:'Career\nOps', k:'build', by:'@nobody', ser:'001/500', star:'★★★★★'},
+    {t:'Mind\nLoop', k:'skill', by:'@ghost', ser:'042/500', star:'★★★★☆'},
+    {t:'Night\nShift', k:'persona', by:'@dx76', ser:'007/500', star:'★★★★★'},
+    {t:'Cold\nEmail', k:'skill', by:'@wolf', ser:'113/500', star:'★★★☆☆'},
+    {t:'Dream\nLog', k:'persona', by:'@moth', ser:'088/500', star:'★★★★☆'},
+    {t:'Tax\nGremlin', k:'build', by:'@feral', ser:'201/500', star:'★★★★☆'},
+    {t:'Pitch\nDeck', k:'build', by:'@nobody', ser:'150/500', star:'★★★★★'},
+    {t:'Sub\nGhost', k:'persona', by:'@shbh', ser:'012/500', star:'★★★★★'},
+  ];
+  function App(){
+    const [tab,setTab]=React.useState(0);
+    const kinds=['all','build','skill','persona'];
+    const list = tab===0 ? CARTS : CARTS.filter(c=>c.k===kinds[tab]);
+    return (<>
+      <div className="bar">
+        <Tabs tabs={["ALL","BUILD","SKILL","PERSONA"]} value={tab} onChange={setTab}/>
+        <div style={{display:'flex',gap:10,alignItems:'center'}}>
+          <Field prefix="⌕" placeholder="search the wall…" style={{width:200}}/>
+          <Sticker shape="tag" tone="hazard" rotate={-3}>342 signed</Sticker>
+        </div>
+      </div>
+      <div className="grid">
+        {list.map((c,i)=>(
+          <div className="cell" key={i}>
+            <Cartridge title={c.t} subtitle={c.k} kind={c.k} serial={c.ser} width={120} spin={false}/>
+            <div className="meta">
+              <div className="nm">{c.t.replace('\n',' ')}</div>
+              <div className="by">{c.by}</div>
+              <div className="ser">{c.ser} · © {c.by.slice(1)}</div>
+              <div className="row"><span className="stars">{c.star}</span><SlapButton tone="go" size="sm">↓ install</SlapButton></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>);
+  }
+  // mount Bar+grid together into the page
+  ReactDOM.createRoot(document.getElementById('bar')).render(<App/>);
+  document.getElementById('grid').remove();
+</script>
+</body>
+</html>

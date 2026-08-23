@@ -1,0 +1,182 @@
+<!-- @dsCard group="Brand" viewport="1280x760" name="The Living Machine" subtitle="The flagship: a hand-assembled bootleg desktop — talk-back windows, teletext, stickerbomb, calm grain, the eye keeping you company" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — Living Machine</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--crt-950);color:var(--text);font-family:var(--font-mono);overflow:hidden;}
+  #fabric{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.22;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  #app{position:relative;z-index:2;height:100%;}
+  #cur{position:fixed;z-index:9999;pointer-events:none;font-family:var(--font-crt);font-size:22px;color:var(--magenta);text-shadow:0 0 8px var(--glow-magenta);transform:translate(-2px,-5px);}
+  *{cursor:none;}
+  /* status bar */
+  .status{position:absolute;top:0;left:0;right:0;display:flex;align-items:stretch;border-bottom:2px solid var(--signal);background:rgba(10,10,8,.7);z-index:8;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+  .status .seg{padding:6px 12px;border-right:1px solid var(--crt-700);display:flex;align-items:center;gap:7px;color:var(--ash-300);white-space:nowrap;}
+  .status .seg.k{background:var(--signal);color:var(--ink);font-weight:700;border:0;}
+  .status .flex{flex:1;}
+  .status .moods{display:flex;gap:0;}
+  .status .moods button{font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;border:0;border-left:1px solid var(--crt-700);padding:6px 9px;background:transparent;color:var(--ash-500);}
+  .status .moods button.on{background:var(--ink);color:var(--signal);}
+  .sound{display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .sound .ic{width:9px;height:9px;border:2px solid currentColor;}
+  .sound.on .ic{background:var(--amber);border-color:var(--amber);}
+  .eyewatch{display:inline-flex;align-items:center;}
+  /* desktop stage */
+  .desk{position:absolute;inset:34px 0 40px;}
+  .win-abs{position:absolute;}
+  /* teletext panel */
+  .ttx{background:#0b1ed1;border:2px solid var(--signal);font-family:var(--font-crt);box-shadow:5px 5px 0 rgba(0,0,0,.5);}
+  .ttx .h{background:#000;color:#fff;font-size:14px;padding:2px 9px;display:flex;justify-content:space-between;letter-spacing:.04em;}
+  .ttx .h .y{color:var(--hazard);}
+  .ttx .b{padding:6px 11px;color:#fff;font-size:18px;line-height:1.32;}
+  .ttx .b .n{color:var(--hazard);} .ttx .b .g{color:#7CFFB0;}
+  .ttx .fast{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:0 9px 9px;}
+  .ttx .fast div{height:13px;}
+  /* ticker */
+  .ticker{position:absolute;left:0;right:0;bottom:0;overflow:hidden;white-space:nowrap;border-top:2px solid var(--signal);background:rgba(10,10,8,.7);z-index:8;}
+  .ticker .run{display:inline-block;padding:7px 0;font-family:var(--font-display);font-weight:900;font-size:13px;letter-spacing:.1em;text-transform:uppercase;animation:sbx-marquee 30s linear infinite;}
+  .ticker .run span{margin:0 12px;color:var(--ash-500);}
+  /* hand-stuck helpers */
+  .rot1{transform:rotate(-2deg);} .rot2{transform:rotate(2deg);} .rot3{transform:rotate(-1deg);}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../lib/substrate.js"></script>
+<script src="../../lib/sound.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="vhs"></div>
+<div id="cur">▸</div>
+<div id="app"></div>
+
+<script>
+  window.__sub = window.SandboxSubstrate.mount(document.getElementById('fabric'), { cell: 4, mood: 'jailbroken' });
+  window.__snd = window.SandboxSound.create();
+  (function(){
+    var sub = window.__sub, snd = window.__snd, c = document.getElementById('cur');
+    addEventListener('mousemove', e => { c.style.left = e.clientX+'px'; c.style.top = e.clientY+'px'; });
+    addEventListener('mousedown', e => { c.textContent='✶'; c.style.color='var(--cyan)'; sub.poke(e.clientX,e.clientY); snd.click(); });
+    addEventListener('mouseup', () => { c.textContent='▸'; c.style.color='var(--magenta)'; });
+    let buf=''; const words={build:'BUILD',weird:'WEIRD',rebel:'REBEL',ship:'SHIP',vibes:'VIBES'};
+    addEventListener('keydown', e => { buf=(buf+e.key).slice(-6).toLowerCase(); for(const k in words) if(buf.endsWith(k)){ sub.surface(words[k]); snd.key(); } });
+  })();
+</script>
+
+<script type="text/babel">
+const { GhostEye, Window, Dialog, SlapButton, Field, Cartridge, BootCoin, Sticker, CharacterSlap, Toast, Loader } = window.SandboxOSDesignSystem_4526c4;
+const { useState, useEffect, useRef } = React;
+const sub = window.__sub, snd = window.__snd;
+const ACCENTS = { jailbroken: 'var(--amber)', workbench: 'var(--green)', afterhours: 'var(--magenta)' };
+
+function Machine() {
+  const [mood, setMood] = useState('jailbroken');
+  const [sound, setSound] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [cmd, setCmd] = useState('');
+
+  useEffect(() => { document.documentElement.style.setProperty('--accent-live', ACCENTS[mood]); }, [mood]);
+
+  function fire(t){ setToast(t); setTimeout(()=>setToast(null), 3400); }
+  // mood is a quiet manual knob now — no idle drift, no mystical performance
+  function pick(m){ setMood(m); sub && sub.setMood(m); snd && snd.slap(); }
+  function toggleSound(){ const v=!sound; setSound(v); if(snd){ snd.enable(v); if(v) snd.boot(); } }
+  function build(){ if(!cmd.trim()) return; snd && snd.install(); fire({tone:'ok',glyph:'✓',title:'built',body:'"'+cmd.slice(0,18)+'" assembled. it\'s yours.'}); setCmd(''); }
+
+  return (
+    <div>
+      <div className="status">
+        <div className="seg k">▚ SANDBOX·OS</div>
+        <div className="seg">UNLICENSED · LOCAL</div>
+        <div className="seg eyewatch" title="always around"><GhostEye size={26} watch /></div>
+        <div className="seg flex" />
+        <div className="seg" style={{padding:0}}><span className="moods">
+          {['jailbroken','workbench','afterhours'].map(m => (
+            <button key={m} className={mood===m?'on':''} onClick={()=>pick(m)}
+              style={mood===m?{boxShadow:`inset 0 -3px 0 ${ACCENTS[m]}`}:null}>{m}</button>
+          ))}
+        </span></div>
+        <div className={'seg sound'+(sound?' on':'')} onClick={toggleSound}><span className="ic" /> sound</div>
+        <div className="seg">21:03 · THANK YOU FOR USING</div>
+      </div>
+
+      <div className="desk">
+        {/* teletext index — bootleg broadcast */}
+        <div className="win-abs ttx rot1" style={{ top: 28, left: 40, width: 290 }}>
+          <div className="h"><span>P<span className="y">101</span> SANDBOX</span><span>MON 16 JUN</span></div>
+          <div className="b">
+            <span className="n">401</span> build a thing <span className="g">······ go</span><br/>
+            <span className="n">402</span> fork a cartridge <span className="g">·· 07</span><br/>
+            <span className="n">403</span> run it yourself <span className="g">··· on</span><br/>
+            <span className="n">404</span> nobody's tool <span className="g">···· yes</span>
+          </div>
+          <div className="fast">
+            <div style={{background:'var(--alert)'}} /><div style={{background:'var(--green)'}} />
+            <div style={{background:'var(--hazard)'}} /><div style={{background:'var(--cyan)'}} />
+          </div>
+        </div>
+
+        {/* talk-back dialog — the soul */}
+        <div className="win-abs rot2" style={{ top: 150, left: 300, width: 240, zIndex: 5 }}>
+          <Dialog title="WONDER.TXT" glyph="⌐■_■"
+            actions={[{label:'build local',tone:'go',onClick:()=>fire({tone:'rebel',glyph:'✦',title:'building local',body:'on your metal. no permission asked.'})},{label:'later',tone:'ghost'}]}>
+            ever wonder why they want it on <i>their</i> server? they're afraid of a maker.
+          </Dialog>
+        </div>
+
+        {/* workbench window */}
+        <div className="win-abs rot3" style={{ top: 60, right: 240, width: 250, zIndex: 4 }}>
+          <Window title="WORKBENCH.EXE">
+            <div style={{ fontSize: 11, color: 'var(--ash-300)', marginBottom: 10 }}>what are we building?</div>
+            <Field prefix="$" placeholder="build a thing…" value={cmd}
+              onChange={e=>setCmd(e.target.value)} onKeyDown={e=>{ if(e.key==='Enter') build(); }} />
+            <div style={{ display:'flex', gap:8, marginTop:10 }}>
+              <SlapButton tone="go" size="sm" onClick={build}>build it</SlapButton>
+              <SlapButton tone="ghost" size="sm">fork</SlapButton>
+            </div>
+          </Window>
+        </div>
+
+        {/* right rail: the owned objects */}
+        <div className="win-abs" style={{ right: 40, top: 70, display:'flex', flexDirection:'column', alignItems:'center', gap: 16, zIndex: 3 }}>
+          <Cartridge title={"Career\nOps"} subtitle="build" kind="build" width={118} />
+          <BootCoin size={76} label="SBX" serial="982-V7" tone="amber" />
+        </div>
+
+        {/* stickerbomb */}
+        <div className="win-abs" style={{ bottom: 24, left: 56, zIndex: 6 }}><Sticker shape="seal" tone="rebel" rotate={-9}>nobody's<br/>tool</Sticker></div>
+        <div className="win-abs" style={{ bottom: 96, left: 168, zIndex: 6 }}><Sticker shape="hazard" rotate={3} style={{width:128}}>handmade</Sticker></div>
+        <div className="win-abs" style={{ bottom: 30, left: 300, zIndex: 6 }}><CharacterSlap face="⌐■_■" label="not an ai" tone="cool" rotate={5} /></div>
+        <div className="win-abs" style={{ top: 250, left: 92, zIndex: 6 }}><Sticker shape="tag" tone="hazard" rotate={-5}>just vibes</Sticker></div>
+        <div className="win-abs" style={{ bottom: 110, right: 60, zIndex: 6 }}><Sticker shape="stamp" tone="rebel" rotate={-12}>approved by nobody</Sticker></div>
+
+        {/* loader strip */}
+        <div className="win-abs" style={{ bottom: 30, right: 220, zIndex: 6 }}><Loader value={66} label="BUILDING" width={170} /></div>
+      </div>
+
+      <div className="ticker"><div className="run">
+        <span>·</span>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>STAY WEIRD<span>·</span>RUN IT YOURSELF<span>·</span>NOBODY'S TOOL<span>·</span>THANK YOU FOR USING<span>·</span>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>STAY WEIRD<span>·</span>RUN IT YOURSELF<span>·</span>NOBODY'S TOOL<span>·</span>THANK YOU FOR USING<span>·</span>
+      </div></div>
+
+      {toast && (
+        <div style={{ position:'absolute', left:'50%', bottom:120, transform:'translateX(-50%)', zIndex:20 }}>
+          <Toast tone={toast.tone} glyph={toast.glyph} title={toast.title}>{toast.body}</Toast>
+        </div>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('app')).render(<Machine />);
+</script>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0F0F0D"/><rect x="20" y="24" width="44" height="34" fill="none" stroke="#F6F2E7" stroke-width="3"/><rect x="20" y="24" width="44" height="8" fill="#F6F2E7"/><rect x="40" y="50" width="34" height="26" fill="#FFD400" stroke="#0B0B09" stroke-width="2"/><text x="50" y="92" font-family="Arial" font-weight="900" font-size="11" fill="#FFB000" text-anchor="middle">SBX·OS</text></svg>
+</template>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!-- @dsCard group="Type" viewport="700x240" name="VHS Motion Type" subtitle="RGB-split kinetic display — tracking, timecode, the broadcast headline" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:#0a0410;color:var(--signal);font-family:var(--font-mono);overflow:hidden;height:240px;position:relative;}
+  .scan::after{content:"";position:absolute;inset:0;background:var(--fx-scanlines);opacity:.4;pointer-events:none;}
+  .track{position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 7px);opacity:.45;}
+  .rec{position:absolute;top:14px;left:16px;font-size:12px;display:flex;align-items:center;gap:7px;letter-spacing:.1em;}
+  .rec b{width:10px;height:10px;border-radius:50%;background:var(--alert);animation:sbx-blink 1.4s steps(1) infinite;}
+  .time{position:absolute;top:14px;right:16px;font-family:var(--font-crt);font-size:20px;}
+  .hero{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+  .big{font-family:var(--font-display);font-weight:900;font-size:64px;line-height:.82;text-transform:uppercase;letter-spacing:-.03em;color:#fff;
+       text-shadow:-4px 0 var(--magenta),4px 0 var(--cyan);animation:sbx-glitch 3s steps(2) infinite;}
+  .sub{font-family:var(--font-mono);font-size:12px;letter-spacing:.4em;color:var(--cyan);margin-top:8px;text-transform:uppercase;}
+  .play{position:absolute;bottom:16px;left:16px;font-family:var(--font-crt);font-size:20px;letter-spacing:.1em;}
+</style></head>
+<body class="scan">
+  <div class="track" style="top:46px"></div><div class="track" style="bottom:54px"></div>
+  <div class="rec"><b></b> REC · SP</div>
+  <div class="time">4:04:21</div>
+  <div class="hero"><div class="big">SAND<br>BOX</div><div class="sub">SUPER · NOSTALGIA · OS</div></div>
+  <div class="play">▶ PLAY · ≡ TRACKING</div>
+</body></html>

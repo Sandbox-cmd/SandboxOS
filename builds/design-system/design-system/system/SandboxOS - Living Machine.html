@@ -1,0 +1,593 @@
+<!-- @dsCard group="Flagship" viewport="1280x900" name="The Living Machine" subtitle="the whole v2 system, inhabited" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SandboxOS — The Living Machine</title>
+<link rel="stylesheet" href="./styles.css">
+<style>
+  html,body{margin:0;min-height:100%;background:var(--crt-black);color:var(--text);font-family:var(--font-mono);}
+  body{overflow-x:hidden;}
+
+  /* the living grain the whole OS sits on */
+  #fabric{position:fixed;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:0;}
+  #vhs{position:fixed;inset:0;background:var(--fx-scanlines);opacity:.20;mix-blend-mode:overlay;pointer-events:none;z-index:1;}
+  #app{position:relative;z-index:2;}
+
+  /* ---- BOOT GATE -------------------------------------------------- */
+  #boot{position:fixed;inset:0;z-index:50;background:var(--crt-black);display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:0;transition:opacity .5s var(--ease-out);}
+  #boot.gone{opacity:0;pointer-events:none;}
+  #bootcanvas{width:min(560px,82vw);height:200px;image-rendering:pixelated;}
+  .boot-strip{font-family:var(--font-crt);font-size:18px;letter-spacing:.14em;color:var(--ash-400);
+              text-transform:uppercase;margin-top:6px;min-height:22px;}
+  .boot-mark{font-family:var(--font-pixel);font-size:9px;letter-spacing:.18em;color:var(--ash-500);
+             text-transform:uppercase;margin-top:30px;}
+  .boot-press{margin-top:26px;}
+
+  /* ---- TOP STATUS RAIL ------------------------------------------- */
+  .status{position:sticky;top:0;display:flex;align-items:stretch;border-bottom:var(--bw-1) solid var(--signal);
+          background:rgba(11,11,9,.82);backdrop-filter:blur(2px);z-index:30;font-size:11px;
+          letter-spacing:.06em;text-transform:uppercase;}
+  .status .seg{padding:7px 12px;border-right:var(--bw-hair) solid var(--crt-700);display:flex;
+               align-items:center;gap:8px;color:var(--ash-300);white-space:nowrap;}
+  .status .seg.k{background:var(--signal);color:var(--ink);font-weight:900;border:0;letter-spacing:.1em;}
+  .status .flex{flex:1;border-right:0;}
+  .status .moods{display:flex;gap:0;padding:0;}
+  .status .moods button{font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;
+                        border:0;border-left:var(--bw-hair) solid var(--crt-700);padding:7px 11px;
+                        background:transparent;color:var(--ash-500);}
+  .status .moods button.on{background:var(--ink);color:var(--signal);}
+  .sound{display:flex;align-items:center;gap:7px;cursor:pointer;}
+  .sound .ic{width:9px;height:9px;border:var(--bw-1) solid currentColor;}
+  .sound.on .ic{background:var(--accent-live,var(--amber));border-color:var(--accent-live,var(--amber));}
+  .clock{font-variant-numeric:tabular-nums;}
+
+  /* ---- SHELL: rail + workbench ----------------------------------- */
+  .shell{display:flex;gap:0;align-items:stretch;min-height:calc(100vh - 36px);}
+  .rail{flex:0 0 232px;border-right:var(--bw-1) solid var(--ink);background:rgba(15,15,13,.62);
+        padding:18px 14px;display:flex;flex-direction:column;gap:18px;}
+  .rail .eye-card{border:var(--bw-1) solid var(--border);padding:12px;display:flex;gap:11px;align-items:center;
+                  background:var(--crt-900);}
+  .rail .eye-card .who{font-size:10px;line-height:1.5;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-400);}
+  .rail .eye-card .who b{color:var(--text);display:block;font-size:12px;letter-spacing:.06em;}
+  .work{flex:1;min-width:0;padding:26px 30px 70px;display:flex;flex-direction:column;gap:34px;}
+
+  /* loud header band */
+  .band{border:var(--bw-2) solid var(--ink);background:var(--crt-900);box-shadow:var(--shadow-slap-lg);
+        padding:22px 24px 20px;position:relative;}
+  .band .pin{position:absolute;top:-15px;right:18px;z-index:4;}
+  .band .pin2{position:absolute;bottom:-16px;left:24px;z-index:4;}
+  .band .sub{font-size:12px;color:var(--ash-300);letter-spacing:.04em;margin-top:12px;max-width:62ch;line-height:1.5;}
+  .band .sub b{color:var(--text);}
+
+  /* the NOTICE -> BUILD -> SHIP loop, made visible */
+  .loop3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:0;margin-top:20px;}
+  .loop3 .step{border:var(--bw-1) solid var(--border);background:var(--crt-950);padding:14px 15px;}
+  .loop3 .step .n{font-family:var(--font-pixel);font-size:9px;letter-spacing:.14em;color:var(--ash-500);}
+  .loop3 .step .t{font-family:var(--font-display);font-weight:900;text-transform:uppercase;letter-spacing:.06em;
+                  font-size:19px;margin:7px 0 4px;}
+  .loop3 .step .d{font-size:11px;color:var(--ash-300);line-height:1.45;}
+  .loop3 .arr{display:flex;align-items:center;justify-content:center;color:var(--ash-500);font-size:18px;padding:0 10px;}
+  .loop3 .step.live .t{color:var(--accent-live,var(--amber));}
+  .loop3 .step.live{border-color:var(--accent-live,var(--amber));}
+
+  /* generic section */
+  .sec > .head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:var(--bw-1) solid var(--border);
+               padding-bottom:8px;}
+  .sec > .head .ix{font-family:var(--font-pixel);font-size:10px;color:var(--ash-500);letter-spacing:.1em;}
+  .sec > .head h2{font-family:var(--font-display);font-weight:900;text-transform:uppercase;letter-spacing:.05em;
+                  font-size:16px;}
+  .sec > .head .note{margin-left:auto;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ash-400);}
+
+  .grid2{display:grid;grid-template-columns:1.45fr 1fr;gap:22px;align-items:start;}
+  .grid-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start;}
+  .panel{border:var(--bw-1) solid var(--border);background:rgba(15,15,13,.6);padding:16px;}
+  .panel .ph{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ash-400);margin-bottom:12px;
+             display:flex;align-items:center;gap:8px;}
+
+  .shelf-cell{border:var(--bw-2) solid var(--ink);background:var(--crt-900);box-shadow:var(--shadow-slap);
+              padding:16px 14px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;}
+  .shelf-cell .drop{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ash-400);text-align:center;}
+  .shelf-cell .drop b{color:var(--text);display:block;font-size:12px;}
+  .shelf-cell .gone{position:absolute;top:-12px;left:-10px;z-index:5;}
+
+  .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+  .ctl-row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-bottom:16px;}
+  .ctl-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ash-500);margin:0 0 10px;}
+
+  /* stickerbomb gutter */
+  .bomb{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;padding:8px 2px;}
+
+  /* ticker */
+  .ticker{overflow:hidden;white-space:nowrap;border-top:var(--bw-1) solid var(--signal);
+          border-bottom:var(--bw-1) solid var(--signal);background:rgba(11,11,9,.8);}
+  .ticker .run{display:inline-block;padding:8px 0;font-family:var(--font-display);font-weight:900;
+               font-size:13px;letter-spacing:.1em;text-transform:uppercase;animation:sbx-marquee 34s linear infinite;}
+  .ticker .run span{margin:0 14px;color:var(--ash-500);}
+
+  .footer{padding:26px 30px 40px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+          border-top:var(--bw-1) solid var(--border);}
+  .footer .mk{font-family:var(--font-pixel);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash-500);}
+
+  .rot-a{transform:rotate(-2deg);} .rot-b{transform:rotate(2deg);} .rot-c{transform:rotate(-1.4deg);}
+
+  @media (prefers-reduced-motion: reduce){ .ticker .run{animation:none;} }
+  @media (max-width:1080px){
+    .grid2,.formgrid{grid-template-columns:1fr;}
+    .grid-stats{grid-template-columns:1fr 1fr;}
+    .grid-shelf{grid-template-columns:1fr;}
+    .rail{display:none;}
+    .loop3{grid-template-columns:1fr;}
+    .loop3 .arr{transform:rotate(90deg);}
+  }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="./lib/substrate.js"></script>
+<script src="./lib/dither.js"></script>
+<script src="./lib/fx.js"></script>
+<script src="./lib/sound.js"></script>
+<script src="./_ds_bundle.js"></script>
+</head>
+<body>
+<canvas id="fabric"></canvas>
+<div id="vhs"></div>
+
+<!-- BOOT GATE: the dither substrate lifting -->
+<div id="boot">
+  <canvas id="bootcanvas"></canvas>
+  <div class="boot-strip" id="bootstrip">warming the metal</div>
+  <div class="boot-mark">PRESSED BY HAND · &copy; NOBODY</div>
+  <div class="boot-press" id="bootpress"></div>
+</div>
+
+<div id="app"></div>
+
+<script>
+  // the living grain underneath everything
+  window.__sub = window.SandboxSubstrate.mount(document.getElementById('fabric'), { cell: 4, mood: 'jailbroken' });
+  window.__snd = window.SandboxSound.create();
+  // boot dither: the word develops out of the fabric, holds, then we lift the gate
+  window.__bootDither = window.SandboxDither.coalesce(document.getElementById('bootcanvas'), {
+    text: 'SANDBOX·OS', cell: 4, color: '#F6F2E7', accent: '#FFB000', loop: false, hold: 900
+  });
+  (function(){
+    var strip = document.getElementById('bootstrip');
+    var lines = ['warming the metal', 'no telemetry to send', 'mounting the workbench', 'it\'s yours now'];
+    var i = 0;
+    var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (RM) { strip.textContent = lines[lines.length-1]; } else {
+      var iv = setInterval(function(){ i++; if(i<lines.length){ strip.textContent = lines[i]; } else { clearInterval(iv); } }, 620);
+    }
+  })();
+</script>
+
+<script type="text/babel">
+const {
+  Window, Dialog, SlapButton, Toast, Loader, Tooltip, Avatar, FaceToggle, Field,
+  Checkbox, Radio, Switch, Tabs, Select, Knob,
+  Table, List, Stat, KeyValue, CodeBlock,
+  Nav, Menu, Pagination,
+  Cartridge, BootCoin, Sticker, Barcode, CharacterSlap,
+  GhostEye, VHSHeadline
+} = window.SandboxOSDesignSystem_4526c4;
+const { useState, useEffect, useRef } = React;
+const sub = window.__sub, snd = window.__snd;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const ACCENTS = { jailbroken: 'var(--amber)', workbench: 'var(--green)', afterhours: 'var(--magenta)' };
+const MOOD_LABEL = { jailbroken: 'everyday', workbench: 'maker mode', afterhours: 'night shift' };
+
+/* ---- real-looking maker content -------------------------------- */
+const DROPS = [
+  { id: 1, serial: '001', name: 'career-ops',   kind: 'BUILD',  cut: 'edition 12 / 40', state: 'shipped' },
+  { id: 2, serial: '002', name: 'night-shift',  kind: 'SKILL',  cut: 'edition 03 / 40', state: 'shipped' },
+  { id: 3, serial: '003', name: 'paper-cutter', kind: 'BUILD',  cut: 'edition 27 / 40', state: 'building' },
+  { id: 4, serial: '004', name: 'desk-radio',   kind: 'BUILD',  cut: 'edition 09 / 40', state: 'shipped' },
+  { id: 5, serial: '005', name: 'the-rebel',    kind: 'PERSONA',cut: 'edition 01 / 01', state: 'kept' },
+  { id: 6, serial: '006', name: 'cold-boot',    kind: 'BUILD',  cut: 'edition 40 / 40', state: 'gone' },
+];
+
+const TERMINAL = [
+  { text: '$ sbx build paper-cutter', tone: 'info' },
+  { text: 'noticed: the default export was 4 clicks deep.', tone: 'dim' },
+  { text: 'cut a one-key version.', tone: 'ok' },
+  { text: '  > wiring controls ......... done', tone: 'ok' },
+  { text: '  > running on this machine . done', tone: 'ok' },
+  { text: '  > phone home ............. refused', tone: 'rebel' },
+  { text: 'the wall held. nothing left the room.', tone: 'ok' },
+  { text: '$ sbx ship paper-cutter --edition 27', tone: 'info' },
+  { text: 'pressed by hand. it is yours.', tone: 'warn' },
+];
+
+const FEED = [
+  { id: 'a', serial: '027', label: 'shipped paper-cutter', meta: 'edition 27 / 40 · on your metal', status: 'ok', trailing: 'just now' },
+  { id: 'b', serial: '026', label: 'noticed a busted default', meta: 'export buried 4 clicks deep', status: 'rebel', trailing: '3m' },
+  { id: 'c', serial: '025', label: 'refused to phone home', meta: 'the wall held', status: 'active', trailing: '3m' },
+  { id: 'd', serial: '024', label: 'forked night-shift', meta: 'made it yours', status: 'link', trailing: '1h' },
+  { id: 'e', serial: '023', label: 'last copy of cold-boot left', meta: 'gone when gone', status: 'warn', trailing: '2h' },
+];
+
+function App() {
+  const [booted, setBooted] = useState(false);
+  const [mood, setMood] = useState('jailbroken');
+  const [sound, setSound] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [cmd, setCmd] = useState('');
+  const [nav, setNav] = useState('workshop');
+  const [page, setPage] = useState(1);
+  const [grain, setGrain] = useState(35);
+  const [offline, setOffline] = useState(true);
+  const [tab, setTab] = useState(0);
+  const [where, setWhere] = useState('local');
+  const clockRef = useRef(null);
+  const [clock, setClock] = useState('00:00');
+
+  // live accent var drives the ONE earned accent per view
+  useEffect(() => { document.documentElement.style.setProperty('--accent-live', ACCENTS[mood]); }, [mood]);
+
+  // boot lift
+  useEffect(() => {
+    const el = document.getElementById('boot');
+    const press = document.getElementById('bootpress');
+    let done = false;
+    const lift = () => {
+      if (done) return; done = true;
+      el.classList.add('gone');
+      setBooted(true);
+      if (window.__bootDither) window.__bootDither.destroy();
+      setTimeout(() => { el.remove(); }, 600);
+    };
+    // mount a real boot slap into the gate so the lift is a user-gesture-able act
+    const root = ReactDOM.createRoot(press);
+    root.render(
+      React.createElement(SlapButton, { tone: 'go', size: 'lg', onClick: lift }, 'PRESS TO BOOT')
+    );
+    // auto-lift as a fallback so the page is never stuck
+    const t = setTimeout(lift, RM ? 200 : 3200);
+    return () => clearTimeout(t);
+  }, []);
+
+  // clock
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date();
+      setClock(String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'));
+    };
+    tick(); clockRef.current = setInterval(tick, 30000);
+    return () => clearInterval(clockRef.current);
+  }, []);
+
+  // grain knob -> live substrate
+  useEffect(() => { if (sub) sub.set({ chaos: grain/100, vhs: 0.3 }); }, [grain]);
+
+  function fire(t){ setToast(t); setTimeout(()=>setToast(null), 3800); }
+  function pick(m){ setMood(m); if (sub) sub.setMood(m); if (snd) snd.slap(); }
+  function toggleSound(){ const v=!sound; setSound(v); if(snd){ snd.enable(v); if(v) snd.boot(); } }
+
+  function build(){
+    if(!cmd.trim()){ fire({tone:'warn',glyph:'!',title:'nothing to build',body:'name the thing first. then it is yours.'}); return; }
+    if (snd) snd.install();
+    if (sub) sub.surface('BUILD');
+    fire({tone:'ok',glyph:'✓',title:'built',body:'"'+cmd.slice(0,20)+'" assembled on your metal. nothing learned behind your back.'});
+    setCmd('');
+  }
+
+  const NAV_SECTIONS = [
+    { label: 'the bench', items: [
+      { id: 'workshop', label: 'workshop', mark: '▚', count: DROPS.length },
+      { id: 'shelf',    label: 'the shelf', mark: '▣', count: 4 },
+      { id: 'log',      label: 'build log', mark: '≡', count: TERMINAL.length },
+    ]},
+    { label: 'the machine', items: [
+      { id: 'controls', label: 'controls', mark: '◉' },
+      { id: 'wall',     label: 'the wall', mark: '▦', count: '0' },
+    ]},
+  ];
+
+  return (
+    <div>
+      {/* ---- TOP STATUS RAIL ---- */}
+      <div className="status">
+        <div className="seg k">▚ SANDBOX&middot;OS</div>
+        <div className="seg">UNLICENSED &middot; LOCAL</div>
+        <div className="seg" title="the eye that watches your build, not you"><GhostEye size={24} watch mood="watch" /></div>
+        <div className="seg flex" />
+        <div className="seg" style={{padding:0}}>
+          <span className="moods">
+            {['jailbroken','workbench','afterhours'].map(m => (
+              <button key={m} className={mood===m?'on':''} onClick={()=>pick(m)}
+                style={mood===m?{boxShadow:`inset 0 -3px 0 ${ACCENTS[m]}`}:null}>{MOOD_LABEL[m]}</button>
+            ))}
+          </span>
+        </div>
+        <div className={'seg sound'+(sound?' on':'')} onClick={toggleSound} role="button" tabIndex={0}
+             onKeyDown={e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleSound(); } }}>
+          <span className="ic" /> sound {sound?'on':'off'}
+        </div>
+        <div className="seg clock">{clock} &middot; THANK YOU FOR USING</div>
+      </div>
+
+      {/* ---- SHELL ---- */}
+      <div className="shell">
+        {/* left rail / workbench nav */}
+        <div className="rail">
+          <div className="eye-card">
+            <Avatar face="⌐■_■" status="building" serial="001-V7" size={42} />
+            <div className="who"><b>the maker</b>local &middot; offline<br/>nobody&apos;s tool</div>
+          </div>
+          <Nav sections={NAV_SECTIONS} activeId={nav} onSelect={setNav}
+               accent={ACCENTS[mood]} ariaLabel="Workbench" />
+          <div style={{marginTop:'auto'}}>
+            <KeyValue dense pairs={[
+              { k: 'pressed', v: 'by hand' },
+              { k: 'runs', v: 'offline' },
+              { k: 'sent home', v: '0' },
+            ]} />
+          </div>
+        </div>
+
+        {/* workbench */}
+        <div className="work">
+
+          {/* ===== HEADER BAND ===== */}
+          <div className="band">
+            <div className="pin rot-b"><Sticker shape="seal" tone="rebel" rotate={-9} halo>nobody&apos;s<br/>tool</Sticker></div>
+            <div className="pin2 rot-a"><Sticker shape="stamp" tone="hazard" rotate={4}>pressed by hand</Sticker></div>
+            <VHSHeadline size="2xl" liveWords={['MACHINE']} accent={ACCENTS[mood]} split shadow>
+              A BOOTLEG OS / FOR MAKERS
+            </VHSHeadline>
+            <div className="sub">
+              you noticed a busted default. so you built the clean version and shipped it.
+              <b> this is the workbench that does that</b> — runs on your own metal, learns your machine,
+              and never phones home. press a thing and it&apos;s yours.
+            </div>
+
+            {/* the loop made visible */}
+            <div className="loop3">
+              <div className="step live">
+                <div className="n">001</div><div className="t">NOTICE</div>
+                <div className="d">a default that wastes your time. a setting buried four clicks deep.</div>
+              </div>
+              <div className="arr">▸</div>
+              <div className="step">
+                <div className="n">002</div><div className="t">BUILD</div>
+                <div className="d">cut the clean version on your own bench. parts you can see.</div>
+              </div>
+              <div className="arr">▸</div>
+              <div className="step">
+                <div className="n">003</div><div className="t">SHIP</div>
+                <div className="d">press it, serial it, hand it over. gone when gone.</div>
+              </div>
+            </div>
+          </div>
+
+          {/* ===== THE PARTS YOU CAN SEE (stats) ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">A</span><h2>the parts you can see</h2>
+              <span className="note">real numbers, openable</span></div>
+            <div className="grid-stats">
+              <Stat label="telemetry sent" value="0" tone="ok" delta="+0 ever" />
+              <Stat label="runs" value="offline" tone="active" />
+              <Stat label="editions pressed" value="183" unit="drops" tone="rebel" delta={+27} />
+              <Stat label="phone-home blocked" value="100" unit="%" tone="ok" delta="+the wall held" />
+            </div>
+          </div>
+
+          {/* ===== WORKSHOP: build log table + terminal ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">B</span><h2>the workshop</h2>
+              <span className="note">what got made, what it cost</span></div>
+            <div className="grid2">
+              <div>
+                <Table
+                  caption="the maker's drops"
+                  serial zebra
+                  defaultSortKey="serial" defaultSortDir="asc"
+                  columns={[
+                    { key: 'name',  label: 'drop', sortable: true,
+                      render: (v) => <span style={{color:'var(--text)',fontWeight:700}}>{v}</span> },
+                    { key: 'kind',  label: 'kind', sortable: true },
+                    { key: 'cut',   label: 'edition' },
+                    { key: 'state', label: 'state', align: 'right', sortable: true,
+                      render: (v) => {
+                        const c = v==='shipped'?'var(--green)':v==='building'?'var(--amber)':v==='gone'?'var(--ash-500)':'var(--magenta)';
+                        return <span style={{color:c,textTransform:'uppercase',letterSpacing:'.06em',fontSize:11}}>{v}</span>;
+                      } },
+                  ]}
+                  rows={DROPS}
+                />
+              </div>
+              <div>
+                <div className="ctl-lbl">live from the bench</div>
+                <CodeBlock variant="log" title="build.log" lang="bash" copyable
+                           showLineNumbers maxHeight="248px" lines={TERMINAL} />
+              </div>
+            </div>
+          </div>
+
+          {/* ===== THE FEED + SPEC ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">C</span><h2>the bench feed</h2>
+              <span className="note">latest first</span></div>
+            <div className="grid2">
+              <div className="panel">
+                <div className="ph">▚ what just happened</div>
+                <List items={FEED} dense defaultValue="a" onSelect={(id)=>{
+                  const it = FEED.find(f=>f.id===id);
+                  if (it) fire({tone:'info',glyph:'▸',title:'opened',body:it.label+' — openable, nothing hidden.'});
+                }} />
+              </div>
+              <div className="panel">
+                <div className="ph">◉ this machine</div>
+                <KeyValue pairs={[
+                  { k: 'where it runs', v: 'your metal' },
+                  { k: 'what it learns', v: 'your machine' },
+                  { k: 'who it answers to', v: 'you' },
+                  { k: 'telemetry', v: '0 sent' },
+                  { k: 'pressed', v: 'by hand' },
+                  { k: 'license', v: 'nobody’s' },
+                ]} />
+                <div style={{marginTop:14}}>
+                  <Loader value={offline ? 100 : 66} label={offline?'WALL HOLDING':'BUILDING'}
+                          caption="THANK YOU FOR USING" width="100%" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ===== THE SHELF: cartridges + coin ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">D</span><h2>the shelf</h2>
+              <span className="note">limited drops &middot; gone when gone</span></div>
+            <div className="grid-shelf">
+              <div className="shelf-cell rot-a">
+                <div className="gone"><Sticker shape="burst" tone="alert" rotate={-10} size="sm">last one</Sticker></div>
+                <Cartridge title={'Career\nOps'} subtitle="build" serial="001" kind="build" width={132} spin />
+                <div className="drop"><b>career-ops</b>edition 12 / 40</div>
+                <SlapButton tone="rebel" size="sm"
+                  onClick={()=>fire({tone:'rebel',glyph:'✦',title:'forked',body:'career-ops is yours now. make it weird.'})}>fork it</SlapButton>
+              </div>
+              <div className="shelf-cell rot-c">
+                <Cartridge title={'Night\nShift'} subtitle="skill" serial="002" kind="skill" width={132} spin />
+                <div className="drop"><b>night-shift</b>edition 03 / 40</div>
+                <SlapButton tone="go" size="sm"
+                  onClick={()=>{ if(snd) snd.install(); fire({tone:'ok',glyph:'✓',title:'installed',body:'plugged into your bench. runs offline.'}); }}>plug in</SlapButton>
+              </div>
+              <div className="shelf-cell rot-b" style={{justifyContent:'center'}}>
+                <BootCoin size={120} label="SBX" serial="982-V7" glyph="▚" tone={mood==='afterhours'?'rebel':mood==='workbench'?'green':'amber'} spin />
+                <div className="drop"><b>boot token</b>one per maker</div>
+                <Barcode seed="982-V7-SANDBOX" height={26} />
+              </div>
+            </div>
+          </div>
+
+          {/* ===== THE CONTROLS: rebuilt a11y forms ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">E</span><h2>the controls</h2>
+              <span className="note">rebuilt so they actually work</span></div>
+            <div className="formgrid">
+              <div className="panel">
+                <div className="ph">▦ what are we building?</div>
+                <Field prefix="$" placeholder="name a thing to build…" value={cmd}
+                       aria-label="thing to build"
+                       onChange={e=>setCmd(e.target.value)}
+                       onKeyDown={e=>{ if(e.key==='Enter') build(); }} />
+                <div style={{display:'flex',gap:10,marginTop:12}}>
+                  <SlapButton tone="go" size="md" onClick={build}>build it</SlapButton>
+                  <SlapButton tone="ghost" size="md"
+                    onClick={()=>fire({tone:'info',glyph:'▸',title:'forking',body:'copy made. it answers to you now.'})}>fork</SlapButton>
+                  <Tooltip label="nobody licenses this" tone="rebel">
+                    <SlapButton tone="ghost" size="md">?</SlapButton>
+                  </Tooltip>
+                </div>
+                <div style={{marginTop:18}}>
+                  <Tabs tabs={['BUILD','FORK','SHIP']} value={tab} onChange={setTab} />
+                  <div className="ctl-lbl" style={{marginTop:14}}>where it runs</div>
+                  <div className="ctl-row">
+                    <Radio name="where" value="local" checked={where==='local'} onChange={setWhere} label="on this machine" />
+                    <Radio name="where" value="cloud" checked={where==='cloud'} onChange={setWhere} label="someone else's server" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="panel">
+                <div className="ph">◉ the machine knobs</div>
+                <div className="ctl-row">
+                  <Switch defaultChecked label="run offline" accent="var(--green)"
+                          onChange={(c)=>{ setOffline(c); if(!c) fire({tone:'warn',glyph:'!',title:'heads up',body:'turned off the wall. you can. most won’t.'}); }} />
+                  <Checkbox label="remember this machine" defaultChecked />
+                  <Checkbox label="phone home" accent="var(--magenta)" />
+                </div>
+                <div className="ctl-row" style={{alignItems:'flex-end',gap:28}}>
+                  <Knob value={grain} onChange={setGrain} min={0} max={100} label="grain" size={84} accent={ACCENTS[mood]} />
+                  <div style={{flex:1,minWidth:140}}>
+                    <Select label="boot mode" defaultValue="sovereign"
+                            options={['sovereign','workbench','night shift']} />
+                    <div style={{marginTop:14,display:'flex',alignItems:'center',gap:14}}>
+                      <FaceToggle faces={{off:'¬_¬', on:'^_^'}} />
+                      <span className="ctl-lbl" style={{margin:0}}>her mood</span>
+                    </div>
+                  </div>
+                </div>
+                <Pagination page={page} pageCount={6} onChange={setPage} accent={ACCENTS[mood]} />
+              </div>
+            </div>
+          </div>
+
+          {/* ===== TALK-BACK: the OS speaks ===== */}
+          <div className="sec">
+            <div className="head"><span className="ix">F</span><h2>the machine talks back</h2>
+              <span className="note">only brags about true things</span></div>
+            <div className="grid2">
+              <div className="rot-c">
+                <Dialog title="WONDER.TXT" glyph="⌐■_■"
+                  actions={[
+                    {label:'build local', tone:'go',
+                     onClick:()=>fire({tone:'rebel',glyph:'✦',title:'building local',body:'on your metal. no permission asked. the wall held.'})},
+                    {label:'later', tone:'ghost'},
+                  ]}>
+                  ever wonder why they want it on <i>their</i> server? a maker on their own
+                  machine doesn&apos;t need supervising. so i don&apos;t — i just watch your build come together, right here with you.
+                </Dialog>
+              </div>
+              <div className="bomb">
+                <CharacterSlap face="⌐■_■" label="not an ai" tone="cool" rotate={5} />
+                <CharacterSlap face="^_^" label="learns YOUR machine" tone="go" rotate={-4} />
+                <Sticker shape="tag" tone="hazard" rotate={-5}>handmade</Sticker>
+                <Sticker shape="price" tone="alert" rotate={4}>$0 / yours</Sticker>
+                <Sticker shape="callout" tone="rebel" rotate={-3}>the wall held</Sticker>
+                <Sticker shape="stamp" tone="go" rotate={-8}>approved by nobody</Sticker>
+                <Sticker shape="ribbon" tone="striped" rotate={2}>gone when gone</Sticker>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ---- TICKER ---- */}
+      <div className="ticker"><div className="run">
+        <span>·</span>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>RUNS OFFLINE
+        <span>·</span>IT LEARNS YOUR MACHINE<span>·</span>NOBODY&apos;S TOOL<span>·</span>GONE WHEN GONE
+        <span>·</span>THE WALL HELD<span>·</span>PRESSED BY HAND<span>·</span>THANK YOU FOR USING
+        <span>·</span>BUILD IT<span>·</span>OWN IT<span>·</span>SHIP IT<span>·</span>NOT AN AI<span>·</span>RUNS OFFLINE
+        <span>·</span>IT LEARNS YOUR MACHINE<span>·</span>NOBODY&apos;S TOOL<span>·</span>GONE WHEN GONE
+        <span>·</span>THE WALL HELD<span>·</span>PRESSED BY HAND<span>·</span>THANK YOU FOR USING<span>·</span>
+      </div></div>
+
+      {/* ---- FOOTER ---- */}
+      <div className="footer">
+        <BootCoin size={56} label="SBX" serial="000-01" tone="amber" />
+        <div>
+          <div style={{fontFamily:'var(--font-display)',fontWeight:900,textTransform:'uppercase',letterSpacing:'.05em',fontSize:15}}>
+            a bootleg OS for makers
+          </div>
+          <div className="mk" style={{marginTop:6}}>PRESSED BY HAND &middot; &copy; NOBODY &middot; RUNS OFFLINE &middot; 0 TELEMETRY SENT</div>
+        </div>
+        <div style={{marginLeft:'auto'}}><GhostEye size={40} watch mood="calm" accent={ACCENTS[mood]} /></div>
+      </div>
+
+      {/* ---- TOAST ---- */}
+      {toast && (
+        <div style={{ position:'fixed', left:'50%', bottom:64, transform:'translateX(-50%)', zIndex:40 }}>
+          <Toast tone={toast.tone} glyph={toast.glyph} title={toast.title}>{toast.body}</Toast>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+
+// wire the live grain to the cursor (desktop only) once mounted
+if (!RM) {
+  addEventListener('pointerdown', e => { if (sub) sub.poke(e.clientX, e.clientY); });
+}
+</script>
+</body>
+</html>
