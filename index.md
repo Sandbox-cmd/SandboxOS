@@ -20,6 +20,8 @@ payload against the card before your keystroke, and marks what lands
 
 ### [human](builds/human/)
 
+*superseded 2026-08-23: the five tones were consolidated into one voice, plain hands, in [voices](builds/voices/). human stays on the shelf as the skill-shaped original and its research.*
+
 the language pack, as a skill. five tones — work, conversation, copy, artist,
 and michael the woodshop Canadian — every one of them authored on a single
 framework of six validated dimensions: word stock, pace, fillers, assumed

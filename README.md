@@ -53,7 +53,7 @@ the full list with every checksum is in [index.md](index.md).
 | shape | name | what it is |
 |---|---|---|
 | app | commerceos | a template for running your own store — install it, register your store, and the system is yours. it ships with nobody's catalog, credentials, or numbers. 551 checks of its own (needs `uv`: brew install uv) |
-| build | human | the language pack as a skill — five tones on one framework, canons and research aboard |
+| build | human | the language pack as a skill — five tones on one framework (superseded by voices' one voice; kept for its research) |
 | build | voices | plain hands — one Claude Code output style for every reader, the five voices consolidated |
 | build | michael | the woodshop — a Claude terminal that designs 3d-printable parts and drives your live Blender |
 
