@@ -38,19 +38,21 @@ drop it in your skills folder as `human/`, or keep it inside one project.
 
 ### [voices](builds/voices/)
 
-the same material in a different shape: five voices delivered as Claude Code
-output styles rather than a skill. switch one on with `/output-style`, or
-drop a single voice into a project's `.claude/output-styles` so it travels
-with the repo.
+one voice, **plain hands**, delivered as a Claude Code output style. it
+replaces the five this build used to carry (work, conversation, copy, artist,
+michael): they shared one core and differed only in the reader, so the core is
+written once and the five readers ride as short "when the reader is…"
+paragraphs. switch it on with `/output-style`, or drop it into a project's
+`.claude/output-styles` so it travels with the repo.
 
 ```
-kept       2026-07-25
-payload    voices/ (11 files)
-sha256     3f24435f5a0ecd6cf7438388b0ec3424161c2b453db74d3adc284d76db7e6df0
+kept       2026-08-23
+payload    voices/ (7 files)
+sha256     e3f565408d909a442b7d48bdf2604eb9c4072703ade21921d241d9b93cf3b112
 ```
 
-human is a skill you add; voices is a style you switch on. same tones, same
-references, same research. take whichever fits how you work.
+human is a skill you add; voices is a style you switch on. same references,
+same research. take whichever fits how you work.
 
 ### [michael](builds/michael/)
 
