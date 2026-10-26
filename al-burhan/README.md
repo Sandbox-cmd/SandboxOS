@@ -36,6 +36,27 @@ arguments/
 sources/                 raw third-party material, local only (gitignored — repo is public)
 ```
 
+## Index of findings
+
+| File | Category | Strength |
+|---|---|---|
+| `prophecies/contemporary/romans-victory.md` | contemporary | moderate |
+| `prophecies/contemporary/abu-lahab.md` | contemporary | moderate |
+| `prophecies/near-fulfillment/conquest-of-mecca.md` | near-fulfillment | weak (self-fulfilling objection) |
+| `prophecies/near-fulfillment/persia-byzantium-conquests.md` | near-fulfillment | weak (hadith dating postdates events) |
+| `prophecies/signs-of-the-hour-minor/bedouins-tall-buildings.md` | minor sign | moderate |
+| `prophecies/signs-of-the-hour-minor/shrinking-of-time-and-distance.md` | minor sign | moderate (conditional on reading) |
+| `prophecies/signs-of-the-hour-minor/spread-of-writing-and-knowledge.md` | minor sign | weak |
+| `prophecies/signs-of-the-hour-minor/widespread-riba.md` | minor sign | weak (isnad likely broken) |
+| `prophecies/signs-of-the-hour-major/README.md` | major signs index | n/a (unfulfilled, non-evidential) |
+| `science/README.md` | charter | use with extreme caution |
+| `science/cosmology/expanding-universe.md` | cosmology | weak (least weak in folder) |
+| `science/cosmology/initial-joined-state.md` | cosmology | weak |
+| `science/biology/embryology.md` | biology | weak (Galenic precedent near-decisive) |
+| `science/earth-and-water/two-seas-barrier.md` | earth/water | weak |
+
+All files are drafts: nothing is citable until its "Sources to verify" checklist is cleared, since hadith numbers and gradings were written from memory without network access.
+
 ## Prophecy categorization
 
 By when fulfillment occurs relative to the revelation:

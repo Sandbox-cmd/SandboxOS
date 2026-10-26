@@ -1,6 +1,8 @@
 # Prophecy: barefoot shepherds competing in tall buildings
 
 Chart step: 4 (Muhammad was a true prophet), fulfilled prophecy.
+Category: arguments/prophecies/signs-of-the-hour-minor
+Strength: moderate (strong specificity and sahih chains; the "mostly Bedouin" and "same people" claims need tightening)
 Raw source: `../../sources/provingislam/bedouins-tall-buildings.md`
 
 ## The text
