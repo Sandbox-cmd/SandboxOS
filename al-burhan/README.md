@@ -11,7 +11,7 @@ A research base for a step-by-step rational case for Islam. The name means "the 
 5. The Quran is from God (inimitability, i'jaz).
 6. Islam completes and corrects earlier revelation.
 
-Each file in `arguments/` supports one of these steps. Every file follows `TEMPLATE.md`: claim, primary texts, argument, objections and replies, sources to verify, status.
+Each file in `arguments/` supports one of these steps. `TEMPLATE.md` is a starting shape, not a requirement. The priority is fetchability: every hadith, verse, date and quotation should carry a link someone can open (sunnah.com, quran.com, a named page or paper), and a file may be organised however makes that clearest.
 
 ## House rules
 
@@ -55,7 +55,17 @@ sources/                 raw third-party material, local only (gitignored — re
 | `science/biology/embryology.md` | biology | weak (Galenic precedent near-decisive) |
 | `science/earth-and-water/two-seas-barrier.md` | earth/water | weak |
 
-All files are drafts: nothing is citable until its "Sources to verify" checklist is cleared, since hadith numbers and gradings were written from memory without network access.
+All files are drafts: nothing is citable until its "Sources to verify" checklist is cleared. The original numbers were written from memory without network access.
+
+Receipt check status (2026-10-27):
+
+| Files | State |
+|---|---|
+| `contemporary/` (2), `near-fulfillment/` (2) | Hadith numbers, narrators, gradings and dates checked and linked. Open items: primary-source reads (Tabari, Ibn Sa'd, Kaegi), Quran wording, the Badr-versus-Nineveh chronology. |
+| `signs-of-the-hour-minor/` (4), `signs-of-the-hour-major/` | Not yet checked. Numbers are still from memory. |
+| `science/` (all) | Not yet checked. Numbers, translations and authorities are still from memory. |
+
+Dates are currently checked against Wikipedia and encyclopedia pages only. Treat those as pointers to the primary sources, not replacements for them.
 
 ## Prophecy categorization
 

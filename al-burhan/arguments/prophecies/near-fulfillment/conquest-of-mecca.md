@@ -11,8 +11,10 @@ Quran 48:27, revealed just after the Muslims had been turned away from Mecca at 
 ## Primary texts
 
 - Quran 48:27: "Certainly Allah has fulfilled His Messenger's vision in truth: you will surely enter al-Masjid al-Haram, if Allah wills, in security, heads shaved and hair shortened, not fearing. He knew what you did not know, and granted besides that a near victory."
-- Context: Surah al-Fath was revealed on the return journey from Hudaybiyyah (Dhul-Qa'dah 6 AH / March 628) — Sahih al-Bukhari (approx. 4833-4834 on the revelation of al-Fath; the Hudaybiyyah narrative is in Bukhari's Book of Conditions, approx. 2731-2732) — verify numbers.
-- Umar's protest at the treaty ("Did you not tell us we would come to the House and circumambulate it?") and the Prophet's answer ("I did not say this year") — in the long Hudaybiyyah hadith, Bukhari — verify.
+- Context: Surah al-Fath was revealed on the return journey from Hudaybiyyah (Dhul-Qa'dah 6 AH / March 628).
+  - [Bukhari 4833](https://sunnah.com/bukhari:4833), from Umar via Aslam: "Tonight a Sura has been revealed to me, dearer to me than that on which the sun rises", then 48:1. This text says only "during one of his journeys". The identical report under the chapter "Ghazwa of al-Hudaibiya" is [Bukhari 4177](https://sunnah.com/bukhari:4177); cite that for the explicit placement.
+  - [Bukhari 4834](https://sunnah.com/bukhari:4834), from Anas: "'Verily We have given you a manifest victory' refers to Al-Hudaibiya." Parallel: [4172](https://sunnah.com/bukhari:4172).
+- The long treaty narrative is a single hadith, [Bukhari 2731-2732](https://sunnah.com/bukhari:2731) (Book of Conditions, from al-Miswar ibn Makhrama and Marwan). It contains Umar's protest ("Didn't you tell us that we would go to the Ka'ba and perform Tawaf?" — "Yes, but did I tell you that we would visit the Ka'ba this year?") and the Umm Salamah episode: the companions would not rise to sacrifice and shave after three commands until she advised him to go out, say nothing, sacrifice and call his barber.
 - Fulfillment: the Umrat al-Qada (lesser pilgrimage) of Dhul-Qa'dah 7 AH / 629 CE under the treaty's terms, and the conquest of Mecca in Ramadan 8 AH / January 630 CE.
 
 ## The argument
@@ -32,12 +34,12 @@ Quran 48:27, revealed just after the Muslims had been turned away from Mecca at 
 ## Sources to verify
 
 - [ ] Quran 48:27 wording and 48:1
-- [ ] Bukhari numbers: revelation of Surah al-Fath on the return from Hudaybiyyah (approx. 4833-4834), the long treaty narrative with Umar's protest (approx. 2731-2732)
+- [x] Bukhari numbers: 4833 (cite 4177 for the Hudaybiyyah placement), 4834, 2731-2732 confirmed (links above)
 - [ ] Treaty term granting the next-year pilgrimage, and the details of Umrat al-Qada (7 AH / 629)
 - [ ] Dates: Hudaybiyyah March 628, conquest of Mecca Ramadan 8 AH / January 630, size of pilgrim band (~1,400)
 - [ ] Classical tafsir on why "in sha Allah" appears in 48:27 (Tabari, Qurtubi, Ibn Kathir)
-- [ ] Report that companions hesitated to shave/sacrifice until the Prophet did so first (Umm Salamah's advice)
+- [x] Companions hesitating to shave and sacrifice until Umm Salamah's advice: inside Bukhari 2731-2732 itself, no separate number
 
 ## Status
 
-Draft. Last review 2026-10-26.
+Draft. Bukhari numbers checked 2026-10-27. Quran wording, treaty terms, dates and the tafsir on "in sha Allah" still unchecked.

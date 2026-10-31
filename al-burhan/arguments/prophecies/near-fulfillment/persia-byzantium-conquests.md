@@ -10,9 +10,9 @@ Hadiths attributed to the Prophet, spoken when the Muslims were a small Arabian 
 
 ## Primary texts
 
-- "When Khosrau perishes, there will be no Khosrau after him, and when Caesar perishes, there will be no Caesar after him. By Him in Whose Hand is my soul, you will spend their treasures in the cause of Allah." — Sahih al-Bukhari (approx. 3120 and 3618) and Sahih Muslim (approx. 2918-2919), narrated by Abu Hurayrah; a version via Jabir ibn Samurah — verify numbers and narrators.
-- The hadith of Adi ibn Hatim: the Prophet, at a time of visible weakness, told him a woman would travel alone from al-Hirah to the Ka'bah fearing none but Allah, and "if you live long, you will see the treasures of Khosrau opened"; Adi says, "I was among those who opened the treasures of Khosrau." — Sahih al-Bukhari (approx. 3595) — verify.
-- Related: the Prophet's letter to Khosrau II and the report that Khosrau tore it, with the Prophet's response that his kingdom would be torn — Bukhari (approx. 64 or 4424) — verify, and note this version's wording varies.
+- "When Khosrau perishes, there will be no Khosrau after him, and when Caesar perishes, there will be no Caesar after him. By Him in Whose Hand is my soul, you will spend their treasures in the cause of Allah." — [Bukhari 3120](https://sunnah.com/bukhari:3120) (Book of Khumus) and [Bukhari 3618](https://sunnah.com/bukhari:3618) (Signs of Prophethood), both from Abu Hurayrah; [Muslim 2918](https://sunnah.com/muslim:2918), Abu Hurayrah (wording: "Kisra has died, there will be no Kisra after him"); [Muslim 2919](https://sunnah.com/muslim:2919), Jabir ibn Samura.
+- The hadith of Adi ibn Hatim: the Prophet, at a time of visible weakness, told him a woman would travel alone from al-Hirah to the Ka'bah fearing none but Allah, and "if you live long, you will see the treasures of Khosrau opened"; Adi says, "I was among those who opened the treasures of Khosrau." — [Bukhari 3595](https://sunnah.com/bukhari:3595), from Adi ibn Hatim. Confirmed: the woman in a howdah from al-Hira, "the treasures of Khosrau will be opened", and Adi: "I was one of those who opened the treasures of Khosrau, son of Hurmuz."
+- Related: the Prophet's letter to Khosrau II, which Khosrau tore up. One report from Ibn 'Abbas appears four times: [Bukhari 64](https://sunnah.com/bukhari:64), [2939](https://sunnah.com/bukhari:2939), [4424](https://sunnah.com/bukhari:4424) (names the envoy Abdullah ibn Hudhafa al-Sahmi) and [7264](https://sunnah.com/bukhari:7264). The Prophet's response in Bukhari is an invocation, "that they be torn to pieces, totally". The paraphrase "his kingdom will be torn" is an interpretation; do not quote it as Bukhari's wording.
 
 ## The argument
 
@@ -30,11 +30,11 @@ Hadiths attributed to the Prophet, spoken when the Muslims were a small Arabian 
 
 ## Sources to verify
 
-- [ ] Bukhari and Muslim numbers for the Khosrau/Caesar treasures hadith (approx. Bukhari 3120, 3618; Muslim 2918-2919) and the narrators of each version
-- [ ] Bukhari number for the Adi ibn Hatim hadith (approx. 3595) and its full wording
-- [ ] The letter to Khosrau II, his tearing it, and the Prophet's reported response; which collection and number (Bukhari approx. 64 / 4424)
-- [ ] Dates: Qadisiyyah 636, Ctesiphon 637, Nihawand 642, death of Yazdegerd III at Merv 651; Adi ibn Hatim's death date (~687)
-- [ ] Peroz III and Sasanian restoration attempts at the Tang court
+- [x] Khosrau/Caesar treasures hadith: Bukhari 3120 and 3618 and Muslim 2918 (Abu Hurayrah), Muslim 2919 (Jabir ibn Samura) confirmed
+- [x] Adi ibn Hatim, Bukhari 3595: confirmed
+- [x] Letter to Khosrau II: Bukhari 64, 2939, 4424, 7264, all Ibn 'Abbas (wording note above)
+- [x] Dates, Wikipedia-level only: Qadisiyyah 16-19 November 636 ([article](https://en.wikipedia.org/wiki/Battle_of_al-Qadisiyyah)); Ctesiphon besieged January-March 637 ([article](https://en.wikipedia.org/wiki/Siege_of_Ctesiphon_(637))); Nihawand 642 ([article](https://en.wikipedia.org/wiki/Battle_of_Nahavand)); Yazdegerd III killed near Merv in 651 ([article](https://en.wikipedia.org/wiki/Yazdegerd_III)); Adi ibn Hatim died about 687 ([article](https://en.wikipedia.org/wiki/Adi_ibn_Hatim))
+- [x] Peroz III at the Tang court: made governor of the "Persia" governorate in 661, titled King of Persia in 662, and general of the Right Guard 670-674 ([article](https://en.wikipedia.org/wiki/Peroz_III)). The Left Guard title belongs to his son Narsieh in the New Book of Tang. Upgrade to the Tang sources.
 - [ ] Classical glosses on "no Caesar after him" (attribution to al-Shafi'i or others; Nawawi's commentary on Muslim)
 - [ ] Dating of earliest hadith corpora: Malik (d. 795), Ma'mar ibn Rashid (d. ~770) via Abd al-Razzaq (d. 827)
 - [ ] Representation of Motzki's and Juynboll's isnad-cum-matn conclusions as summarized here (do not cite beyond what their work supports)
@@ -42,4 +42,4 @@ Hadiths attributed to the Prophet, spoken when the Muslims were a small Arabian 
 
 ## Status
 
-Draft. Last review 2026-10-26.
+Draft. Hadith numbers and narrators checked 2026-10-27. The dating objection (collections postdate the conquests) is untouched by this and remains the decisive one. Classical glosses on "no Caesar" and the isnad-cum-matn claims are still unchecked.

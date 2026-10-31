@@ -11,8 +11,8 @@ An early Meccan surah publicly condemned a living, named opponent — the Prophe
 ## Primary texts
 
 - Quran 111 (al-Masad), complete: "May the hands of Abu Lahab perish, and may he perish. His wealth and what he earned will not avail him. He will burn in a Fire of flame, and his wife, the carrier of firewood, with a rope of palm fiber around her neck."
-- Occasion of revelation: when the Prophet called Quraysh to Mount Safa to warn them, Abu Lahab said "Perish you! Is this what you gathered us for?" — Sahih al-Bukhari (approx. 4971-4973, in the tafsir chapters) and Sahih Muslim (approx. 208) — verify numbers.
-- Abu Lahab (Abd al-Uzza ibn Abd al-Muttalib) died in Mecca shortly after the battle of Badr (624 CE), reportedly of an infectious disease ('adasah), without converting. His death report is in the sira literature (Ibn Ishaq/Ibn Hisham) — verify.
+- Occasion of revelation: when the Prophet called Quraysh to Mount Safa to warn them, Abu Lahab said "Tabban laka" ("May you perish! You gathered us only for this?") and Surah 111 was revealed. All from Ibn 'Abbas: [Bukhari 4971](https://sunnah.com/bukhari:4971) (names Safa), [Bukhari 4972](https://sunnah.com/bukhari:4972) (says al-Batha' and the mountain), [Bukhari 4973](https://sunnah.com/bukhari:4973) (short form), [Muslim 208](https://sunnah.com/muslim:208).
+- Abu Lahab (Abd al-Uzza ibn Abd al-Muttalib) died in Mecca in about February-March 624, shortly after the battle of Badr, of 'adasah, a contagious pustular disease, without converting. His body lay untended three days before it was cast into a pit. Sources: [Integrated Encyclopedia of the Qur'an, "Abu Lahab"](https://www.iequran.com/pdf/IEQ-vol-1/A/Abu%20Lahab.pdf) (cites Ibn Sa'd, Tabaqat 4:60; Ibn Hajar, al-Isaba; the Sira); "seven days afterwards" in [the Mufti of the Federal Territories' article](https://www.muftiwp.gov.my/en/artikel/al-kafi-li-al-fatawi/2934-al-kafi-992-abu-lahab-and-the-story-of-his-death) (citing al-Rahiq al-Makhtum, pp. 335-336). The cleanest classical cites are Ibn Sa'd and Ibn Ishaq, not Ibn Hisham specifically.
 
 ## The argument
 
@@ -32,13 +32,13 @@ An early Meccan surah publicly condemned a living, named opponent — the Prophe
 
 ## Sources to verify
 
-- [ ] Bukhari and Muslim numbers for the Safa incident and the revelation of Surah 111 (approx. Bukhari 4971-4973, Muslim 208)
-- [ ] Date and manner of Abu Lahab's death ('adasah, days after news of Badr) — Ibn Ishaq/Ibn Hisham reference
-- [ ] Umm Jamil's identity (Arwa bint Harb, sister of Abu Sufyan) and her death without converting
-- [ ] Abu Lahab's sons' marriages to Ruqayyah and Umm Kulthum and the forced divorces; Utbah ibn Abi Lahab's later conversion
+- [x] Bukhari 4971, 4972, 4973 and Muslim 208: confirmed (links above)
+- [x] Date and manner of death: confirmed (links above). Open: read the Ibn Sa'd and Ibn Ishaq passages directly rather than through the encyclopedia.
+- [x] Umm Jamil bint Harb, sister of Abu Sufyan: confirmed ([Wikipedia, Abu Lahab](https://en.wikipedia.org/wiki/Abu_Lahab)). Her death without converting: still needs a source.
+- [x] The sons Utba and Utayba were made to divorce Ruqayya and Umm Kulthum before the marriages were consummated (IEQ, citing Ibn 'Abd al-Barr, al-Isti'ab 2:747-748). Utba accepted Islam after the conquest of Mecca ([Wikipedia](https://en.wikipedia.org/wiki/Abu_Lahab)); Utayba did not, and was killed by a lion in Syria after the Prophet's imprecation (IEQ).
 - [ ] Traditional dating of the surah (~613-614) and its classing as early Meccan
 - [ ] Any classical or polemical source discussing whether an insincere conversion would have "counted"
 
 ## Status
 
-Draft. Last review 2026-10-26.
+Draft. Hadith numbers and sira facts checked 2026-10-27. Surah dating and the question of whether an insincere conversion would have counted are still open.
