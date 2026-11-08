@@ -1,0 +1,27 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.4",
+  "body": [
+    { "type": "TextBlock", "text": "Daily check-in", "weight": "Bolder", "size": "Medium" },
+    { "type": "TextBlock", "text": "Two minutes. Your answers go to the team digest at 10:30.", "isSubtle": true, "wrap": true },
+    { "type": "Input.ChoiceSet", "id": "project", "label": "Project", "isRequired": true, "style": "compact",
+      "choices": [
+        { "title": "Demand Forecast", "value": "Demand Forecast" },
+        { "title": "Price Elasticity", "value": "Price Elasticity" },
+        { "title": "Churn Model", "value": "Churn Model" },
+        { "title": "Inventory Optimisation", "value": "Inventory Optimisation" },
+        { "title": "Ticket Classifier", "value": "Ticket Classifier" },
+        { "title": "Document Search", "value": "Document Search" },
+        { "title": "Sentiment Monitor", "value": "Sentiment Monitor" },
+        { "title": "Feature Store", "value": "Feature Store" },
+        { "title": "MLOps Pipeline", "value": "MLOps Pipeline" },
+        { "title": "Data Quality Monitor", "value": "Data Quality Monitor" }
+      ] },
+    { "type": "Input.Text", "id": "yesterday", "label": "What moved the sprint goal forward yesterday?", "isMultiline": true, "isRequired": true },
+    { "type": "Input.Text", "id": "today", "label": "What will you work on today?", "isMultiline": true, "isRequired": true },
+    { "type": "Input.Toggle", "id": "blocked", "title": "I'm blocked", "valueOn": "Y", "valueOff": "N", "value": "N" },
+    { "type": "Input.Text", "id": "blockerNote", "label": "If blocked: what do you need, and from whom?", "isMultiline": true }
+  ],
+  "actions": [ { "type": "Action.Submit", "title": "Submit" } ]
+}
