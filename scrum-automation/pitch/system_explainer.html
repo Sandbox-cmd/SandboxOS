@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrum Automation Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f7f9;
+  --paper: #ffffff;
+  --ink: #1d232b;
+  --ink-2: #4a5360;
+  --ink-3: #7b8491;
+  --line: #9aa3ae;
+  --line-soft: #d3d8de;
+  --fill: #eceff3;
+  --fill-2: #e1e5ea;
+  --accent: #1f5fbf;
+  --accent-soft: #e3ecfa;
+  --red: #c8473b;
+  --amber: #d49a1c;
+  --green: #3c8d4f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171c; --paper: #1c2027; --ink: #e8ebef; --ink-2: #b7bec8; --ink-3: #8a93a0;
+    --line: #5d6673; --line-soft: #363d47; --fill: #262b33; --fill-2: #2f353e;
+    --accent: #6ea2f0; --accent-soft: #1d2b42;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171c; --paper: #1c2027; --ink: #e8ebef; --ink-2: #b7bec8; --ink-3: #8a93a0;
+  --line: #5d6673; --line-soft: #363d47; --fill: #262b33; --fill-2: #2f353e;
+  --accent: #6ea2f0; --accent-soft: #1d2b42;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+body { overflow-x: hidden; }
+.mono { font-family: "JetBrains Mono", Consolas, "DejaVu Sans Mono", monospace; }
+
+#fit { width: 100%; overflow: hidden; }
+.canvas { position: relative; width: 1920px; height: 1080px; background: var(--paper); transform-origin: 0 0; }
+.abs { position: absolute; }
+
+/* header */
+.eyebrow { font-size: 15px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: 44px; line-height: 1.12; font-weight: 800; letter-spacing: -.02em; }
+h1 b { color: var(--accent); }
+.sub { font-size: 19px; color: var(--ink-2); margin-top: 10px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.chip { font-size: 13px; padding: 5px 10px; border: 1.5px solid var(--line); border-radius: 999px; color: var(--ink-2); background: var(--paper); }
+
+/* wireframe boxes */
+.box { position: absolute; border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); padding: 12px 14px; overflow: hidden; }
+.box.dash { border-style: dashed; }
+.box.accent { border-color: var(--accent); background: var(--accent-soft); }
+.bh { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.bh span { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+.lbl { font-size: 12px; color: var(--ink-3); margin: 6px 0 3px; }
+.field { height: 22px; border: 1.5px solid var(--line-soft); border-radius: 5px; background: var(--fill); }
+.bar { height: 8px; border-radius: 4px; background: var(--fill-2); }
+.row { display: flex; align-items: center; gap: 8px; }
+.note { font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+
+/* column headers */
+.colh { position: absolute; top: 196px; width: 285px; }
+.colh .n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; margin-right: 8px; vertical-align: 1px; }
+.colh .t { font-size: 20px; font-weight: 700; }
+.colh .c { font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+
+/* side panels */
+.side { position: absolute; top: 196px; width: 210px; height: 594px; }
+.side .t { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.side .big { font-size: 46px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+.side .big small { font-size: 18px; font-weight: 600; color: var(--ink-3); }
+.side .cap { font-size: 13px; color: var(--ink-3); }
+.stack { position: absolute; left: 0; width: 210px; bottom: 0; display: flex; flex-direction: column; }
+.seg { border: 1.5px solid var(--line); border-top-width: 0; background: var(--fill); display: flex; justify-content: space-between; align-items: center; padding: 0 10px; font-size: 13px; color: var(--ink-2); }
+.seg:first-child { border-top-width: 1.5px; border-radius: 8px 8px 0 0; }
+.seg:last-child { border-radius: 0 0 8px 8px; }
+.seg b { color: var(--ink); }
+
+.flow { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-top: 1px solid var(--line-soft); }
+.flow:first-of-type { border-top: 0; }
+.tag { font-size: 11px; padding: 2px 7px; border-radius: 4px; background: var(--fill); color: var(--ink-2); white-space: nowrap; }
+.term { font-size: 13px; line-height: 1.75; color: var(--ink-2); }
+.term i { color: var(--accent); font-style: normal; }
+.dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.r { background: var(--red); } .a { background: var(--amber); } .g { background: var(--green); }
+.slot { border: 1.5px solid var(--line-soft); border-radius: 6px; background: var(--fill); padding: 6px 9px; font-size: 13px; margin-top: 6px; }
+.slot b { display: block; font-size: 13px; }
+.slot span { font-size: 11.5px; color: var(--ink-3); }
+
+/* bottom strip */
+.card { position: absolute; top: 828px; height: 212px; width: 588px; border: 1.5px solid var(--line); border-radius: 12px; padding: 16px 20px; background: var(--paper); }
+.card h3 { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+.card.ask { border-color: var(--accent); background: var(--accent-soft); }
+.tl { position: relative; display: flex; justify-content: space-between; margin-top: 18px; }
+.tl::before { content: ""; position: absolute; left: 14px; right: 14px; top: 9px; border-top: 2px dashed var(--line); }
+.tl div { position: relative; width: 25%; font-size: 13px; color: var(--ink-2); line-height: 1.35; padding-right: 8px; }
+.tl div::before { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--accent); background: var(--paper); margin-bottom: 10px; }
+.tl b { display: block; color: var(--ink); font-size: 13.5px; }
+.list { list-style: none; font-size: 14.5px; line-height: 1.4; }
+.list li { display: flex; gap: 10px; margin-bottom: 9px; }
+.cb { flex: none; width: 18px; height: 18px; border: 2px solid var(--accent); border-radius: 4px; margin-top: 1px; }
+.kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpi div { border: 1.5px solid var(--line-soft); border-radius: 8px; padding: 8px 10px; }
+.kpi b { display: block; font-size: 22px; font-weight: 800; color: var(--accent); }
+.kpi span { font-size: 12.5px; color: var(--ink-2); }
+svg.over { position: absolute; left: 0; top: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="fit"><div class="canvas" id="canvas">
+
+  <!-- Header -->
+  <div class="abs" style="left:56px; top:40px; width:1300px;">
+    <div class="eyebrow">Proposal · Scrum at portfolio scale</div>
+    <h1 style="margin-top:10px;">10 projects, <b>about 6</b> meeting hours a week instead of <b>42.5</b></h1>
+    <div class="sub">Every Scrum event stays. Routine status work moves to automation on Microsoft 365 tools we already license.</div>
+  </div>
+  <div class="abs chips" style="right:56px; top:52px; width:440px;">
+    <span class="chip">Teams</span><span class="chip">Microsoft Lists</span><span class="chip">Power Automate</span>
+    <span class="chip">Forms</span><span class="chip">Excel / Power BI</span><span class="chip">VS Code + Python</span>
+  </div>
+
+  <!-- Left: today -->
+  <div class="side" style="left:56px;">
+    <div class="t">Today</div>
+    <div class="big">42.5 <small>h / week</small></div>
+    <div class="cap">10 projects × standard Scrum, if the PM attends each</div>
+    <div class="stack">
+      <div class="seg" style="height:135px;"><span>Daily Scrum</span><b>12.5</b></div>
+      <div class="seg" style="height:108px;"><span>Planning</span><b>10</b></div>
+      <div class="seg" style="height:108px;"><span>Refinement</span><b>10</b></div>
+      <div class="seg" style="height:54px;"><span>Review</span><b>5</b></div>
+      <div class="seg" style="height:54px;"><span>Retro</span><b>5</b></div>
+    </div>
+  </div>
+
+  <!-- Right: with the system -->
+  <div class="side" style="left:1654px;">
+    <div class="t" style="color:var(--accent);">With the system</div>
+    <div class="big" style="color:var(--accent);">5.9 <small>h / week</small></div>
+    <div class="cap">Same scale as left. 86% fewer meeting hours.</div>
+    <div class="abs" style="left:0; bottom:0; width:210px; height:459px; border:1.5px dashed var(--line-soft); border-radius:8px;"></div>
+    <div class="abs" style="left:14px; top:250px; width:182px; font-size:13px; color:var(--ink-3); text-align:center; line-height:1.4;">36.6 h a week back for stakeholders, risks and unblocking</div>
+    <div class="stack">
+      <div class="seg" style="height:64px; background:var(--accent-soft); border-color:var(--accent); border-radius:8px;"><span>All live time</span><b>5.9</b></div>
+    </div>
+    <div class="abs note" style="left:12px; bottom:76px; width:190px; font-size:12px; color:var(--ink-2); line-height:1.5;">Sprint Day 3.4<br>Reading digests 1.25<br>Refinement 0.75<br>Scrum of Scrums 0.5</div>
+  </div>
+
+  <!-- Column headers -->
+  <div class="colh" style="left:300px;"><span class="n">1</span><span class="t">Team inputs</span><div class="c">About 2 minutes a day per person</div></div>
+  <div class="colh" style="left:645px;"><span class="n">2</span><span class="t">Automation runs</span><div class="c">Nobody has to chase updates</div></div>
+  <div class="colh" style="left:990px;"><span class="n">3</span><span class="t">Outputs land</span><div class="c">In Teams, email and Excel</div></div>
+  <div class="colh" style="left:1335px;"><span class="n">4</span><span class="t">Live time</span><div class="c">Demos, decisions and blockers only</div></div>
+
+  <!-- 1. Inputs -->
+  <div class="box" style="left:300px; top:262px; width:285px; height:204px;">
+    <div class="bh">Teams check-in card <span class="mono">09:00 daily</span></div>
+    <div class="row"><div style="flex:1"><div class="lbl" style="margin-top:0">Project</div><div class="field"></div></div></div>
+    <div class="lbl">Yesterday</div><div class="field"></div>
+    <div class="lbl">Today</div><div class="field"></div>
+    <div class="row" style="margin-top:9px; justify-content:space-between;">
+      <div class="row" style="font-size:12.5px; color:var(--ink-2);"><span style="width:30px;height:16px;border-radius:8px;border:1.5px solid var(--accent);background:var(--accent-soft);display:inline-block;position:relative;"><span style="position:absolute;right:2px;top:2px;width:9px;height:9px;border-radius:50%;background:var(--accent);"></span></span>I'm blocked</div>
+      <div style="font-size:12px; padding:3px 12px; border-radius:5px; background:var(--accent); color:#fff;">Submit</div>
+    </div>
+  </div>
+  <div class="box" style="left:300px; top:480px; width:285px; height:122px;">
+    <div class="bh">Forms retro survey <span class="mono">Sprint Day −2</span></div>
+    <div class="row" style="gap:6px;"><span style="width:12px;height:12px;border:1.5px solid var(--line);border-radius:50%"></span><div class="bar" style="width:150px"></div></div>
+    <div class="row" style="gap:6px; margin-top:8px;"><span style="width:12px;height:12px;border:1.5px solid var(--line);border-radius:50%"></span><div class="bar" style="width:120px"></div></div>
+    <div class="row" style="gap:5px; margin-top:10px; font-size:12px; color:var(--ink-3);">Sprint score <span class="mono" style="letter-spacing:2px; color:var(--ink-2);">① ② ③ ④ ⑤</span></div>
+  </div>
+  <div class="box" style="left:300px; top:616px; width:285px; height:174px;">
+    <div class="bh">Lists backlog <span>one list, all 10 projects</span></div>
+    <div class="mono" style="display:grid; grid-template-columns:52px 1fr 70px 28px; gap:6px 8px; font-size:11px; color:var(--ink-3); align-items:center;">
+      <span>ID</span><span>Project</span><span>Status</span><span>Pts</span>
+      <span>DS-014</span><div class="bar"></div><span class="tag">Done</span><span>3</span>
+      <span>DS-027</span><div class="bar" style="width:70%"></div><span class="tag">In prog</span><span>5</span>
+      <span>DS-031</span><div class="bar" style="width:85%"></div><span class="tag" style="background:#f6dcd8;color:#8a2d24;">Blocked</span><span>2</span>
+      <span>DS-042</span><div class="bar" style="width:60%"></div><span class="tag">Ready</span><span>8</span>
+    </div>
+  </div>
+
+  <!-- 2. Automation -->
+  <div class="box accent" style="left:645px; top:262px; width:285px; height:340px;">
+    <div class="bh">Power Automate <span>6 flows</span></div>
+    <div class="flow"><span>Check-in + team digest</span><span class="tag mono">daily</span></div>
+    <div class="flow"><span>Blocker escalation</span><span class="tag mono">on blocked</span></div>
+    <div class="flow"><span>Sprint rollover + velocity</span><span class="tag mono">sprint end</span></div>
+    <div class="flow"><span>Retro survey + themes</span><span class="tag mono">SD −2</span></div>
+    <div class="flow"><span>Stale work nudge</span><span class="tag mono">5 days idle</span></div>
+    <div class="flow"><span>Leadership digest</span><span class="tag mono">Fri 15:00</span></div>
+    <div class="note" style="margin-top:8px; font-size:12px; color:var(--ink-3);">Reads and writes the Lists backlog. Posts to Teams and Outlook.</div>
+  </div>
+  <div class="box" style="left:645px; top:616px; width:285px; height:174px;">
+    <div class="bh">VS Code scripts <span>Python</span></div>
+    <div class="term mono">
+      <div><i>›</i> backlog_hygiene.py</div>
+      <div><i>›</i> metrics.py</div>
+      <div><i>›</i> sprint_report.py</div>
+    </div>
+    <div class="note" style="margin-top:4px; font-size:12px; color:var(--ink-3);">Unready items, KPIs, review decks</div>
+  </div>
+
+  <!-- 3. Outputs -->
+  <div class="box" style="left:990px; top:262px; width:285px; height:150px;">
+    <div class="bh">Team digest <span class="mono">10:30</span></div>
+    <div class="row"><span class="dot" style="background:var(--fill-2)"></span><div class="bar" style="flex:1"></div></div>
+    <div class="row" style="margin-top:8px"><span class="dot" style="background:var(--fill-2)"></span><div class="bar" style="width:70%"></div></div>
+    <div class="row" style="margin-top:8px"><span class="dot" style="background:var(--fill-2)"></span><div class="bar" style="width:82%"></div></div>
+    <div class="note" style="margin-top:10px; font-size:12.5px;">8 of 10 checked in · 1 blocked</div>
+  </div>
+  <div class="box" style="left:990px; top:426px; width:285px; height:96px; border-color:var(--red);">
+    <div class="bh" style="margin-bottom:4px;">Blocker alert <span class="mono" style="color:var(--red)">open 52 h</span></div>
+    <div class="note">DS-031 Churn Model: waiting on CRM data access</div>
+    <div class="note" style="font-size:12px; color:var(--ink-3); margin-top:3px;">PM + PO pinged · stakeholder emailed</div>
+  </div>
+  <div class="box" style="left:990px; top:536px; width:285px; height:108px;">
+    <div class="bh">Sprint review pack <span>per cluster</span></div>
+    <div class="row" style="gap:10px;">
+      <div style="width:72px;height:44px;border:1.5px solid var(--line);border-radius:4px;padding:5px;"><div class="bar" style="width:70%;height:5px;"></div><div class="bar" style="margin-top:5px;height:5px;"></div></div>
+      <div style="width:72px;height:44px;border:1.5px solid var(--line);border-radius:4px;padding:5px;display:flex;gap:3px;align-items:flex-end;"><div style="width:9px;height:14px;background:var(--fill-2)"></div><div style="width:9px;height:24px;background:var(--fill-2)"></div><div style="width:9px;height:18px;background:var(--fill-2)"></div><div style="width:9px;height:30px;background:var(--accent)"></div></div>
+      <div style="width:72px;height:44px;border:1.5px solid var(--line);border-radius:4px;padding:5px;"><div class="bar" style="height:5px;"></div><div class="bar" style="margin-top:5px;width:60%;height:5px;"></div><div class="bar" style="margin-top:5px;width:80%;height:5px;"></div></div>
+    </div>
+  </div>
+  <div class="box" style="left:990px; top:658px; width:285px; height:132px;">
+    <div class="bh">Portfolio dashboard <span>RAG × 10</span></div>
+    <div class="row" style="gap:9px; flex-wrap:wrap; width:150px;">
+      <span class="dot g"></span><span class="dot g"></span><span class="dot a"></span><span class="dot r"></span><span class="dot g"></span>
+      <span class="dot a"></span><span class="dot g"></span><span class="dot g"></span><span class="dot a"></span><span class="dot g"></span>
+    </div>
+    <div class="note" style="margin-top:10px; font-size:12.5px;">Say/do, cycle time, blocker age, experiment win rate</div>
+  </div>
+
+  <!-- 4. Live time -->
+  <div class="box" style="left:1335px; top:262px; width:285px; height:136px;">
+    <div class="bh">Scrum of Scrums <span class="mono">Tue + Thu</span></div>
+    <div class="note">15 minutes. Overdue blockers and cross-project dependencies. No status round.</div>
+    <div class="note" style="font-size:12px; color:var(--ink-3); margin-top:6px;">PM + one lead per cluster</div>
+  </div>
+  <div class="box accent" style="left:1335px; top:412px; width:285px; height:254px;">
+    <div class="bh">Sprint Day <span class="mono">every 2nd Monday</span></div>
+    <div class="slot"><b>09:30 Forecasting</b><span>4 projects · Review 45 · Retro 30 · Plan 60</span></div>
+    <div class="slot"><b>12:30 NLP</b><span>3 projects · Review 45 · Retro 30 · Plan 60</span></div>
+    <div class="slot"><b>15:00 Platform</b><span>3 projects · Review 45 · Retro 30 · Plan 60</span></div>
+    <div class="note" style="font-size:12px; color:var(--ink-3); margin-top:7px;">All 10 projects on the same sprint dates</div>
+  </div>
+  <div class="box" style="left:1335px; top:680px; width:285px; height:110px;">
+    <div class="bh">Refinement <span class="mono">weekly · 45 min</span></div>
+    <div class="note">3 or 4 projects in rotation. Gaps arrive pre-flagged by the hygiene script.</div>
+  </div>
+
+  <!-- Arrows -->
+  <svg class="over" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+      </marker>
+      <marker id="ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/>
+      </marker>
+    </defs>
+    <g stroke="var(--accent)" stroke-width="2.5" fill="none" marker-end="url(#ah)">
+      <!-- inputs -> automation -->
+      <path d="M587 364 L641 364"/>
+      <path d="M587 541 L641 541"/>
+      <path d="M587 703 L641 703"/>
+      <!-- automation -> outputs -->
+      <path d="M932 337 L986 337"/>
+      <path d="M932 474 L986 474"/>
+      <path d="M932 660 L986 600"/>
+      <path d="M932 724 L986 724"/>
+      <!-- outputs -> live -->
+      <path d="M1277 337 L1331 337"/>
+      <path d="M1277 590 L1331 590"/>
+      <path d="M1277 700 L1331 650"/>
+    </g>
+    <!-- escalation path -->
+    <g stroke="var(--red)" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-end="url(#ahr)">
+      <path d="M1277 474 C1305 474 1300 380 1331 380"/>
+    </g>
+    <text x="1283" y="508" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="var(--red)">48 h+</text>
+  </svg>
+
+  <!-- Bottom strip -->
+  <div class="card" style="left:56px;">
+    <h3>90-day rollout</h3>
+    <div class="tl">
+      <div><b>Weeks 1-2</b>Measure today's meeting hours, set up the backlog list</div>
+      <div><b>Weeks 3-4</b>Pilot check-ins and blocker flow with one team</div>
+      <div><b>Month 2</b>Align sprint dates, launch Sprint Day and review packs</div>
+      <div><b>Month 3</b>Portfolio dashboard, first quarterly planning</div>
+    </div>
+  </div>
+  <div class="card ask" style="left:666px;">
+    <h3>What I need from you</h3>
+    <ul class="list">
+      <li><span class="cb"></span>Power Automate and Lists access on a team SharePoint site</li>
+      <li><span class="cb"></span>One pilot team for 4 weeks</li>
+      <li><span class="cb"></span>30 minutes with IT to confirm connector and Graph access</li>
+      <li><span class="cb"></span>Your backing to put all projects on the same sprint dates</li>
+    </ul>
+  </div>
+  <div class="card" style="left:1276px;">
+    <h3>How we'll know it works</h3>
+    <div class="kpi">
+      <div><b>&lt; 8 h</b><span>live meetings per week for the PM</span></div>
+      <div><b>&gt; 85%</b><span>daily check-in response rate</span></div>
+      <div><b>&lt; 48 h</b><span>age of any open blocker</span></div>
+      <div><b>Tracked</b><span>sprint goal hit rate per project</span></div>
+    </div>
+  </div>
+
+</div></div>
+<script>
+(function () {
+  var c = document.getElementById('canvas'), f = document.getElementById('fit');
+  function fit() {
+    var s = Math.min(1, f.clientWidth / 1920);
+    c.style.transform = 'scale(' + s + ')';
+    f.style.height = (1080 * s) + 'px';
+  }
+  window.addEventListener('resize', fit); fit();
+})();
+</script>
+</body>
+</html>

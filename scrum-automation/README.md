@@ -8,6 +8,7 @@ A working system for running about 10 agile data science projects with Microsoft
 - `backlog_template.xlsx`: the data model (Backlog, Standup Log, Impediments, Risks, Sprint Snapshots, Calendar, Projects) with sample data for 10 projects and a live-formula Dashboard sheet. Mirror these columns in Microsoft Lists or Azure DevOps.
 - `flows/standup_card.json`: the Teams adaptive card for the async daily check-in. Paste it into Power Automate's "Post adaptive card and wait for a response" action.
 - `scripts/`: Python tools you run from VS Code.
+- `pitch/`: one-page wireframe explainer for pitching the system to a manager. `system_explainer.png` (image), `.pdf` (print), `.pptx` (one slide with a 60-second script in the speaker notes) and `.html` (editable source).
 
 ## Scripts
 
