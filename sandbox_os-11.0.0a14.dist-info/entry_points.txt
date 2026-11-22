@@ -1,0 +1,2 @@
+[console_scripts]
+sandbox = sandbox_os.command.cli:main

@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: sandbox-os
+Version: 11.0.0a14
+Summary: A workshop on your own machine, worked with an AI partner in your terminal.
+License: LicenseRef-Winktank-Person-1.0
+Requires-Python: >=3.14

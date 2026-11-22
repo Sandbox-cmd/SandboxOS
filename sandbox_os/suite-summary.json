@@ -1,0 +1,14 @@
+{
+ "collected": 1938,
+ "ran": 1938,
+ "failures": 0,
+ "errors": 0,
+ "skipped": 16,
+ "not_yet": 2,
+ "unexpected_passes": 0,
+ "seconds": 2087.9,
+ "ok": true,
+ "exit": 0,
+ "command": "python3 -m tests.run",
+ "stdin": "/dev/null"
+}

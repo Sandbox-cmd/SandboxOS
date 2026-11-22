@@ -1,0 +1,7 @@
+pass: committed: the tree is committed but for dist/
+pass: suite: the full suite passed with standard input closed: {"collected": 1938, "ran": 1938, "failures": 0, "errors": 0, "skipped": 16, "not_yet": 2, "unexpected_passes": 0, "seconds": 2087.9, "ok": true}
+pass: budgets: the budgets test passes; no limit moved without its date and reason since 11.0.0a13
+pass: licence: the licence file, the headers, no other grant and the first page's words hold
+pass: version: 11.0.0a14 is no existing tag
+pass: format: format 2, unchanged
+pass: changes: CHANGES.md names 11.0.0a14
